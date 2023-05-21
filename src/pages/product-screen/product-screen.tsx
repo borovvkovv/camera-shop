@@ -1,4 +1,3 @@
-import cn from 'classnames';
 
 type ProductScreenProps = {};
 
@@ -218,7 +217,7 @@ function ProductScreen({}: ProductScreenProps): JSX.Element {
                     </button>
                     <a
                       className='btn btn--transparent'
-                      href='#'
+                      href='/'
                     >
                       Подробнее
                     </a>
@@ -298,7 +297,7 @@ function ProductScreen({}: ProductScreenProps): JSX.Element {
                     </button>
                     <a
                       className='btn btn--transparent'
-                      href='#'
+                      href='/'
                     >
                       Подробнее
                     </a>
@@ -377,7 +376,7 @@ function ProductScreen({}: ProductScreenProps): JSX.Element {
                     </button>
                     <a
                       className='btn btn--transparent'
-                      href='#'
+                      href='/'
                     >
                       Подробнее
                     </a>
@@ -455,7 +454,7 @@ function ProductScreen({}: ProductScreenProps): JSX.Element {
                     </button>
                     <a
                       className='btn btn--transparent'
-                      href='#'
+                      href='/'
                     >
                       Подробнее
                     </a>
@@ -535,7 +534,7 @@ function ProductScreen({}: ProductScreenProps): JSX.Element {
                     </button>
                     <a
                       className='btn btn--transparent'
-                      href='#'
+                      href='/'
                     >
                       Подробнее
                     </a>
@@ -614,7 +613,7 @@ function ProductScreen({}: ProductScreenProps): JSX.Element {
                     </button>
                     <a
                       className='btn btn--transparent'
-                      href='#'
+                      href='/'
                     >
                       Подробнее
                     </a>
@@ -625,7 +624,7 @@ function ProductScreen({}: ProductScreenProps): JSX.Element {
                 className='slider-controls slider-controls--prev'
                 type='button'
                 aria-label='Предыдущий слайд'
-                disabled=''
+                disabled
               >
                 <svg
                   width={7}

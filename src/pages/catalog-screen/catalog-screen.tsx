@@ -1,4 +1,3 @@
-import cn from 'classnames';
 
 type CatalogScreenProps = {};
 
@@ -42,7 +41,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                       <input
                         type='checkbox'
                         name='photocamera'
-                        defaultChecked=''
+                        checked
                       />
                       <span className='custom-checkbox__icon' />
                       <span className='custom-checkbox__label'>Фотокамера</span>
@@ -68,7 +67,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                       <input
                         type='checkbox'
                         name='digital'
-                        defaultChecked=''
+                        checked
                       />
                       <span className='custom-checkbox__icon' />
                       <span className='custom-checkbox__label'>Цифровая</span>
@@ -79,7 +78,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                       <input
                         type='checkbox'
                         name='film'
-                        disabled=''
+                        disabled
                       />
                       <span className='custom-checkbox__icon' />
                       <span className='custom-checkbox__label'>Плёночная</span>
@@ -102,8 +101,8 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                       <input
                         type='checkbox'
                         name='collection'
-                        defaultChecked=''
-                        disabled=''
+                        checked
+                        disabled
                       />
                       <span className='custom-checkbox__icon' />
                       <span className='custom-checkbox__label'>
@@ -119,7 +118,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                       <input
                         type='checkbox'
                         name='zero'
-                        defaultChecked=''
+                        checked
                       />
                       <span className='custom-checkbox__icon' />
                       <span className='custom-checkbox__label'>Нулевой</span>
@@ -170,7 +169,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                         type='radio'
                         id='sortPrice'
                         name='sort'
-                        defaultChecked=''
+                        checked
                       />
                       <label htmlFor='sortPrice'>по цене</label>
                     </div>
@@ -189,7 +188,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                         type='radio'
                         id='up'
                         name='sort-icon'
-                        defaultChecked=''
+                        checked
                         aria-label='По возрастанию'
                       />
                       <label htmlFor='up'>
@@ -296,7 +295,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                   </button>
                   <a
                     className='btn btn--transparent'
-                    href='#'
+                    href='/'
                   >
                     Подробнее
                   </a>
@@ -368,7 +367,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                 <div className='product-card__buttons'>
                   <a
                     className='btn btn--purple-border product-card__btn product-card__btn--in-cart'
-                    href='#'
+                    href='/'
                   >
                     <svg
                       width={16}
@@ -381,7 +380,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                   </a>
                   <a
                     className='btn btn--transparent'
-                    href='#'
+                    href='/'
                   >
                     Подробнее
                   </a>
@@ -459,7 +458,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                   </button>
                   <a
                     className='btn btn--transparent'
-                    href='#'
+                    href='/'
                   >
                     Подробнее
                   </a>
@@ -537,7 +536,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                   </button>
                   <a
                     className='btn btn--transparent'
-                    href='#'
+                    href='/'
                   >
                     Подробнее
                   </a>
@@ -615,7 +614,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                   </button>
                   <a
                     className='btn btn--transparent'
-                    href='#'
+                    href='/'
                   >
                     Подробнее
                   </a>
@@ -693,7 +692,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                   </button>
                   <a
                     className='btn btn--transparent'
-                    href='#'
+                    href='/'
                   >
                     Подробнее
                   </a>
@@ -771,7 +770,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                   </button>
                   <a
                     className='btn btn--transparent'
-                    href='#'
+                    href='/'
                   >
                     Подробнее
                   </a>
@@ -849,7 +848,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                   </button>
                   <a
                     className='btn btn--transparent'
-                    href='#'
+                    href='/'
                   >
                     Подробнее
                   </a>
@@ -927,7 +926,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                   </button>
                   <a
                     className='btn btn--transparent'
-                    href='#'
+                    href='/'
                   >
                     Подробнее
                   </a>
@@ -939,7 +938,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                 <li className='pagination__item'>
                   <a
                     className='pagination__link pagination__link--active'
-                    href={1}
+                    href="1"
                   >
                     1
                   </a>
@@ -947,7 +946,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                 <li className='pagination__item'>
                   <a
                     className='pagination__link'
-                    href={2}
+                    href="2"
                   >
                     2
                   </a>
@@ -955,7 +954,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                 <li className='pagination__item'>
                   <a
                     className='pagination__link'
-                    href={3}
+                    href="3"
                   >
                     3
                   </a>
@@ -963,7 +962,7 @@ function CatalogScreen({}: CatalogScreenProps): JSX.Element {
                 <li className='pagination__item'>
                   <a
                     className='pagination__link pagination__link--text'
-                    href={2}
+                    href="2"
                   >
                     Далее
                   </a>

@@ -15,7 +15,6 @@ import { humanizeProductPrice, makeProductName } from '../../utils';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 function CatalogScreen(): JSX.Element {
-
   const { pathname } = useLocation();
   const { id: pageAsString } = useParams();
   const pageAsNumber = Number(pageAsString);
@@ -23,14 +22,25 @@ function CatalogScreen(): JSX.Element {
 
   const modalRef = useRef(null);
   const { isVisible, setVisibility } = usePopup(modalRef);
-  const [selectedProduct, setSelectedProduct] = useState<ProductCard | null>(null);
-  const { products, isProductsLoading, isProductsLoadingFailed } = useProducts();
-  const { pagedProducts, currentPage, maxPageNumber } =
-    usePagination(products, pageNumber);
+  const [selectedProduct, setSelectedProduct] = useState<ProductCard | null>(
+    null
+  );
+  const { products, isProductsLoading, isProductsLoadingFailed } =
+    useProducts();
+  const { pagedProducts, currentPage, maxPageNumber } = usePagination(
+    products,
+    pageNumber
+  );
 
-  const ErrorState = () => <h1 className='title title--h3'>Не удалось загрузить товары. Попробуйте позже.</h1>;
+  const ErrorState = () => (
+    <h1 className='title title--h3'>
+      Не удалось загрузить товары. Попробуйте позже.
+    </h1>
+  );
   const LoadingState = () => <h1 className='title title--h3'>Загрузка...</h1>;
-  const EmptyState = () => <h1 className='title title--h3'>Товары не найдены</h1>;
+  const EmptyState = () => (
+    <h1 className='title title--h3'>Товары не найдены</h1>
+  );
 
   function handlePopupCrossClick() {
     setVisibility(false);
@@ -53,7 +63,14 @@ function CatalogScreen(): JSX.Element {
     <>
       <Banner />
       <div className='page-content'>
-        <Breadcrumbs />
+        <Breadcrumbs
+          crumbs={[
+            {
+              name: 'Каталог',
+              path: AppRoute.Root,
+            },
+          ]}
+        />
         <section className='catalog'>
           <div className='container'>
             <h1 className='title title--h2'>Каталог фото- и видеотехники</h1>
@@ -68,12 +85,15 @@ function CatalogScreen(): JSX.Element {
                   <Sorts />
                 </div>
                 {(isProductsLoadingFailed && <ErrorState />) ||
-                  (isProductsLoading && products.length === 0 && <LoadingState />) ||
-                  (products.length === 0 && <EmptyState />) ||
-                  <ProductCardsList
-                    products={pagedProducts}
-                    onBuyClick={handleProductCardBuyClick}
-                  />}
+                  (isProductsLoading && products.length === 0 && (
+                    <LoadingState />
+                  )) ||
+                  (products.length === 0 && <EmptyState />) || (
+                    <ProductCardsList
+                      products={pagedProducts}
+                      onBuyClick={handleProductCardBuyClick}
+                    />
+                  )}
                 <Pagination
                   currentPage={currentPage}
                   maxPageNumber={maxPageNumber}

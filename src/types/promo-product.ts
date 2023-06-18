@@ -1,4 +1,3 @@
-import { ProductCategory, ProductLevel, ProductType } from '../enums';
 import { ProductCard } from './product-card';
 
 export type PromoProduct = Pick<

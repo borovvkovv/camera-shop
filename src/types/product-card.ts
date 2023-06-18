@@ -1,4 +1,4 @@
-import { ProductCategory, ProductLevel, ProductType } from '../enums'
+import { ProductCategory, ProductLevel, ProductType } from '../enums';
 
 export type ProductCard = {
   id: number;

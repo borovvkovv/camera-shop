@@ -15,3 +15,8 @@ export enum ProductLevel {
   Amateur = 'Любительский',
   Professional = 'Профессиональный',
 }
+
+export enum ProductCardMode {
+  Card = 'Card',
+  Slider = 'Slider'
+}

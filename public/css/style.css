@@ -3624,7 +3624,6 @@ button,
   .slider-controls:active {
     color: #7575e2;
     background-color: #a2a2ff;
-    pointer-events: none;
   }
 
   .link:hover,
@@ -3654,5 +3653,40 @@ button,
   .tabs__control:focus-visible,
   .tabs__control:active {
     background-color: #f4f4fc;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    transform: translateX(390%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-390%);
+  }
+}
+
+@keyframes fadeInReverse {
+  100% {
+    transform: translateX(390%);
+  }
+  0% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOutReverse {
+  100% {
+    transform: translateX(0);
+  }
+  0% {
+    transform: translateX(-390%);
   }
 }

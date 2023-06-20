@@ -1,12 +1,10 @@
 export const MAX_RATING_STARS = 5;
-
 export const PRODUCTS_ON_PAGE = 9;
 export const PRODUCTS_ON_SLIDER = 3;
 export const COMMENTS_ON_PAGE = 3;
 
 export enum NameSpace {
   DATA = 'DATA',
-  APP = 'APP'
 }
 
 export const enum ApiRoute {
@@ -16,7 +14,6 @@ export const enum ApiRoute {
   Promo = '/promo',
   Reviews = '/cameras/{:cameraId}/reviews',
   PostReview = '/reviews',
-  Coupons = '/coupons',
 }
 
 export const enum AppRoute {

@@ -34,9 +34,6 @@ const store = mockStore({
     isCommentSending: false,
     isCommentSent: true,
   },
-  [NameSpace.APP]: {
-    currentPage: 1,
-  },
 });
 
 const history = createMemoryHistory();

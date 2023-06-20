@@ -14,7 +14,10 @@ function Pagination({
     <div className='pagination'>
       <ul className='pagination__list'>
         {currentPage > 1 && (
-          <li className='pagination__item'>
+          <li
+            className='pagination__item'
+            data-testid='paginationPrevious'
+          >
             <Link
               className='pagination__link pagination__link--text'
               to={`${AppRoute.Catalog.replace(':id', `${currentPage - 1}`)}`}
@@ -33,13 +36,17 @@ function Pagination({
                 index + 1 === currentPage ? 'pagination__link--active' : ''
               }`}
               to={`${AppRoute.Catalog.replace(':id', `${index + 1}`)}`}
+              data-testid={`page-${index + 1}`}
             >
               {index + 1}
             </Link>
           </li>
         ))}
         {currentPage < maxPageNumber && (
-          <li className='pagination__item'>
+          <li
+            className='pagination__item'
+            data-testid='paginationNext'
+          >
             <Link
               className='pagination__link pagination__link--text'
               to={`${AppRoute.Catalog.replace(':id', `${currentPage + 1}`)}`}

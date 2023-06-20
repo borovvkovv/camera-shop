@@ -2,7 +2,8 @@ import { NameSpace } from '../../const';
 import { State } from '../../types/store';
 
 export const getProducts = (state: State) => state[NameSpace.DATA].products;
-export const getIsProductsLoading = (state: State) => state[NameSpace.DATA].isProductsLoading;
+export const getIsProductsLoading = (state: State) =>
+  state[NameSpace.DATA].isProductsLoading;
 export const getIsProductsLoadingFailed = (state: State) =>
   state[NameSpace.DATA].isProductsLoadingFailed;
 
@@ -18,3 +19,7 @@ export const getIsPromoLoading = (state: State) =>
   state[NameSpace.DATA].isPromoLoading;
 
 export const getReviews = (state: State) => state[NameSpace.DATA].reviews;
+export const getIsCommentSending = (state: State) =>
+  state[NameSpace.DATA].isCommentSending;
+export const getIsCommentSent = (state: State) =>
+  state[NameSpace.DATA].isCommentSent;

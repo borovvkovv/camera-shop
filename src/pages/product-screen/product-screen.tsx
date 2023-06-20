@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router';
+import AddToCart from '../../components/add-to-cart/add-to-cart';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ReviewList from '../../components/review-list/review-list';
 import Slider from '../../components/slider/slider';
@@ -10,7 +11,7 @@ import useProduct from '../../hooks/use-product';
 import useSimilarProducts from '../../hooks/use-similar-products';
 import { redirectToRoute } from '../../store/action';
 import { ProductCard } from '../../types/product-card';
-import { humanizeProductPrice, makeProductName } from '../../utils';
+import { humanizeProductPrice } from '../../utils';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 function ProductScreen(): JSX.Element {
@@ -22,17 +23,15 @@ function ProductScreen(): JSX.Element {
 
   const { product, isProductLoading } = useProduct(id);
   const { similarProducts } = useSimilarProducts(id);
+
   const [selectedProduct, setSelectedProduct] = useState<ProductCard | null>(
     null
   );
   const modalRef = useRef(null);
   const { isVisible, setVisibility } = usePopup(modalRef);
+
   const characteristics = useRef(null);
   const text = useRef(null);
-
-  function handlePopupCrossClick() {
-    setVisibility(false);
-  }
 
   const handleProductCardBuyClick = useMemo(
     () => (productCard: ProductCard) => {
@@ -77,7 +76,7 @@ function ProductScreen(): JSX.Element {
     vendorCode,
     description,
     type,
-    category,
+    category
   } = product;
 
   return (
@@ -187,6 +186,7 @@ function ProductScreen(): JSX.Element {
                       );
                       toggleTabsControls();
                     }}
+                    data-testid='buttonCharacteristicsTab'
                   >
                     Характеристики
                   </button>
@@ -199,14 +199,18 @@ function ProductScreen(): JSX.Element {
                       dispatch(redirectToRoute(`/cameras/${id}/text`));
                       toggleTabsControls();
                     }}
+                    data-testid='buttonTextTab'
                   >
                     Описание
                   </button>
                 </div>
                 <div className='tabs__content'>
                   <div
-                    className='tabs__element'
+                    className={`tabs__element ${
+                      tab === 'characteristics' ? 'is-active' : ''
+                    }`}
                     ref={characteristics}
+                    data-testid='characteristicsTab'
                   >
                     <ul className='product__tabs-list'>
                       <li className='item-list'>
@@ -228,8 +232,11 @@ function ProductScreen(): JSX.Element {
                     </ul>
                   </div>
                   <div
-                    className='tabs__element is-active'
+                    className={`tabs__element ${
+                      tab === 'text' ? 'is-active' : ''
+                    }`}
                     ref={text}
+                    data-testid='textTab'
                   >
                     <div className='product__tabs-text'>
                       <p>{description}</p>
@@ -255,86 +262,13 @@ function ProductScreen(): JSX.Element {
         </div>
       )}
       <ReviewList productId={id} />
-      {selectedProduct && (
-        <div className={`modal ${isVisible ? 'is-active' : ''}`}>
-          <div className='modal__wrapper'>
-            <div className='modal__overlay'></div>
-            <div
-              className='modal__content'
-              ref={modalRef}
-            >
-              <p className='title title--h4'>Добавить товар в корзину</p>
-              <div className='basket-item basket-item--short'>
-                <div className='basket-item__img'>
-                  <picture>
-                    <source
-                      type='image/webp'
-                      srcSet={`/${selectedProduct.previewImgWebp}, /${selectedProduct.previewImgWebp2x} 2x`}
-                    />
-                    <img
-                      src={`/${selectedProduct.previewImg}`}
-                      srcSet={`/${selectedProduct.previewImg2x} 2x`}
-                      width='140'
-                      height='120'
-                      alt={name}
-                    />
-                  </picture>
-                </div>
-                <div className='basket-item__description'>
-                  <p className='basket-item__title'>{selectedProduct.name}</p>
-                  <ul className='basket-item__list'>
-                    <li className='basket-item__list-item'>
-                      <span className='basket-item__article'>Артикул:</span>{' '}
-                      <span className='basket-item__number'>
-                        {selectedProduct.vendorCode}
-                      </span>
-                    </li>
-                    <li className='basket-item__list-item'>
-                      {makeProductName(selectedProduct)}
-                    </li>
-                    <li className='basket-item__list-item'>
-                      {selectedProduct.level} уровень
-                    </li>
-                  </ul>
-                  <p className='basket-item__price'>
-                    <span className='visually-hidden'>Цена:</span>
-                    {humanizeProductPrice(selectedProduct.price)} ₽
-                  </p>
-                </div>
-              </div>
-              <div className='modal__buttons'>
-                <button
-                  className='btn btn--purple modal__btn modal__btn--fit-width'
-                  type='button'
-                >
-                  <svg
-                    width='24'
-                    height='16'
-                    aria-hidden='true'
-                  >
-                    <use xlinkHref='#icon-add-basket'></use>
-                  </svg>
-                  Добавить в корзину
-                </button>
-              </div>
-              <button
-                className='cross-btn'
-                type='button'
-                aria-label='Закрыть попап'
-                onClick={handlePopupCrossClick}
-              >
-                <svg
-                  width='10'
-                  height='10'
-                  aria-hidden='true'
-                >
-                  <use xlinkHref='#icon-close'></use>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
+      <AddToCart
+        product={selectedProduct}
+        modalRef={modalRef}
+        isVisible={isVisible}
+        setVisibility={setVisibility}
+      />
     </>
   );
 }

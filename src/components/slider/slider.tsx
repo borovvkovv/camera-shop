@@ -68,6 +68,7 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element {
             style={{
               animation: `${trigger} 1s`,
             }}
+            data-testid='productCardSlider'
           >
             <ProductCardItem
               key={product.id}
@@ -84,6 +85,7 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element {
         type='button'
         aria-label='Предыдущий слайд'
         disabled={currentSliderPage <= 1}
+        data-testid='prevSlide'
       >
         <svg
           width={7}
@@ -99,6 +101,7 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element {
         type='button'
         aria-label='Следующий слайд'
         disabled={currentSliderPage >= maxPageNumber}
+        data-testid='nextSlide'
       >
         <svg
           width={7}

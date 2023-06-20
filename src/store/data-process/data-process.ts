@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { DataProcess } from '../../types/store';
-import { addReviewAction, fetchProductAction, fetchProductsAction, fetchPromoAction, fetchSimilarProductsAction } from '../api-actions';
+import { addReviewAction, fetchProductAction, fetchProductsAction, fetchPromoAction, fetchReviewsAction, fetchSimilarProductsAction } from '../api-actions';
 
 const initialState: DataProcess = {
   products: [],
@@ -13,6 +13,8 @@ const initialState: DataProcess = {
   promo: null,
   isPromoLoading: true,
   reviews: [],
+  isCommentSending: false,
+  isCommentSent: false,
 };
 
 export const dataProcess = createSlice({
@@ -35,6 +37,7 @@ export const dataProcess = createSlice({
       })
       .addCase(fetchProductAction.pending, (state) => {
         state.isProductLoading = true;
+        state.isCommentSent = false;
       })
       .addCase(fetchProductAction.fulfilled, (state, action) => {
         state.product = action.payload;
@@ -56,8 +59,21 @@ export const dataProcess = createSlice({
       .addCase(fetchPromoAction.rejected, (state) => {
         state.isPromoLoading = false;
       })
+      .addCase(fetchReviewsAction.fulfilled, (state, action) => {
+        state.reviews = action.payload;
+      })
+      .addCase(addReviewAction.pending, (state) => {
+        state.isCommentSending = true;
+        state.isCommentSent = false;
+      })
       .addCase(addReviewAction.fulfilled, (state, action) => {
-        state.reviews.concat(action.payload);
+        state.reviews = state.reviews.concat(action.payload);
+        state.isCommentSending = false;
+        state.isCommentSent = true;
+      })
+      .addCase(addReviewAction.rejected, (state) => {
+        state.isCommentSending = false;
+        state.isCommentSent = false;
       });
   },
 });

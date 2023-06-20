@@ -17,11 +17,20 @@ function StarRating({ rating }: StarRatingProps): JSX.Element {
             aria-hidden='true'
             key={keyValue}
           >
-            <use xlinkHref={index <= indexRating ? '#icon-full-star' : '#icon-star'} />
+            <use
+              xlinkHref={
+                index <= indexRating ? '#icon-full-star' : '#icon-star'
+              }
+            />
           </svg>
         );
       })}
-      <p className='visually-hidden'>Рейтинг: {rating}</p>
+      <p
+        className='visually-hidden'
+        data-testid='starRating'
+      >
+        Рейтинг: {rating}
+      </p>
     </>
   );
 }

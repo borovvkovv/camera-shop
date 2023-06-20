@@ -1,13 +1,8 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import useProduct from '../../hooks/use-product';
 import usePromo from '../../hooks/use-promo';
 import { productLevelMap } from '../../maps';
-import { fetchPromoAction } from '../../store/api-actions';
-import { getIsPromoLoading, getPromo } from '../../store/data-process/selectors';
 
 function Banner(): JSX.Element {
 
@@ -56,7 +51,7 @@ function Banner(): JSX.Element {
         </span>
         <Link
           className='btn'
-          to={AppRoute.Product.replace('{:cameraId}', String(promo.id))}
+          to={AppRoute.Product.replace(':id', String(promo.id))}
         >
           Подробнее
         </Link>

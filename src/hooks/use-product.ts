@@ -8,7 +8,7 @@ export default function useProduct(productId: number) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (productId !== 0) {
+    if (productId !== 0 && !isNaN(productId)) {
       dispatch(fetchProductAction(productId));
     }
   }, [dispatch, productId]);

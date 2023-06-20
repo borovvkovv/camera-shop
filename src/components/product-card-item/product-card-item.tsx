@@ -72,6 +72,7 @@ function ProductCardItem({
         <Link
           className='btn btn--transparent'
           to={AppRoute.Product.replace(':id', String(id))}
+          data-testid='productCardMoreInfo'
         >
           Подробнее
         </Link>
@@ -79,7 +80,7 @@ function ProductCardItem({
     </>
   );
 
-  return mode && mode === ProductCardMode.Card ? (
+  return !mode || mode === ProductCardMode.Card ? (
     <div className={`product-card ${addClass ?? ''}`}>{content}</div>
   ) : (
     content

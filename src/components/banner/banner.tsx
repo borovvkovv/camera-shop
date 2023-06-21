@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import useProduct from '../../hooks/use-product';
@@ -59,4 +60,4 @@ function Banner(): JSX.Element {
     </div>
   );
 }
-export default Banner;
+export default memo(Banner);

@@ -21,7 +21,7 @@ const mockStore = configureMockStore<
 describe('Hook: useProduct', () => {
   it('should call action', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         promo: getFakePromoProduct(),
         isPromoLoading: false
       },
@@ -38,7 +38,7 @@ describe('Hook: useProduct', () => {
   it('should return promo product', () => {
     const fakePromo = getFakePromoProduct();
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         promo: fakePromo,
         isPromoLoading: false,
       },

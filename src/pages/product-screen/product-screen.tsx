@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import AddToCart from '../../components/add-to-cart/add-to-cart';
@@ -13,13 +14,14 @@ import { redirectToRoute } from '../../store/action';
 import { ProductCard } from '../../types/product-card';
 import { humanizeProductPrice } from '../../utils';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import StarRating from '../../components/star-rating/star-rating';
 
 function ProductScreen(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const { id: idAsString, tab: tabAsString } = useParams();
   const id = Number(idAsString);
-  const tab = !tabAsString ? 'characteristics' : tabAsString;
+  const tab = tabAsString ?? 'characteristics';
 
   const { product, isProductLoading } = useProduct(id);
   const { similarProducts } = useSimilarProducts(id);
@@ -30,8 +32,19 @@ function ProductScreen(): JSX.Element {
   const modalRef = useRef(null);
   const { isVisible, setVisibility } = usePopup(modalRef);
 
-  const characteristics = useRef(null);
-  const text = useRef(null);
+  const crumbs = useMemo(
+    () => [
+      {
+        name: 'Каталог',
+        path: AppRoute.Root,
+      },
+      {
+        name: !product ? '' : product.name,
+        path: AppRoute.Product.replace(':id', String(id)),
+      },
+    ],
+    [id, product]
+  );
 
   const handleProductCardBuyClick = useMemo(
     () => (productCard: ProductCard) => {
@@ -41,12 +54,13 @@ function ProductScreen(): JSX.Element {
     [setVisibility]
   );
 
-  function toggleTabsControls() {
-    if (characteristics.current && text.current) {
-      (characteristics.current as Element).classList.toggle('is-active');
-      (text.current as Element).classList.toggle('is-active');
-    }
-  }
+  const handleCharacteristicsButtonClick = () => {
+    dispatch(redirectToRoute(`/cameras/${id}/characteristics`));
+  };
+
+  const handleTextButtonClick = () => {
+    dispatch(redirectToRoute(`/cameras/${id}/text`));
+  };
 
   if (isNaN(id)) {
     return <NotFoundScreen />;
@@ -57,11 +71,7 @@ function ProductScreen(): JSX.Element {
   }
 
   if (!product) {
-    return (
-      <h1 className='title title--h3'>
-        Не удалось загрузить товар. Попробуйте позже.
-      </h1>
-    );
+    return <NotFoundScreen />;
   }
 
   const {
@@ -76,23 +86,15 @@ function ProductScreen(): JSX.Element {
     vendorCode,
     description,
     type,
-    category
+    category,
   } = product;
 
   return (
     <>
-      <Breadcrumbs
-        crumbs={[
-          {
-            name: 'Каталог',
-            path: AppRoute.Root,
-          },
-          {
-            name: product.name,
-            path: AppRoute.Product.replace(':id', String(id)),
-          },
-        ]}
-      />
+      <Helmet>
+        <title>{name}</title>
+      </Helmet>
+      <Breadcrumbs crumbs={crumbs} />
       <div className='page-content__section'>
         <section className='product'>
           <div className='container'>
@@ -114,42 +116,7 @@ function ProductScreen(): JSX.Element {
             <div className='product__content'>
               <h1 className='title title--h3'>{name}</h1>
               <div className='rate product__rate'>
-                <svg
-                  width={17}
-                  height={16}
-                  aria-hidden='true'
-                >
-                  <use xlinkHref='#icon-full-star' />
-                </svg>
-                <svg
-                  width={17}
-                  height={16}
-                  aria-hidden='true'
-                >
-                  <use xlinkHref='#icon-full-star' />
-                </svg>
-                <svg
-                  width={17}
-                  height={16}
-                  aria-hidden='true'
-                >
-                  <use xlinkHref='#icon-star' />
-                </svg>
-                <svg
-                  width={17}
-                  height={16}
-                  aria-hidden='true'
-                >
-                  <use xlinkHref='#icon-star' />
-                </svg>
-                <svg
-                  width={17}
-                  height={16}
-                  aria-hidden='true'
-                >
-                  <use xlinkHref='#icon-star' />
-                </svg>
-                <p className='visually-hidden'>Рейтинг: 2</p>
+                <StarRating rating={2} />
                 <p className='rate__count'>
                   <span className='visually-hidden'>Всего оценок:</span>
                   {reviewCount}
@@ -180,12 +147,7 @@ function ProductScreen(): JSX.Element {
                       tab === 'characteristics' ? 'is-active' : ''
                     }`}
                     type='button'
-                    onClick={() => {
-                      dispatch(
-                        redirectToRoute(`/cameras/${id}/characteristics`)
-                      );
-                      toggleTabsControls();
-                    }}
+                    onClick={handleCharacteristicsButtonClick}
                     data-testid='buttonCharacteristicsTab'
                   >
                     Характеристики
@@ -195,10 +157,7 @@ function ProductScreen(): JSX.Element {
                       tab === 'text' ? 'is-active' : ''
                     }`}
                     type='button'
-                    onClick={() => {
-                      dispatch(redirectToRoute(`/cameras/${id}/text`));
-                      toggleTabsControls();
-                    }}
+                    onClick={handleTextButtonClick}
                     data-testid='buttonTextTab'
                   >
                     Описание
@@ -209,7 +168,6 @@ function ProductScreen(): JSX.Element {
                     className={`tabs__element ${
                       tab === 'characteristics' ? 'is-active' : ''
                     }`}
-                    ref={characteristics}
                     data-testid='characteristicsTab'
                   >
                     <ul className='product__tabs-list'>
@@ -235,7 +193,6 @@ function ProductScreen(): JSX.Element {
                     className={`tabs__element ${
                       tab === 'text' ? 'is-active' : ''
                     }`}
-                    ref={text}
                     data-testid='textTab'
                   >
                     <div className='product__tabs-text'>
@@ -248,21 +205,11 @@ function ProductScreen(): JSX.Element {
           </div>
         </section>
       </div>
-      {similarProducts && similarProducts.length > 0 && (
-        <div className='page-content__section'>
-          <section className='product-similar'>
-            <div className='container'>
-              <h2 className='title title--h3'>Похожие товары</h2>
-              <Slider
-                products={similarProducts}
-                onBuyClick={handleProductCardBuyClick}
-              />
-            </div>
-          </section>
-        </div>
-      )}
+      <Slider
+        products={similarProducts}
+        onBuyClick={handleProductCardBuyClick}
+      />
       <ReviewList productId={id} />
-
       <AddToCart
         product={selectedProduct}
         modalRef={modalRef}

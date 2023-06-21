@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Review } from '../../types/review';
 import { formatDateToDayAndMonth, formatDateToYearMonthDay } from '../../utils';
 import StarRating from '../star-rating/star-rating';
@@ -52,4 +53,4 @@ function ReviewItem({ reviewItem }: ReviewItemProps): JSX.Element {
   );
 }
 
-export default ReviewItem;
+export default memo(ReviewItem);

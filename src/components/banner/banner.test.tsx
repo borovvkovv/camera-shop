@@ -13,7 +13,7 @@ const promoProduct = getFakePromoProduct();
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const store = mockStore({
-  [NameSpace.DATA]: {
+  [NameSpace.Data]: {
     product: null,
     isProductLoading: false,
     promo: promoProduct,

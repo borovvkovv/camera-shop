@@ -21,7 +21,7 @@ const reviews = getFakeRevews(25);
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const store = mockStore({
-  [NameSpace.DATA]: {
+  [NameSpace.Data]: {
     products: products,
     isProductsLoading: false,
     isProductsLoadingFailed: false,

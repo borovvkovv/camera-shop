@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useMemo, useRef, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 import AddToCart from '../../components/add-to-cart/add-to-cart';
 import Banner from '../../components/banner/banner';
@@ -43,10 +44,22 @@ function CatalogScreen(): JSX.Element {
     <h1 className='title title--h3'>Товары не найдены</h1>
   );
 
-  function handleProductCardBuyClick(product: ProductCard) {
-    setSelectedProduct(product);
-    setVisibility(true);
-  }
+  const crumbs = useMemo(() =>
+    [
+      {
+        name: 'Каталог',
+        path: AppRoute.Root,
+      },
+    ]
+  , []);
+
+  const handleProductCardBuyClick = useMemo(
+    () => (product: ProductCard) => {
+      setSelectedProduct(product);
+      setVisibility(true);
+    },
+    [setVisibility]
+  );
 
   if (
     isNaN(pageNumber) ||
@@ -58,16 +71,12 @@ function CatalogScreen(): JSX.Element {
 
   return (
     <>
+      <Helmet>
+        <title>Каталог</title>
+      </Helmet>
       <Banner />
       <div className='page-content'>
-        <Breadcrumbs
-          crumbs={[
-            {
-              name: 'Каталог',
-              path: AppRoute.Root,
-            },
-          ]}
-        />
+        <Breadcrumbs crumbs={crumbs} />
         <section className='catalog'>
           <div className='container'>
             <h1 className='title title--h2'>Каталог фото- и видеотехники</h1>

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 function Filters(): JSX.Element {
   return (
     <form action='#'>
@@ -136,4 +138,4 @@ function Filters(): JSX.Element {
   );
 }
 
-export default Filters;
+export default memo(Filters);

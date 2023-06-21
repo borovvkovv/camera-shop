@@ -21,7 +21,7 @@ const mockStore = configureMockStore<
 describe('Hook: useProduct', () => {
   it('should call action when given id is number', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         product: getFakeProduct(3),
         isProductLoading: false
       },
@@ -38,7 +38,7 @@ describe('Hook: useProduct', () => {
   it('should return product if given offer id is number', () => {
     const fakeProduct = getFakeProduct(4);
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         product: fakeProduct,
         isProductLoading: false,
       },
@@ -54,7 +54,7 @@ describe('Hook: useProduct', () => {
 
   it('should not call action when given id is NaN', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         product: null,
         isProductLoading: false,
       },

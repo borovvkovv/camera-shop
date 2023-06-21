@@ -9,7 +9,7 @@ const mockStore = configureMockStore();
 describe('Hook: useFormDisable', () => {
   it('should return false when comment is not sending', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         isCommentSending: false,
       },
     });
@@ -25,7 +25,7 @@ describe('Hook: useFormDisable', () => {
 
   it('should return true when comment is sending', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         isCommentSending: true,
       },
     });

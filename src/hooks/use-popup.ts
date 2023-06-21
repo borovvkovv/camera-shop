@@ -30,7 +30,7 @@ export default function usePopup(
 
         const target = evt.target as HTMLElement;
         const focusables = modalRef.current.querySelectorAll(
-          'input,button,select,textarea,a,[tabindex]:not([tabindex="-1"])'
+          '.btn,input,button,select,textarea,a,[tabindex]:not([tabindex="-1"])'
         );
 
         const firstElement = focusables[0] as HTMLElement;
@@ -49,7 +49,8 @@ export default function usePopup(
             firstElement.focus();
             evt.preventDefault();
           }
-        } else {
+        }
+        else {
           if (evt.shiftKey) {
             if (evt.target === firstElement) {
               target.blur();
@@ -68,6 +69,7 @@ export default function usePopup(
     }
 
     if (isVisible) {
+      document.body.addEventListener('focusin', (e) => void 0, {capture: false});
       document.addEventListener('keydown', handleKeyDown);
       document.addEventListener('click', handleClick, true);
       document.body.classList.add('scroll-lock');

@@ -21,7 +21,7 @@ describe('Component: Banner', () => {
   it('should render correctly', () => {
 
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         products: products,
         isProductsLoading: false,
         isProductsLoadingFailed: false,
@@ -59,7 +59,7 @@ describe('Component: Banner', () => {
 
   it('should render loading when products is loading', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         products: [],
         isProductsLoading: true,
         isProductsLoadingFailed: false,
@@ -95,7 +95,7 @@ describe('Component: Banner', () => {
 
   it('should error when products loading failed', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         products: [],
         isProductsLoading: false,
         isProductsLoadingFailed: true,
@@ -133,7 +133,7 @@ describe('Component: Banner', () => {
 
   it('should render empty catalog when products is empty', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         products: [],
         isProductsLoading: false,
         isProductsLoadingFailed: false,

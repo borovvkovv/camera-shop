@@ -1,25 +1,25 @@
 import { NameSpace } from '../../const';
 import { State } from '../../types/store';
 
-export const getProducts = (state: State) => state[NameSpace.DATA].products;
+export const getProducts = (state: State) => state[NameSpace.Data].products;
 export const getIsProductsLoading = (state: State) =>
-  state[NameSpace.DATA].isProductsLoading;
+  state[NameSpace.Data].isProductsLoading;
 export const getIsProductsLoadingFailed = (state: State) =>
-  state[NameSpace.DATA].isProductsLoadingFailed;
+  state[NameSpace.Data].isProductsLoadingFailed;
 
-export const getProduct = (state: State) => state[NameSpace.DATA].product;
+export const getProduct = (state: State) => state[NameSpace.Data].product;
 export const getIsProductLoading = (state: State) =>
-  state[NameSpace.DATA].isProductLoading;
+  state[NameSpace.Data].isProductLoading;
 
 export const getSimilarProducts = (state: State) =>
-  state[NameSpace.DATA].similarProducts;
+  state[NameSpace.Data].similarProducts;
 
-export const getPromo = (state: State) => state[NameSpace.DATA].promo;
+export const getPromo = (state: State) => state[NameSpace.Data].promo;
 export const getIsPromoLoading = (state: State) =>
-  state[NameSpace.DATA].isPromoLoading;
+  state[NameSpace.Data].isPromoLoading;
 
-export const getReviews = (state: State) => state[NameSpace.DATA].reviews;
+export const getReviews = (state: State) => state[NameSpace.Data].reviews;
 export const getIsCommentSending = (state: State) =>
-  state[NameSpace.DATA].isCommentSending;
+  state[NameSpace.Data].isCommentSending;
 export const getIsCommentSent = (state: State) =>
-  state[NameSpace.DATA].isCommentSent;
+  state[NameSpace.Data].isCommentSent;

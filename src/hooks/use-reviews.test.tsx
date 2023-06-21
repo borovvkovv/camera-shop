@@ -6,9 +6,7 @@ import { createAPI } from '../services/api';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import { State } from '../types/store';
 import { Action } from 'redux';
-import { getFakeProduct, getFakeProducts, getFakeRevews, getFakeReview } from '../utils/mock';
-import useProduct from './use-product';
-import useProducts from './use-products';
+import { getFakeRevews } from '../utils/mock';
 import useReviews from './use-reviews';
 
 const api = createAPI();
@@ -24,7 +22,7 @@ describe('Hook: useReviews', () => {
   it('should call action', () => {
     const fakeReviews = getFakeRevews(5);
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         reviews: fakeReviews,
       },
     });
@@ -40,7 +38,7 @@ describe('Hook: useReviews', () => {
   it('should return reviews', () => {
     const fakeReviews = getFakeRevews(5);
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         reviews: fakeReviews,
       },
     });

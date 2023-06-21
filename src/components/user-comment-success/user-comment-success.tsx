@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 type UserCommentSuccessProps = {
   modalRef?: React.MutableRefObject<null>;
   isVisible: boolean;
@@ -60,4 +62,4 @@ function UserCommentSuccess({
   );
 }
 
-export default UserCommentSuccess;
+export default memo(UserCommentSuccess);

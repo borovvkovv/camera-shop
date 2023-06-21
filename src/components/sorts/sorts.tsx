@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 function Sorts(): JSX.Element {
   return (
     <form action='#'>
@@ -76,4 +78,4 @@ function Sorts(): JSX.Element {
   );
 }
 
-export default Sorts;
+export default memo(Sorts);

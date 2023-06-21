@@ -6,8 +6,7 @@ import { createAPI } from '../services/api';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import { State } from '../types/store';
 import { Action } from 'redux';
-import { getFakeProduct, getFakeProducts } from '../utils/mock';
-import useProduct from './use-product';
+import { getFakeProducts } from '../utils/mock';
 import useProducts from './use-products';
 
 const api = createAPI();
@@ -22,7 +21,7 @@ const mockStore = configureMockStore<
 describe('Hook: useProducts', () => {
   it('should call action', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         products: getFakeProducts(1),
         isProductsLoading: true,
         isProductsLoadingFailed: false

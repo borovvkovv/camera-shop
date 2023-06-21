@@ -1,6 +1,6 @@
 export enum ProductCategory {
-  'Video' = 'Видеокамера',
-  'Photo' = 'Фотоаппарат',
+  Video = 'Видеокамера',
+  Photo = 'Фотоаппарат',
 }
 
 export enum ProductType {

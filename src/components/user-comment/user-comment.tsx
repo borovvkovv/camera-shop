@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   ChangeEvent,
+  memo,
   useCallback,
   useEffect,
   useMemo,
@@ -103,6 +104,14 @@ function UserComment({
     setVisibility(false);
   }
 
+  const handleStarRatingChange = useMemo(
+    () => (num: number) => {
+      handleRatingChange(num);
+      unregister('rating');
+    },
+    [handleRatingChange, unregister]
+  );
+
   return (
     <>
       <div
@@ -115,16 +124,28 @@ function UserComment({
             className='modal__content'
             ref={modalRef}
           >
+            <button
+              className='cross-btn'
+              type='button'
+              aria-label='Закрыть попап'
+              onClick={handlePopupCrossClick}
+              data-testid='closeUserComment'
+            >
+              <svg
+                width='10'
+                height='10'
+                aria-hidden='true'
+              >
+                <use xlinkHref='#icon-close'></use>
+              </svg>
+            </button>
             <p className='title title--h4'>Оставить отзыв</p>
             <div className='htmlForm-review'>
               <form onSubmit={handleSubmit(onSubmitValid)}>
                 <div className='form-review__rate'>
                   <StarRatingList
                     currentRating={userReview.rating}
-                    onChange={(num) => {
-                      handleRatingChange(num);
-                      unregister('rating');
-                    }}
+                    onChange={handleStarRatingChange}
                     disabled={isFormDisabled}
                     register={register}
                     errors={errors}
@@ -280,21 +301,6 @@ function UserComment({
                 </button>
               </form>
             </div>
-            <button
-              className='cross-btn'
-              type='button'
-              aria-label='Закрыть попап'
-              onClick={handlePopupCrossClick}
-              data-testid='closeUserComment'
-            >
-              <svg
-                width='10'
-                height='10'
-                aria-hidden='true'
-              >
-                <use xlinkHref='#icon-close'></use>
-              </svg>
-            </button>
           </div>
         </div>
       </div>
@@ -307,4 +313,4 @@ function UserComment({
   );
 }
 
-export default UserComment;
+export default memo(UserComment);

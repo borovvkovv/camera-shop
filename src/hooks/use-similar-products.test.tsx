@@ -22,7 +22,7 @@ describe('Hook: useSimilarProducts', () => {
   it('should call action', () => {
     const fakeSimilarProducts = getFakeProducts(5);
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         similarProducts: fakeSimilarProducts,
       },
     });
@@ -38,7 +38,7 @@ describe('Hook: useSimilarProducts', () => {
   it('should return similar products', () => {
     const fakeSimilarProducts = getFakeProducts(5);
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         similarProducts: fakeSimilarProducts,
       },
     });

@@ -14,7 +14,7 @@ const mockStore = configureMockStore(middlewares);
 describe('Component: ReviewList', () => {
   it('should render correctly reviews', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         reviews: getFakeRevews(9),
         isCommentSending: false,
         isCommentSent: true,
@@ -32,7 +32,7 @@ describe('Component: ReviewList', () => {
 
   it('should not render button "Показать больше отзывов" when reviews number is less or equal than 3', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         reviews: getFakeRevews(3),
         isCommentSending: false,
         isCommentSent: true,

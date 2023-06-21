@@ -4,7 +4,7 @@ export const PRODUCTS_ON_SLIDER = 3;
 export const COMMENTS_ON_PAGE = 3;
 
 export enum NameSpace {
-  DATA = 'DATA',
+  Data = 'DATA',
 }
 
 export const enum ApiRoute {

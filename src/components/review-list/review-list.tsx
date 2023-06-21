@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { memo, useMemo, useRef } from 'react';
 import useCommentsPagination from '../../hooks/use-comments-pagination';
 import usePopup from '../../hooks/use-popup';
 import useReviews from '../../hooks/use-reviews';
@@ -9,8 +9,7 @@ type ReviewListProps = {
   productId: number;
 };
 
-function ReviewList({ productId }: ReviewListProps): JSX.Element | null {
-
+function ReviewList({ productId }: ReviewListProps): JSX.Element {
   const { reviews } = useReviews(productId);
   const reviewsSorted = useMemo(
     () =>
@@ -29,10 +28,6 @@ function ReviewList({ productId }: ReviewListProps): JSX.Element | null {
     setVisibility: setModalUserCommentVisibility,
   } = usePopup(modalUserCommentRef);
 
-  if (reviewsSorted.length === 0) {
-    return null;
-  }
-
   return (
     <>
       <div className='page-content__section'>
@@ -49,14 +44,18 @@ function ReviewList({ productId }: ReviewListProps): JSX.Element | null {
                 Оставить свой отзыв
               </button>
             </div>
-            <ul className='review-block__list'>
-              {pagedComments.map((review) => (
-                <ReviewItem
-                  key={review.id}
-                  reviewItem={review}
-                />
-              ))}
-            </ul>
+            {!reviews.length ? (
+              <h1 className='title title--h3'>Нет отзывов</h1>
+            ) : (
+              <ul className='review-block__list'>
+                {pagedComments.map((review) => (
+                  <ReviewItem
+                    key={review.id}
+                    reviewItem={review}
+                  />
+                ))}
+              </ul>
+            )}
             {currentPage < maxPageNumber && (
               <div className='review-block__buttons'>
                 <button
@@ -82,4 +81,4 @@ function ReviewList({ productId }: ReviewListProps): JSX.Element | null {
   );
 }
 
-export default ReviewList;
+export default memo(ReviewList);

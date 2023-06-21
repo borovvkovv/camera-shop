@@ -21,7 +21,7 @@ const mockStore = configureMockStore(middlewares);
 describe('Component: ProductScreen', () => {
   it('should render correctly', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         product: product,
         isProductLoading: false,
         reviews: [],
@@ -49,7 +49,7 @@ describe('Component: ProductScreen', () => {
 
   it('should render loading when product is loading', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         product: null,
         isProductLoading: true,
       },
@@ -76,7 +76,7 @@ describe('Component: ProductScreen', () => {
 
   it('should error when product loading failed', () => {
     const store = mockStore({
-      [NameSpace.DATA]: {
+      [NameSpace.Data]: {
         product: null,
         isProductLoading: false,
       },

@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { ProductCard } from '../types/product-card';
 import { PRODUCTS_ON_SLIDER } from '../const';
 
 export default function useSlider(

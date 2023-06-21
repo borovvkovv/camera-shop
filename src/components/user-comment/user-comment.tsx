@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   ChangeEvent,
   memo,
@@ -141,7 +139,7 @@ function UserComment({
             </button>
             <p className='title title--h4'>Оставить отзыв</p>
             <div className='htmlForm-review'>
-              <form onSubmit={handleSubmit(onSubmitValid)}>
+              <form onSubmit={(evt) => void handleSubmit(onSubmitValid)(evt)}>
                 <div className='form-review__rate'>
                   <StarRatingList
                     currentRating={userReview.rating}

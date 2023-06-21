@@ -69,7 +69,6 @@ export default function usePopup(
     }
 
     if (isVisible) {
-      document.body.addEventListener('focusin', (e) => void 0, {capture: false});
       document.addEventListener('keydown', handleKeyDown);
       document.addEventListener('click', handleClick, true);
       document.body.classList.add('scroll-lock');

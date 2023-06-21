@@ -1,7 +1,5 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import {
-  getFakeProduct,
-} from '../../utils/mock';
+import { getFakeProduct } from '../../utils/mock';
 import thunk from 'redux-thunk';
 import { AppRoute, NameSpace } from '../../const';
 import { Provider } from 'react-redux';
@@ -10,6 +8,7 @@ import { createMemoryHistory } from 'history';
 import { Route, Routes } from 'react-router';
 import HistoryRouter from '../../components/history-router/history-router';
 import ProductScreen from './product-screen';
+import { HelmetProvider } from 'react-helmet-async';
 
 const product = getFakeProduct();
 
@@ -25,23 +24,26 @@ describe('Component: ProductScreen', () => {
         product: product,
         isProductLoading: false,
         reviews: [],
+        similarProducts: []
       },
     });
 
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Routes>
-            <Route
-              path={AppRoute.Product}
-              element={<ProductScreen />}
-            />
-          </Routes>
+          <HelmetProvider>
+            <Routes>
+              <Route
+                path={AppRoute.Product}
+                element={<ProductScreen />}
+              />
+            </Routes>
+          </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
 
-    history.push(AppRoute.Product.replace(':id', product.id.toString()));
+    history.push(AppRoute.Product.replace(':id', String(product.id)));
     render(fakeApp);
 
     expect(screen.getByText(product.description)).toBeInTheDocument();
@@ -58,23 +60,25 @@ describe('Component: ProductScreen', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Routes>
-            <Route
-              path={AppRoute.Product}
-              element={<ProductScreen />}
-            />
-          </Routes>
+          <HelmetProvider>
+            <Routes>
+              <Route
+                path={AppRoute.Product}
+                element={<ProductScreen />}
+              />
+            </Routes>
+          </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
 
-    history.push(AppRoute.Product.replace(':id', product.id.toString()));
+    history.push(AppRoute.Product.replace(':id', String(product.id)));
     render(fakeApp);
 
     expect(screen.getByText(/Загрузка.../)).toBeInTheDocument();
   });
 
-  it('should error when product loading failed', () => {
+  it('should set 404 page when product loading failed', () => {
     const store = mockStore({
       [NameSpace.Data]: {
         product: null,
@@ -85,21 +89,21 @@ describe('Component: ProductScreen', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Routes>
-            <Route
-              path={AppRoute.Product}
-              element={<ProductScreen />}
-            />
-          </Routes>
+          <HelmetProvider>
+            <Routes>
+              <Route
+                path={AppRoute.Product}
+                element={<ProductScreen />}
+              />
+            </Routes>
+          </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
 
-    history.push(AppRoute.Product.replace(':id', product.id.toString()));
+    history.push(AppRoute.Product.replace(':id', String(product.id)));
     render(fakeApp);
 
-    expect(
-      screen.getByText(/Не удалось загрузить товар. Попробуйте позже./)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Страница не найдена/i)).toBeInTheDocument();
   });
 });

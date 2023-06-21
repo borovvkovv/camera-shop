@@ -8,6 +8,7 @@ import { createMemoryHistory } from 'history';
 import CatalogScreen from './catalog-screen';
 import { Route, Routes } from 'react-router';
 import HistoryRouter from '../../components/history-router/history-router';
+import { HelmetProvider } from 'react-helmet-async';
 
 const products = getFakeProducts(PRODUCTS_ON_PAGE + 1);
 
@@ -16,10 +17,8 @@ const history = createMemoryHistory();
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('Component: Banner', () => {
-
+describe('Component: CatalogScreen', () => {
   it('should render correctly', () => {
-
     const store = mockStore({
       [NameSpace.Data]: {
         products: products,
@@ -35,16 +34,18 @@ describe('Component: Banner', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Routes>
-            <Route
-              path={AppRoute.Product}
-              element={<h1>Product page</h1>}
-            />
-            <Route
-              path={AppRoute.Root}
-              element={<CatalogScreen />}
-            />
-          </Routes>
+          <HelmetProvider>
+            <Routes>
+              <Route
+                path={AppRoute.Product}
+                element={<h1>Product page</h1>}
+              />
+              <Route
+                path={AppRoute.Root}
+                element={<CatalogScreen />}
+              />
+            </Routes>
+          </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
@@ -73,16 +74,18 @@ describe('Component: Banner', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Routes>
-            <Route
-              path={AppRoute.Product}
-              element={<h1>Product page</h1>}
-            />
-            <Route
-              path={AppRoute.Root}
-              element={<CatalogScreen />}
-            />
-          </Routes>
+          <HelmetProvider>
+            <Routes>
+              <Route
+                path={AppRoute.Product}
+                element={<h1>Product page</h1>}
+              />
+              <Route
+                path={AppRoute.Root}
+                element={<CatalogScreen />}
+              />
+            </Routes>
+          </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
@@ -90,7 +93,7 @@ describe('Component: Banner', () => {
     history.push(AppRoute.Root);
     render(fakeApp);
 
-    expect(screen.getByText(/Загрузка.../)).toBeInTheDocument();
+    expect(screen.getByText(/Загрузка.../i)).toBeInTheDocument();
   });
 
   it('should error when products loading failed', () => {
@@ -109,16 +112,18 @@ describe('Component: Banner', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Routes>
-            <Route
-              path={AppRoute.Product}
-              element={<h1>Product page</h1>}
-            />
-            <Route
-              path={AppRoute.Root}
-              element={<CatalogScreen />}
-            />
-          </Routes>
+          <HelmetProvider>
+            <Routes>
+              <Route
+                path={AppRoute.Product}
+                element={<h1>Product page</h1>}
+              />
+              <Route
+                path={AppRoute.Root}
+                element={<CatalogScreen />}
+              />
+            </Routes>
+          </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
@@ -127,7 +132,7 @@ describe('Component: Banner', () => {
     render(fakeApp);
 
     expect(
-      screen.getByText(/Не удалось загрузить товары. Попробуйте позже./)
+      screen.getByText(/Не удалось загрузить товары. Попробуйте позже./i)
     ).toBeInTheDocument();
   });
 
@@ -147,16 +152,18 @@ describe('Component: Banner', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Routes>
-            <Route
-              path={AppRoute.Product}
-              element={<h1>Product page</h1>}
-            />
-            <Route
-              path={AppRoute.Root}
-              element={<CatalogScreen />}
-            />
-          </Routes>
+          <HelmetProvider>
+            <Routes>
+              <Route
+                path={AppRoute.Product}
+                element={<h1>Product page</h1>}
+              />
+              <Route
+                path={AppRoute.Root}
+                element={<CatalogScreen />}
+              />
+            </Routes>
+          </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
@@ -164,6 +171,6 @@ describe('Component: Banner', () => {
     history.push(AppRoute.Root);
     render(fakeApp);
 
-    expect(screen.getByText(/Товары не найдены/)).toBeInTheDocument();
+    expect(screen.getByText(/Товары не найдены/i)).toBeInTheDocument();
   });
 });

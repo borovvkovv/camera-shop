@@ -12,7 +12,7 @@ type SliderProps = {
 function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
   const slider = useRef(null);
   const [currentSliderPage, setCurrentSliderPage] = useState(1);
-  const [trigger, settrigger] = useState('fade');
+  const [trigger, setTrigger] = useState('fade');
   const { currentPageIndexes, maxPageNumber } = useSlider(
     products.length,
     currentSliderPage
@@ -23,10 +23,10 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
       if (evt.target instanceof HTMLButtonElement) {
         evt.target.disabled = true;
       }
-      settrigger('fadeOut');
+      setTrigger('fadeOut');
       global.setTimeout(() => {
         setCurrentSliderPage((prev) => prev + 1);
-        settrigger('fadeIn');
+        setTrigger('fadeIn');
         if (evt.target instanceof HTMLButtonElement) {
           evt.target.disabled = false;
         }
@@ -40,10 +40,10 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
       if (evt.target instanceof HTMLButtonElement) {
         evt.target.disabled = true;
       }
-      settrigger('fadeInReverse');
+      setTrigger('fadeInReverse');
       global.setTimeout(() => {
         setCurrentSliderPage((prev) => prev - 1);
-        settrigger('fadeOutReverse');
+        setTrigger('fadeOutReverse');
         if (evt.target instanceof HTMLButtonElement) {
           evt.target.disabled = false;
         }

@@ -1,20 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import NotFoundScreen from './not-found-screen';
-import { Helmet } from 'react-helmet-async';
-
-const fakeApp = (
-  <>
-    <Helmet>
-      <title>Каталог</title>
-    </Helmet>
-    <NotFoundScreen />
-  </>
-);
+import { HelmetProvider } from 'react-helmet-async';
 
 describe('Component: NotFoundScreen', () => {
   it('should render correctly', () => {
-    render(fakeApp);
+    render(
+      <HelmetProvider>
+        <NotFoundScreen />
+      </HelmetProvider>
+    );
 
-    expect(screen.getByText(/Страница не найдена/)).toBeInTheDocument();
+    expect(screen.getByText(/Страница не найдена/i)).toBeInTheDocument();
   });
 });

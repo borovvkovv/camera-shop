@@ -3655,38 +3655,3 @@ button,
     background-color: #f4f4fc;
   }
 }
-@keyframes fadeIn {
-  0% {
-    transform: translateX(390%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeOut {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-390%);
-  }
-}
-
-@keyframes fadeInReverse {
-  100% {
-    transform: translateX(390%);
-  }
-  0% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeOutReverse {
-  100% {
-    transform: translateX(0);
-  }
-  0% {
-    transform: translateX(-390%);
-  }
-}

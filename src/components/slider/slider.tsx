@@ -3,6 +3,7 @@ import { ProductCardMode } from '../../enums';
 import useSlider from '../../hooks/use-slider';
 import { ProductCard } from '../../types/product-card';
 import ProductCardItem from '../product-card-item/product-card-item';
+import './slider.css';
 
 type SliderProps = {
   products: ProductCard[];
@@ -30,7 +31,7 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
         if (evt.target instanceof HTMLButtonElement) {
           evt.target.disabled = false;
         }
-      }, 800);
+      }, 300);
     },
     []
   );
@@ -40,14 +41,14 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
       if (evt.target instanceof HTMLButtonElement) {
         evt.target.disabled = true;
       }
-      setTrigger('fadeInReverse');
+      setTrigger('fadeOutReverse');
       global.setTimeout(() => {
         setCurrentSliderPage((prev) => prev - 1);
-        setTrigger('fadeOutReverse');
+        setTrigger('fadeInReverse');
         if (evt.target instanceof HTMLButtonElement) {
           evt.target.disabled = false;
         }
-      }, 800);
+      }, 300);
     },
     []
   );
@@ -73,7 +74,7 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
                   }`}
                   key={product.id}
                   style={{
-                    animation: `${trigger} 1s`,
+                    animation: `${trigger} 0.35s`,
                   }}
                   data-testid='productCardSlider'
                 >

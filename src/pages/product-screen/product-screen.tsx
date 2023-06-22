@@ -6,23 +6,30 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ReviewList from '../../components/review-list/review-list';
 import Slider from '../../components/slider/slider';
 import { AppRoute } from '../../const';
-import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import usePopup from '../../hooks/use-popup';
 import useProduct from '../../hooks/use-product';
 import useSimilarProducts from '../../hooks/use-similar-products';
-import { redirectToRoute } from '../../store/action';
 import { ProductCard } from '../../types/product-card';
 import { humanizeProductPrice } from '../../utils';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import StarRating from '../../components/star-rating/star-rating';
+import ProductInfoTabs from '../../components/product-info-tabs/product-info-tabs';
+import { ProductInfoTabMode } from '../../enums';
 
 function ProductScreen(): JSX.Element {
-  const dispatch = useAppDispatch();
-
   const { id: idAsString, tab: tabAsString } = useParams();
   const id = Number(idAsString);
-  const tab = tabAsString ?? 'characteristics';
 
+  const productInfoModeValues = Object.values(ProductInfoTabMode);
+  let tabMode: ProductInfoTabMode | undefined = tabAsString as ProductInfoTabMode;
+
+  if (
+    productInfoModeValues.indexOf(
+      tabMode ?? ProductInfoTabMode.Characteristics
+    ) === -1
+  ) {
+    tabMode = undefined;
+  }
   const { product, isProductLoading } = useProduct(id);
   const { similarProducts } = useSimilarProducts(id);
 
@@ -54,13 +61,9 @@ function ProductScreen(): JSX.Element {
     [setVisibility]
   );
 
-  const handleCharacteristicsButtonClick = () => {
-    dispatch(redirectToRoute(`/cameras/${id}/characteristics`));
-  };
-
-  const handleTextButtonClick = () => {
-    dispatch(redirectToRoute(`/cameras/${id}/text`));
-  };
+  if (tabMode && !tabMode) {
+    return <NotFoundScreen />;
+  }
 
   if (isNaN(id)) {
     return <NotFoundScreen />;
@@ -82,11 +85,6 @@ function ProductScreen(): JSX.Element {
     name,
     price,
     reviewCount,
-    level,
-    vendorCode,
-    description,
-    type,
-    category,
   } = product;
 
   return (
@@ -140,67 +138,10 @@ function ProductScreen(): JSX.Element {
                 </svg>
                 Добавить в корзину
               </button>
-              <div className='tabs product__tabs'>
-                <div className='tabs__controls product__tabs-controls'>
-                  <button
-                    className={`tabs__control ${
-                      tab === 'characteristics' ? 'is-active' : ''
-                    }`}
-                    type='button'
-                    onClick={handleCharacteristicsButtonClick}
-                    data-testid='buttonCharacteristicsTab'
-                  >
-                    Характеристики
-                  </button>
-                  <button
-                    className={`tabs__control ${
-                      tab === 'text' ? 'is-active' : ''
-                    }`}
-                    type='button'
-                    onClick={handleTextButtonClick}
-                    data-testid='buttonTextTab'
-                  >
-                    Описание
-                  </button>
-                </div>
-                <div className='tabs__content'>
-                  <div
-                    className={`tabs__element ${
-                      tab === 'characteristics' ? 'is-active' : ''
-                    }`}
-                    data-testid='characteristicsTab'
-                  >
-                    <ul className='product__tabs-list'>
-                      <li className='item-list'>
-                        <span className='item-list__title'>Артикул:</span>
-                        <p className='item-list__text'> {vendorCode}</p>
-                      </li>
-                      <li className='item-list'>
-                        <span className='item-list__title'>Категория:</span>
-                        <p className='item-list__text'>{category}</p>
-                      </li>
-                      <li className='item-list'>
-                        <span className='item-list__title'>Тип камеры:</span>
-                        <p className='item-list__text'>{type}</p>
-                      </li>
-                      <li className='item-list'>
-                        <span className='item-list__title'>Уровень:</span>
-                        <p className='item-list__text'>{level}</p>
-                      </li>
-                    </ul>
-                  </div>
-                  <div
-                    className={`tabs__element ${
-                      tab === 'text' ? 'is-active' : ''
-                    }`}
-                    data-testid='textTab'
-                  >
-                    <div className='product__tabs-text'>
-                      <p>{description}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductInfoTabs
+                product={product}
+                tabMode={tabMode}
+              />
             </div>
           </div>
         </section>

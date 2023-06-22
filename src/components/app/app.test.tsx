@@ -97,11 +97,11 @@ describe('Application routing', () => {
     expect(screen.getByTestId('textTab')).not.toHaveClass('is-active');
   });
 
-  it(`Should render catalog when user navigate to "/cameras/${product.id}/text"`, () => {
+  it(`Should render catalog when user navigate to "/cameras/${product.id}/description"`, () => {
     history.push(
       AppRoute.ProductTab.replace(':id', String(product.id)).replace(
         ':tab',
-        'text'
+        'description'
       )
     );
     render(fakeApp);

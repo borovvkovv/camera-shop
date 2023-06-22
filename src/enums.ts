@@ -3,6 +3,11 @@ export enum ProductCategory {
   Photo = 'Фотоаппарат',
 }
 
+export enum ProductInfoTabMode {
+  Characteristics = 'characteristics',
+  Description = 'description',
+}
+
 export enum ProductType {
   Collect = 'Коллекционная',
   Instant = 'Моментальная',

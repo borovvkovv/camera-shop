@@ -21,7 +21,13 @@ export default function useCommentsPagination(allComments: Review[]) {
           setCurrentPage((prev) => prev + 1);
           isLoadingActive = false;
         }, 1000);
-      } else if (timerId) {
+      }else if (
+        isLoadingActive &&
+        timerId &&
+        document.scrollingElement &&
+        window.innerHeight + document.documentElement.scrollTop <
+          document.scrollingElement?.scrollHeight
+      ) {
         clearTimeout(timerId);
         isLoadingActive = false;
       }

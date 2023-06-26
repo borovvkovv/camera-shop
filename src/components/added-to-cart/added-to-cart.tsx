@@ -17,7 +17,10 @@ function AddedToCart({
   }
 
   return (
-    <div className={`modal ${isVisible ? 'is-active' : ''} modal--narrow`}>
+    <div
+      className={`modal ${isVisible ? 'is-active' : ''} modal--narrow`}
+      data-testid='addedToCartPopup'
+    >
       <div className='modal__wrapper'>
         <div className='modal__overlay'></div>
         <div

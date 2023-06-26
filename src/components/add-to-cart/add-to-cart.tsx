@@ -17,22 +17,28 @@ function AddToCart({
   isVisible,
   setVisibility,
 }: AddToCartProps): JSX.Element | null {
-
   const modalReviewRef = useRef(null);
   const {
     isVisible: isModalReviewVisible,
     setVisibility: setModalReviewVisibility,
   } = usePopup(modalReviewRef);
 
-
   function handlePopupCrossClick() {
+    setVisibility(false);
+  }
+
+  function handleAddToCartButtonClick() {
+    setModalReviewVisibility(true);
     setVisibility(false);
   }
 
   return (
     product && (
       <>
-        <div className={`modal ${isVisible ? 'is-active' : ''}`}>
+        <div
+          className={`modal ${isVisible ? 'is-active' : ''}`}
+          data-testid='AddToCartPopup'
+        >
           <div className='modal__wrapper'>
             <div className='modal__overlay'></div>
             <div
@@ -82,10 +88,8 @@ function AddToCart({
                 <button
                   className='btn btn--purple modal__btn modal__btn--fit-width'
                   type='button'
-                  onClick={() => {
-                    setModalReviewVisibility(true);
-                    setVisibility(false);
-                  }}
+                  onClick={handleAddToCartButtonClick}
+                  data-testid='addToCartButton'
                 >
                   <svg
                     width='24'
@@ -102,6 +106,7 @@ function AddToCart({
                 type='button'
                 aria-label='Закрыть попап'
                 onClick={handlePopupCrossClick}
+                data-testid='ClosePopupButton'
               >
                 <svg
                   width='10'

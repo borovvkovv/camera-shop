@@ -12,6 +12,7 @@ function Banner(): JSX.Element {
       <div
         style={{ width: '1280px', height: '280px', backgroundColor: '#333333' }}
       />
+      <span className='visually-hidden'>Загрузка промо-продукта</span>
     </div>
   );
 

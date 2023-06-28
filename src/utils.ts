@@ -1,5 +1,7 @@
 import { ProductCategory } from './enums';
 import { ProductCard } from './types/product-card';
+import { ProductRating } from './types/product-rating';
+import { Review } from './types/review';
 
 export function makeProductName(product: ProductCard) {
   return `${product.type} ${
@@ -10,7 +12,9 @@ export function makeProductName(product: ProductCard) {
 }
 
 export function humanizeProductPrice(price: number) {
-  return price.toLocaleString('en-US', { minimumFractionDigits: 0 }).replace(/,/g, ' ');
+  return price
+    .toLocaleString('en-US', { minimumFractionDigits: 0 })
+    .replace(/,/g, ' ');
 }
 
 export function formatDateToDayAndMonth(date: Date): string {
@@ -35,4 +39,26 @@ export function formatDateToDayAndMonth(date: Date): string {
 
 export function formatDateToYearMonthDay(date: Date): string {
   return date.toISOString().split('T')[0];
+}
+
+export function getAverageRating(reviews: Review[]) {
+  const ratingSum = reviews
+    .map((review) => review.rating)
+    .reduce((prev, curr) => prev + curr);
+
+  return Math.ceil(ratingSum / reviews.length);
+}
+
+export function pushRatingIfNotExists(storeRatings: ProductRating[], reviews: Review[], productId: number)
+{
+  const rating = {
+    productId,
+    rating: getAverageRating(reviews)
+  };
+
+  if (!storeRatings.find((r) => r.productId === productId)) {
+    storeRatings.push(rating);
+  }
+
+  return storeRatings;
 }

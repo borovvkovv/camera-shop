@@ -20,6 +20,7 @@ describe('Reducer: DataProcess', () => {
       isProductsLoading: true,
       isProductsLoadingFailed: false,
       product: null,
+      productsRating: [],
       isProductLoading: true,
       similarProducts: [],
       promo: null,

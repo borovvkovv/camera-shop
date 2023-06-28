@@ -15,6 +15,7 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 import StarRating from '../../components/star-rating/star-rating';
 import ProductInfoTabs from '../../components/product-info-tabs/product-info-tabs';
 import { ProductInfoTabMode } from '../../enums';
+import useRating from '../../hooks/use-rating';
 
 function ProductScreen(): JSX.Element {
   const { id: idAsString, tab: tabAsString } = useParams();
@@ -32,6 +33,7 @@ function ProductScreen(): JSX.Element {
   }
   const { product, isProductLoading } = useProduct(id);
   const { similarProducts } = useSimilarProducts(id);
+  const { ratingInfo } = useRating(id);
 
   const [selectedProduct, setSelectedProduct] = useState<ProductCard | null>(
     null
@@ -114,7 +116,7 @@ function ProductScreen(): JSX.Element {
             <div className='product__content'>
               <h1 className='title title--h3'>{name}</h1>
               <div className='rate product__rate'>
-                <StarRating rating={2} />
+                <StarRating rating={ratingInfo?.rating ?? null} />
                 <p className='rate__count'>
                   <span className='visually-hidden'>Всего оценок:</span>
                   {reviewCount}

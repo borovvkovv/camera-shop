@@ -4,7 +4,7 @@ import { getProductsRating } from '../store/data-process/selectors';
 import { useAppDispatch } from './use-app-dispatch';
 import { useAppSelector } from './use-app-selector';
 
-export default function useReviews(productId: number) {
+export default function useRating(productId: number) {
   const dispatch = useAppDispatch();
 
   const ratings = useAppSelector(getProductsRating);

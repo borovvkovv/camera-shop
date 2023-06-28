@@ -4,9 +4,12 @@ import {
 import HistoryRouter from '../history-router/history-router';
 import { createMemoryHistory } from 'history';
 import { act, render, screen } from '@testing-library/react';
-import { PRODUCTS_ON_SLIDER } from '../../const';
+import { NameSpace, PRODUCTS_ON_SLIDER } from '../../const';
 import userEvent from '@testing-library/user-event';
 import Slider from './slider';
+import thunk from 'redux-thunk';
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { Provider } from 'react-redux';
 
 const products = getFakeProducts(7);
 
@@ -14,13 +17,24 @@ const history = createMemoryHistory();
 
 const onBuyClick = jest.fn();
 
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+const store = mockStore({
+  [NameSpace.Data]: {
+    productsRating: [],
+  },
+});
+
 const fakeComponent = (
-  <HistoryRouter history={history}>
-    <Slider
-      products={products}
-      onBuyClick={onBuyClick}
-    />
-  </HistoryRouter>
+  <Provider store={store}>
+    <HistoryRouter history={history}>
+      <Slider
+        products={products}
+        onBuyClick={onBuyClick}
+      />
+    </HistoryRouter>
+  </Provider>
 );
 
 describe('Component: Slider', () => {

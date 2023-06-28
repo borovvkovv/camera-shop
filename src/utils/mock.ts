@@ -58,3 +58,11 @@ export const getFakeUserReview = () => ({
   review: random.words(),
   rating: datatype.number(),
 });
+
+export const getFakeProductRating = () => ({
+  productId: datatype.number(),
+  rating: datatype.number(),
+});
+
+export const getFakeProductsRating = (quantity: number) =>
+  Array.from({ length: quantity }).map((_) => getFakeProductRating());

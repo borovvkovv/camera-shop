@@ -11,6 +11,7 @@ import {
   fetchReviewsAction,
   fetchSimilarProductsAction,
 } from '../api-actions';
+import { getAverageRating } from '../../utils';
 
 describe('Reducer: DataProcess', () => {
   let state: DataProcess;
@@ -171,6 +172,10 @@ describe('Reducer: DataProcess', () => {
     ).toEqual({
       ...state,
       reviews,
+      productsRating: [{
+        productId: reviews[0].cameraId,
+        rating: getAverageRating(reviews),
+      }],
     });
   });
 

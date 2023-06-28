@@ -26,6 +26,7 @@ const store = mockStore({
     isProductsLoading: false,
     isProductsLoadingFailed: false,
     product: product,
+    productsRating: [],
     isProductLoading: false,
     similarProducts: similarProducts,
     promo: getFakePromoProduct(),

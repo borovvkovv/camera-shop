@@ -1,13 +1,40 @@
+import { ChangeEvent, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import useSearchForm from '../../hooks/use-search-form';
+
 function Header(): JSX.Element {
+  const ref = useRef(null);
+  const {
+    isFormSearchOpened,
+    setFormSearchOpened,
+    searchPattern,
+    setSearchPattern,
+  } = useSearchForm(ref);
+
+  function handleSearchFormChange({ target }: ChangeEvent<HTMLInputElement>) {
+    setSearchPattern(target.value);
+  }
+
+  function handleInputSearchFocus() {
+    if (searchPattern !== '') {
+      setFormSearchOpened(true);
+    }
+  }
+
+  function handleSearchFormResetClick() {
+    setSearchPattern('');
+  }
+
   return (
     <header
       className='header'
       id='header'
     >
       <div className='container'>
-        <a
+        <Link
           className='header__logo'
-          href='/'
+          to={AppRoute.Root}
           aria-label='Переход на главную'
         >
           <svg
@@ -17,44 +44,47 @@ function Header(): JSX.Element {
           >
             <use xlinkHref='#icon-logo'></use>
           </svg>
-        </a>
+        </Link>
         <nav className='main-nav header__main-nav'>
           <ul className='main-nav__list'>
             <li className='main-nav__item'>
-              <a
+              <Link
                 className='main-nav__link'
-                href='/'
+                to={AppRoute.Root}
               >
                 Каталог
-              </a>
+              </Link>
             </li>
             <li className='main-nav__item'>
-              <a
+              <Link
                 className='main-nav__link'
-                href='/'
+                to='/'
               >
                 Гарантии
-              </a>
+              </Link>
             </li>
             <li className='main-nav__item'>
-              <a
+              <Link
                 className='main-nav__link'
-                href='/'
+                to='/'
               >
                 Доставка
-              </a>
+              </Link>
             </li>
             <li className='main-nav__item'>
-              <a
+              <Link
                 className='main-nav__link'
-                href='/'
+                to='/'
               >
                 О компании
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
-        <div className='form-search'>
+        <div
+          className={`form-search ${isFormSearchOpened ? 'list-opened' : ''}`}
+          ref={ref}
+        >
           <form>
             <label>
               <svg
@@ -70,6 +100,9 @@ function Header(): JSX.Element {
                 type='text'
                 autoComplete='off'
                 placeholder='Поиск по сайту'
+                onChange={handleSearchFormChange}
+                value={searchPattern}
+                onFocus={handleInputSearchFocus}
               />
             </label>
             <ul className='form-search__select-list'>
@@ -108,6 +141,7 @@ function Header(): JSX.Element {
           <button
             className='form-search__reset'
             type='reset'
+            onClick={handleSearchFormResetClick}
           >
             <svg
               width='10'
@@ -119,9 +153,9 @@ function Header(): JSX.Element {
             <span className='visually-hidden'>Сбросить поиск</span>
           </button>
         </div>
-        <a
+        <Link
           className='header__basket-link'
-          href='/'
+          to='/'
         >
           <svg
             width='16'
@@ -130,7 +164,7 @@ function Header(): JSX.Element {
           >
             <use xlinkHref='#icon-basket'></use>
           </svg>
-        </a>
+        </Link>
       </div>
     </header>
   );

@@ -1,29 +1,42 @@
 import { ChangeEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import useSearchForm from '../../hooks/use-search-form';
+import useSearchResults from '../../hooks/use-search-results';
+import { redirectToRoute } from '../../store/action';
+import SearchFormResultList from '../search-form-result-list/search-form-result-list';
+import { useLocation } from 'react-router';
 
 function Header(): JSX.Element {
   const ref = useRef(null);
+  const dispatch = useAppDispatch();
+
+  const { pathname } = useLocation();
+
   const {
     isFormSearchOpened,
     setFormSearchOpened,
     searchPattern,
     setSearchPattern,
   } = useSearchForm(ref);
+  const { foundProducts } = useSearchResults(searchPattern);
 
-  function handleSearchFormChange({ target }: ChangeEvent<HTMLInputElement>) {
+  function handleInputSearchChange({ target }: ChangeEvent<HTMLInputElement>) {
     setSearchPattern(target.value);
   }
 
   function handleInputSearchFocus() {
-    if (searchPattern !== '') {
-      setFormSearchOpened(true);
-    }
+    setFormSearchOpened(searchPattern !== '');
   }
 
   function handleSearchFormResetClick() {
     setSearchPattern('');
+  }
+
+  function handleSearchResultProductClick(urlPath: string) {
+    dispatch(redirectToRoute(urlPath));
+    setFormSearchOpened(false);
   }
 
   return (
@@ -100,43 +113,16 @@ function Header(): JSX.Element {
                 type='text'
                 autoComplete='off'
                 placeholder='Поиск по сайту'
-                onChange={handleSearchFormChange}
+                onChange={handleInputSearchChange}
                 value={searchPattern}
                 onFocus={handleInputSearchFocus}
               />
             </label>
-            <ul className='form-search__select-list'>
-              <li
-                className='form-search__select-item'
-                tabIndex={0}
-              >
-                Cannonball Pro MX 8i
-              </li>
-              <li
-                className='form-search__select-item'
-                tabIndex={0}
-              >
-                Cannonball Pro MX 7i
-              </li>
-              <li
-                className='form-search__select-item'
-                tabIndex={0}
-              >
-                Cannonball Pro MX 6i
-              </li>
-              <li
-                className='form-search__select-item'
-                tabIndex={0}
-              >
-                Cannonball Pro MX 5i
-              </li>
-              <li
-                className='form-search__select-item'
-                tabIndex={0}
-              >
-                Cannonball Pro MX 4i
-              </li>
-            </ul>
+            <SearchFormResultList
+              productInfoList={foundProducts}
+              onClick={handleSearchResultProductClick}
+              currentPath={pathname}
+            />
           </form>
           <button
             className='form-search__reset'

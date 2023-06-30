@@ -6,7 +6,10 @@ function BasicLayout(): JSX.Element {
     <>
       <Header />
       <main>
-        <div className='page-content'>
+        <div
+          className='page-content'
+          data-testid='basicLayout'
+        >
           <Outlet />
         </div>
       </main>

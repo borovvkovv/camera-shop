@@ -41,6 +41,7 @@ function SearchFormResultList({
               }`}
               tabIndex={0}
               onClick={() => handleResultProductClick(productInfo)}
+              data-testid={`searchResultItem-${index}`}
             >
               {productInfo.productName}
             </li>

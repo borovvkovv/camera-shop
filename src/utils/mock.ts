@@ -1,13 +1,9 @@
-import {
-  datatype,
-  name,
-  unique,
-  random,
-} from 'faker';
+import { datatype, name, unique, random } from 'faker';
 import { ProductCategory, ProductLevel, ProductType } from '../enums';
 import { ProductCard } from '../types/product-card';
 import { PromoProduct } from '../types/promo-product';
 import { Review } from '../types/review';
+import { SearchResultProduct } from '../types/search-result-product';
 
 export const getFakeProduct = (id?: number): ProductCard => ({
   id: unique(() => id ?? datatype.number()),
@@ -48,7 +44,8 @@ export const getFakeReview = (): Review => ({
   rating: datatype.number(),
 });
 
-export const getFakeRevews = (quantity: number) => Array.from({length: quantity}).map((_) => getFakeReview());
+export const getFakeRevews = (quantity: number) =>
+  Array.from({ length: quantity }).map((_) => getFakeReview());
 
 export const getFakeUserReview = () => ({
   cameraId: unique(() => datatype.number()),
@@ -66,3 +63,9 @@ export const getFakeProductRating = () => ({
 
 export const getFakeProductsRating = (quantity: number) =>
   Array.from({ length: quantity }).map((_) => getFakeProductRating());
+
+export const getFakeSearchResultProducts = (quantity: number): SearchResultProduct[] =>
+  Array.from({ length: quantity }).map((_) => ({
+    productName: datatype.string(),
+    urlPath: datatype.string(),
+  }));

@@ -97,6 +97,7 @@ function Header(): JSX.Element {
         <div
           className={`form-search ${isFormSearchOpened ? 'list-opened' : ''}`}
           ref={ref}
+          data-testid='formSearchContainer'
         >
           <form>
             <label>

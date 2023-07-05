@@ -3,6 +3,11 @@ export enum ProductCategory {
   Photo = 'Фотоаппарат',
 }
 
+export enum FilterProductCategory {
+  Photo = 'Фотокамера',
+  Video = 'Видеокамера',
+}
+
 export enum ProductInfoTabMode {
   Characteristics = 'characteristics',
   Description = 'description',

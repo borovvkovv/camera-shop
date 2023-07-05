@@ -7,14 +7,15 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import Filters from '../../components/filters/filters';
 import Pagination from '../../components/pagination/pagination';
 import ProductCardsList from '../../components/product-cards-list/product-cards-list';
-import Sorts from '../../components/sorts/sorts';
 import { AppRoute } from '../../const';
 import usePagination from '../../hooks/use-pagination';
 import usePopup from '../../hooks/use-popup';
 import useProducts from '../../hooks/use-products';
 import { ProductCard } from '../../types/product-card';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-
+import useFilter from '../../hooks/use-filter';
+import Sorts from '../../components/sorts/sorts';
+import useSort from '../../hooks/use-sort';
 function CatalogScreen(): JSX.Element {
   const { pathname } = useLocation();
   const { id: pageAsString } = useParams();
@@ -26,11 +27,13 @@ function CatalogScreen(): JSX.Element {
   );
   const modalRef = useRef(null);
   const { isVisible, setVisibility } = usePopup(modalRef);
-
   const { products, isProductsLoading, isProductsLoadingFailed } =
     useProducts();
+  const { filter, processedProducts, searchParams, setSearchParams } =
+    useFilter(products);
+  const { sort, sortedProducts } = useSort(searchParams, processedProducts);
   const { pagedProducts, currentPage, maxPageNumber } = usePagination(
-    products,
+    sortedProducts,
     pageNumber
   );
 
@@ -44,14 +47,15 @@ function CatalogScreen(): JSX.Element {
     <h1 className='title title--h3'>Товары не найдены</h1>
   );
 
-  const crumbs = useMemo(() =>
-    [
+  const crumbs = useMemo(
+    () => [
       {
         name: 'Каталог',
         path: AppRoute.Root,
       },
-    ]
-  , []);
+    ],
+    []
+  );
 
   const handleProductCardBuyClick = useMemo(
     () => (product: ProductCard) => {
@@ -83,23 +87,32 @@ function CatalogScreen(): JSX.Element {
             <div className='page-content__columns'>
               <div className='catalog__aside'>
                 <div className='catalog-filter'>
-                  <Filters />
+                  <Filters
+                    products={sortedProducts}
+                    filter={filter}
+                    sort={sort}
+                    setSearchParams={setSearchParams}
+                  />
                 </div>
               </div>
               <div className='catalog__content'>
                 <div className='catalog-sort'>
-                  <Sorts />
+                  <Sorts
+                    filter={filter}
+                    sort={sort}
+                    setSearchParams={setSearchParams}
+                  />
                 </div>
                 {(isProductsLoadingFailed && <ErrorState />) ||
                   (isProductsLoading && products.length === 0 && (
                     <LoadingState />
                   )) ||
-                  (products.length === 0 && <EmptyState />) || (
-                  <ProductCardsList
-                    products={pagedProducts}
-                    onBuyClick={handleProductCardBuyClick}
-                  />
-                )}
+                  (processedProducts.length === 0 && <EmptyState />) || (
+                    <ProductCardsList
+                      products={pagedProducts}
+                      onBuyClick={handleProductCardBuyClick}
+                    />
+                  )}
                 <Pagination
                   currentPage={currentPage}
                   maxPageNumber={maxPageNumber}

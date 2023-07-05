@@ -1,8 +1,51 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
+import { URLSearchParams } from 'url';
+import { Filter } from '../../types/filter';
+import { Sort, SortBy, SortOrder } from '../../types/sort';
+import { NavigateOptions, URLSearchParamsInit } from 'react-router-dom';
+import { getQueryParams } from '../../utils';
 
-function Sorts(): JSX.Element {
+type SortsProps = {
+  filter: Filter;
+  sort: Sort;
+  setSearchParams: (
+    nextInit?:
+      | URLSearchParamsInit
+      | ((prev: URLSearchParams) => URLSearchParamsInit),
+    navigateOpts?: NavigateOptions
+  ) => void;
+};
+
+function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
+  const queryParams = useMemo(() => getQueryParams(filter, sort), [filter, sort]);
+
+  function handleSortByPriceChange() {
+    setSearchParams({
+      ...queryParams,
+      by: SortBy.Price,
+    });
+  }
+  function handleSortByPopularityChange() {
+    setSearchParams({
+      ...queryParams,
+      by: SortBy.Popularity,
+    });
+  }
+  function handleSortOrderAscChange() {
+    setSearchParams({
+      ...queryParams,
+      order: SortOrder.Asc,
+    });
+  }
+  function handleSortOrderDescChange() {
+    setSearchParams({
+      ...queryParams,
+      order: SortOrder.Desc,
+    });
+  }
+
   return (
-    <form action='#'>
+    <form>
       <div className='catalog-sort__inner'>
         <p className='title title--h5'>Сортировать:</p>
         <div className='catalog-sort__type'>
@@ -11,10 +54,8 @@ function Sorts(): JSX.Element {
               type='radio'
               id='sortPrice'
               name='sort'
-              checked
-              onChange={() => {
-                void 0;
-              }}
+              checked={SortBy[sort.by ?? SortBy.Price] === SortBy.Price}
+              onChange={handleSortByPriceChange}
             />
             <label htmlFor='sortPrice'>по цене</label>
           </div>
@@ -23,9 +64,8 @@ function Sorts(): JSX.Element {
               type='radio'
               id='sortPopular'
               name='sort'
-              onChange={() => {
-                void 0;
-              }}
+              checked={SortBy[sort.by ?? SortBy.Price] === SortBy.Popularity}
+              onChange={handleSortByPopularityChange}
             />
             <label htmlFor='sortPopular'>по популярности</label>
           </div>
@@ -36,11 +76,9 @@ function Sorts(): JSX.Element {
               type='radio'
               id='up'
               name='sort-icon'
-              checked
+              checked={SortOrder[sort.order ?? SortOrder.Asc] === SortOrder.Asc}
               aria-label='По возрастанию'
-              onChange={() => {
-                void 0;
-              }}
+              onChange={handleSortOrderAscChange}
             />
             <label htmlFor='up'>
               <svg
@@ -58,9 +96,10 @@ function Sorts(): JSX.Element {
               id='down'
               name='sort-icon'
               aria-label='По убыванию'
-              onChange={() => {
-                void 0;
-              }}
+              checked={
+                SortOrder[sort.order ?? SortOrder.Asc] === SortOrder.Desc
+              }
+              onChange={handleSortOrderDescChange}
             />
             <label htmlFor='down'>
               <svg

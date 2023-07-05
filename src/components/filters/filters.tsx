@@ -1,8 +1,195 @@
-import { memo } from 'react';
+import { ChangeEvent, memo, useEffect, useState } from 'react';
+import { NavigateOptions, URLSearchParamsInit } from 'react-router-dom';
+import { URLSearchParams } from 'url';
+import { FilterProductCategory, ProductLevel, ProductType } from '../../enums';
+import { Filter } from '../../types/filter';
+import { ProductCard } from '../../types/product-card';
+import { Sort } from '../../types/sort';
+import { getMaxPrice, getMinPrice, getQueryParams } from '../../utils';
 
-function Filters(): JSX.Element {
+type FilterProps = {
+  filter: Filter;
+  sort: Sort;
+  setSearchParams: (
+    nextInit?:
+      | URLSearchParamsInit
+      | ((prev: URLSearchParams) => URLSearchParamsInit),
+    navigateOpts?: NavigateOptions
+  ) => void;
+  products: ProductCard[];
+};
+
+function Filters({
+  filter,
+  sort,
+  setSearchParams,
+  products,
+}: FilterProps): JSX.Element {
+  const minPrice = getMinPrice(products);
+  const maxPrice = getMaxPrice(products);
+
+  const [queryParams, setQueryParams] = useState(getQueryParams(filter, sort));
+
+  const [handlerTimeout, setHandlerTimeout] = useState<
+    ReturnType<typeof setTimeout> | undefined
+  >(undefined);
+
+  useEffect(() => {
+    setQueryParams(getQueryParams(filter, sort));
+  }, [filter, sort]);
+
+  const [productTypesToDisable, setProductTypesToDisable] = useState<
+    (keyof typeof ProductType)[]>([]);
+
+  function handleProductCategoryChange(evt: ChangeEvent<HTMLInputElement>) {
+    if (handlerTimeout) {
+      clearTimeout(handlerTimeout);
+    }
+
+    if ((evt.target as HTMLInputElement).value === 'Video') {
+      setProductTypesToDisable(['Instant', 'Film']);
+      const newQueryParams = {
+        ...queryParams,
+        category: [(evt.target as HTMLInputElement).value],
+        type: queryParams['type']
+          ? queryParams['type'].filter((x) => x !== 'Instant' && x !== 'Film')
+          : [],
+      };
+      setQueryParams(newQueryParams);
+      const timeoutId = setTimeout(() => {
+        setSearchParams(newQueryParams);
+      }, 1000);
+      setHandlerTimeout(timeoutId);
+    } else {
+      setProductTypesToDisable([]);
+      const newQueryParams = {
+        ...queryParams,
+        category: [(evt.target as HTMLInputElement).value],
+      };
+      setQueryParams(newQueryParams);
+      const timeoutId = setTimeout(() => {
+        setSearchParams(newQueryParams);
+      }, 1000);
+      setHandlerTimeout(timeoutId);
+    }
+  }
+
+  function handleProductTypeChange(evt: ChangeEvent<HTMLInputElement>) {
+    const selectedTypeAsString = (evt.target as HTMLInputElement).value;
+    const selectedType = selectedTypeAsString as keyof typeof ProductType;
+    if (handlerTimeout) {
+      clearTimeout(handlerTimeout);
+    }
+    if (queryParams['type']?.includes(selectedType)) {
+      const newQueryParams = {
+        ...queryParams,
+        type: [
+          ...queryParams['type'].slice(
+            0,
+            queryParams['type'].indexOf(selectedType)
+          ),
+          ...queryParams['type'].slice(
+            queryParams['type'].indexOf(selectedType) + 1
+          ),
+        ],
+      };
+      setQueryParams((prev) => newQueryParams);
+      setHandlerTimeout(
+        setTimeout(() => {
+          setSearchParams(newQueryParams);
+        }, 1000)
+      );
+    } else {
+      const newQueryParams = {
+        ...queryParams,
+        type: [...(queryParams['type'] ?? []), selectedTypeAsString],
+      };
+      setQueryParams(newQueryParams);
+      setHandlerTimeout(
+        setTimeout(() => {
+          setSearchParams(newQueryParams);
+        }, 1000)
+      );
+    }
+  }
+
+  function handleProductLevelChange(evt: ChangeEvent<HTMLInputElement>) {
+    const selectedLevelAsString = (evt.target as HTMLInputElement).value;
+    const selectedLevel = selectedLevelAsString as keyof typeof ProductLevel;
+    if (handlerTimeout) {
+      clearTimeout(handlerTimeout);
+    }
+    if (queryParams['level']?.includes(selectedLevel)) {
+      const newQueryParams = {
+        ...queryParams,
+        level: [
+          ...queryParams['level'].slice(
+            0,
+            queryParams['level'].indexOf(selectedLevel)
+          ),
+          ...queryParams['level'].slice(
+            queryParams['level'].indexOf(selectedLevel) + 1
+          ),
+        ],
+      };
+      setQueryParams(newQueryParams);
+      setHandlerTimeout(
+        setTimeout(() => {
+          setSearchParams(newQueryParams);
+        }, 1000)
+      );
+    } else {
+      const newQueryParams = {
+        ...queryParams,
+        level: [...(queryParams['level'] ?? []), selectedLevelAsString],
+      };
+      setQueryParams(newQueryParams);
+      setHandlerTimeout(
+        setTimeout(() => {
+          setSearchParams(newQueryParams);
+        }, 1000)
+      );
+    }
+  }
+
+  function handleResetButtonClick() {
+    setQueryParams({});
+    setSearchParams({});
+  }
+
+  function handlePriceMinChange(evt: ChangeEvent<HTMLInputElement>) {
+    if (handlerTimeout) {
+      clearTimeout(handlerTimeout);
+    }
+    const newQueryParams = {
+      ...queryParams,
+      'price_gte': evt.target.value === '' ? [] : [evt.target.value],
+    };
+    setQueryParams(newQueryParams);
+    const timeoutId = setTimeout(() => {
+      setSearchParams(newQueryParams);
+    }, 1000);
+    setHandlerTimeout(timeoutId);
+  }
+
+  function handlePriceMaxChange(evt: ChangeEvent<HTMLInputElement>) {
+    if (handlerTimeout) {
+      clearTimeout(handlerTimeout);
+    }
+    const newQueryParams = {
+      ...queryParams,
+      'price_lte': evt.target.value === '' ? [] : [evt.target.value],
+    };
+    setQueryParams(newQueryParams);
+    setHandlerTimeout(
+      setTimeout(() => {
+        setSearchParams(newQueryParams);
+      }, 1000)
+    );
+  }
+
   return (
-    <form action='#'>
+    <form>
       <h2 className='visually-hidden'>Фильтр</h2>
       <fieldset className='catalog-filter__block'>
         <legend className='title title--h5'>Цена, ₽</legend>
@@ -12,7 +199,9 @@ function Filters(): JSX.Element {
               <input
                 type='number'
                 name='price'
-                placeholder='от'
+                placeholder={isNaN(minPrice) ? 'от' : String(minPrice)}
+                value={queryParams['price_gte'] ?? ''}
+                onChange={handlePriceMinChange}
               />
             </label>
           </div>
@@ -21,7 +210,9 @@ function Filters(): JSX.Element {
               <input
                 type='number'
                 name='priceUp'
-                placeholder='до'
+                placeholder={isNaN(maxPrice) ? 'до' : String(maxPrice)}
+                value={queryParams['price_lte'] ?? ''}
+                onChange={handlePriceMaxChange}
               />
             </label>
           </div>
@@ -29,108 +220,96 @@ function Filters(): JSX.Element {
       </fieldset>
       <fieldset className='catalog-filter__block'>
         <legend className='title title--h5'>Категория</legend>
-        <div className='custom-checkbox catalog-filter__item'>
-          <label>
-            <input
-              type='checkbox'
-              name='photocamera'
-            />
-            <span className='custom-checkbox__icon' />
-            <span className='custom-checkbox__label'>Фотокамера</span>
-          </label>
-        </div>
-        <div className='custom-checkbox catalog-filter__item'>
-          <label>
-            <input
-              type='checkbox'
-              name='videocamera'
-            />
-            <span className='custom-checkbox__icon' />
-            <span className='custom-checkbox__label'>Видеокамера</span>
-          </label>
-        </div>
+        {Object.entries(FilterProductCategory).map(([key, value]) => (
+          <div
+            className='custom-checkbox catalog-filter__item'
+            key={key}
+          >
+            <label>
+              <input
+                type='radio'
+                name='category'
+                onChange={handleProductCategoryChange}
+                value={key}
+                checked={
+                  queryParams['category']?.length > 0
+                    ? FilterProductCategory[
+                        String(
+                          queryParams['category']
+                        ) as keyof typeof FilterProductCategory
+                    ] === value
+                    : false
+                }
+              />
+              <span className='custom-checkbox__icon' />
+              <span className='custom-checkbox__label'>{value}</span>
+            </label>
+          </div>
+        ))}
       </fieldset>
       <fieldset className='catalog-filter__block'>
         <legend className='title title--h5'>Тип камеры</legend>
-        <div className='custom-checkbox catalog-filter__item'>
-          <label>
-            <input
-              type='checkbox'
-              name='digital'
-            />
-            <span className='custom-checkbox__icon' />
-            <span className='custom-checkbox__label'>Цифровая</span>
-          </label>
-        </div>
-        <div className='custom-checkbox catalog-filter__item'>
-          <label>
-            <input
-              type='checkbox'
-              name='film'
-              disabled
-            />
-            <span className='custom-checkbox__icon' />
-            <span className='custom-checkbox__label'>Плёночная</span>
-          </label>
-        </div>
-        <div className='custom-checkbox catalog-filter__item'>
-          <label>
-            <input
-              type='checkbox'
-              name='snapshot'
-            />
-            <span className='custom-checkbox__icon' />
-            <span className='custom-checkbox__label'>Моментальная</span>
-          </label>
-        </div>
-        <div className='custom-checkbox catalog-filter__item'>
-          <label>
-            <input
-              type='checkbox'
-              name='collection'
-              disabled
-            />
-            <span className='custom-checkbox__icon' />
-            <span className='custom-checkbox__label'>Коллекционная</span>
-          </label>
-        </div>
+        {Object.entries(ProductType).map(([key, value]) => (
+          <div
+            className='custom-checkbox catalog-filter__item'
+            key={key}
+          >
+            <label>
+              <input
+                type='checkbox'
+                name={key.toLowerCase()}
+                onChange={handleProductTypeChange}
+                value={key}
+                checked={
+                  queryParams['type']
+                    ? queryParams['type']
+                      .map((t) => ProductType[t as keyof typeof ProductType])
+                      .includes(value)
+                    : false
+                }
+                disabled={productTypesToDisable
+                  .map((t) => ProductType[t])
+                  .includes(value)}
+              />
+              <span className='custom-checkbox__icon' />
+              <span className='custom-checkbox__label'>{value}</span>
+            </label>
+          </div>
+        ))}
       </fieldset>
       <fieldset className='catalog-filter__block'>
         <legend className='title title--h5'>Уровень</legend>
-        <div className='custom-checkbox catalog-filter__item'>
-          <label>
-            <input
-              type='checkbox'
-              name='zero'
-            />
-            <span className='custom-checkbox__icon' />
-            <span className='custom-checkbox__label'>Нулевой</span>
-          </label>
-        </div>
-        <div className='custom-checkbox catalog-filter__item'>
-          <label>
-            <input
-              type='checkbox'
-              name='non-professional'
-            />
-            <span className='custom-checkbox__icon' />
-            <span className='custom-checkbox__label'>Любительский</span>
-          </label>
-        </div>
-        <div className='custom-checkbox catalog-filter__item'>
-          <label>
-            <input
-              type='checkbox'
-              name='professional'
-            />
-            <span className='custom-checkbox__icon' />
-            <span className='custom-checkbox__label'>Профессиональный</span>
-          </label>
-        </div>
+        {Object.entries(ProductLevel).map(([key, value]) => (
+          <div
+            className='custom-checkbox catalog-filter__item'
+            key={key}
+          >
+            <label>
+              <input
+                type='checkbox'
+                name={key.toLowerCase()}
+                onChange={handleProductLevelChange}
+                value={key}
+                checked={
+                  queryParams['level']
+                    ? queryParams['level']
+                        .map(
+                          (t) => ProductLevel[t as keyof typeof ProductLevel]
+                        )
+                        .includes(value)
+                    : false
+                }
+              />
+              <span className='custom-checkbox__icon' />
+              <span className='custom-checkbox__label'>{value}</span>
+            </label>
+          </div>
+        ))}
       </fieldset>
       <button
         className='btn catalog-filter__reset-btn'
         type='reset'
+        onClick={handleResetButtonClick}
       >
         Сбросить фильтры
       </button>

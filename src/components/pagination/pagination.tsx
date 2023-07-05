@@ -10,7 +10,11 @@ type PaginationProps = {
 function Pagination({
   currentPage,
   maxPageNumber,
-}: PaginationProps): JSX.Element {
+}: PaginationProps): JSX.Element | null {
+  if (maxPageNumber < 2) {
+    return null;
+  }
+
   return (
     <div className='pagination'>
       <ul className='pagination__list'>

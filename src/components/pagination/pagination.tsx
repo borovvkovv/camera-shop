@@ -1,16 +1,29 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { Filter } from '../../types/filter';
+import { Sort } from '../../types/sort';
+import { getQueryParams, getStringFromQueryParams } from '../../utils';
 
 type PaginationProps = {
   currentPage: number;
   maxPageNumber: number;
+  filter: Filter;
+  sort: Sort;
 };
 
 function Pagination({
   currentPage,
   maxPageNumber,
+  filter,
+  sort,
 }: PaginationProps): JSX.Element | null {
+
+  const queryParams = useMemo(
+    () => getQueryParams(filter, sort),
+    [filter, sort]
+  );
+
   if (maxPageNumber < 2) {
     return null;
   }
@@ -25,7 +38,13 @@ function Pagination({
           >
             <Link
               className='pagination__link pagination__link--text'
-              to={`${AppRoute.Catalog.replace(':id', `${currentPage - 1}`)}`}
+              to={{
+                pathname: `${AppRoute.Catalog.replace(
+                  ':id',
+                  `${currentPage - 1}`
+                )}`,
+                search: getStringFromQueryParams(queryParams),
+              }}
             >
               Назад
             </Link>
@@ -40,7 +59,10 @@ function Pagination({
               className={`pagination__link ${
                 index + 1 === currentPage ? 'pagination__link--active' : ''
               }`}
-              to={`${AppRoute.Catalog.replace(':id', `${index + 1}`)}`}
+              to={{
+                pathname: `${AppRoute.Catalog.replace(':id', `${index + 1}`)}`,
+                search: getStringFromQueryParams(queryParams),
+              }}
               data-testid={`page-${index + 1}`}
             >
               {index + 1}
@@ -54,7 +76,13 @@ function Pagination({
           >
             <Link
               className='pagination__link pagination__link--text'
-              to={`${AppRoute.Catalog.replace(':id', `${currentPage + 1}`)}`}
+              to={{
+                pathname: `${AppRoute.Catalog.replace(
+                  ':id',
+                  `${currentPage + 1}`
+                )}`,
+                search: getStringFromQueryParams(queryParams),
+              }}
             >
               Далее
             </Link>

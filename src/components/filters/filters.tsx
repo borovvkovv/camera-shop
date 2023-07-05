@@ -17,6 +17,7 @@ type FilterProps = {
     navigateOpts?: NavigateOptions
   ) => void;
   products: ProductCard[];
+  onSubmit: (queryParams: Record<string, string[]>) => void;
 };
 
 function Filters({
@@ -24,22 +25,56 @@ function Filters({
   sort,
   setSearchParams,
   products,
+  onSubmit,
 }: FilterProps): JSX.Element {
   const minPrice = getMinPrice(products);
   const maxPrice = getMaxPrice(products);
 
   const [queryParams, setQueryParams] = useState(getQueryParams(filter, sort));
+  useEffect(() => {
+    setQueryParams(getQueryParams(filter, sort));
+  }, [filter, sort]);
 
   const [handlerTimeout, setHandlerTimeout] = useState<
     ReturnType<typeof setTimeout> | undefined
   >(undefined);
 
-  useEffect(() => {
-    setQueryParams(getQueryParams(filter, sort));
-  }, [filter, sort]);
-
   const [productTypesToDisable, setProductTypesToDisable] = useState<
-    (keyof typeof ProductType)[]>([]);
+    (keyof typeof ProductType)[]
+  >([]);
+
+  function handlePriceMinChange(evt: ChangeEvent<HTMLInputElement>) {
+    if (handlerTimeout) {
+      clearTimeout(handlerTimeout);
+    }
+    const newQueryParams = {
+      ...queryParams,
+      price_gte: evt.target.value === '' ? [] : [evt.target.value],
+    };
+    setQueryParams(newQueryParams);
+    const timeoutId = setTimeout(() => {
+      // setSearchParams(newQueryParams);
+      onSubmit(newQueryParams);
+    }, 1000);
+    setHandlerTimeout(timeoutId);
+  }
+
+  function handlePriceMaxChange(evt: ChangeEvent<HTMLInputElement>) {
+    if (handlerTimeout) {
+      clearTimeout(handlerTimeout);
+    }
+    const newQueryParams = {
+      ...queryParams,
+      price_lte: evt.target.value === '' ? [] : [evt.target.value],
+    };
+    setQueryParams(newQueryParams);
+    setHandlerTimeout(
+      setTimeout(() => {
+        // setSearchParams(newQueryParams);
+        onSubmit(newQueryParams);
+      }, 1000)
+    );
+  }
 
   function handleProductCategoryChange(evt: ChangeEvent<HTMLInputElement>) {
     if (handlerTimeout) {
@@ -57,7 +92,8 @@ function Filters({
       };
       setQueryParams(newQueryParams);
       const timeoutId = setTimeout(() => {
-        setSearchParams(newQueryParams);
+        // setSearchParams(newQueryParams);
+        onSubmit(newQueryParams);
       }, 1000);
       setHandlerTimeout(timeoutId);
     } else {
@@ -68,7 +104,8 @@ function Filters({
       };
       setQueryParams(newQueryParams);
       const timeoutId = setTimeout(() => {
-        setSearchParams(newQueryParams);
+        // setSearchParams(newQueryParams);
+        onSubmit(newQueryParams);
       }, 1000);
       setHandlerTimeout(timeoutId);
     }
@@ -96,7 +133,8 @@ function Filters({
       setQueryParams((prev) => newQueryParams);
       setHandlerTimeout(
         setTimeout(() => {
-          setSearchParams(newQueryParams);
+          // setSearchParams(newQueryParams);
+          onSubmit(newQueryParams);
         }, 1000)
       );
     } else {
@@ -107,7 +145,8 @@ function Filters({
       setQueryParams(newQueryParams);
       setHandlerTimeout(
         setTimeout(() => {
-          setSearchParams(newQueryParams);
+          // setSearchParams(newQueryParams);
+          onSubmit(newQueryParams);
         }, 1000)
       );
     }
@@ -135,7 +174,8 @@ function Filters({
       setQueryParams(newQueryParams);
       setHandlerTimeout(
         setTimeout(() => {
-          setSearchParams(newQueryParams);
+          // setSearchParams(newQueryParams);
+          onSubmit(newQueryParams);
         }, 1000)
       );
     } else {
@@ -146,7 +186,8 @@ function Filters({
       setQueryParams(newQueryParams);
       setHandlerTimeout(
         setTimeout(() => {
-          setSearchParams(newQueryParams);
+          // setSearchParams(newQueryParams);
+          onSubmit(newQueryParams);
         }, 1000)
       );
     }
@@ -154,38 +195,8 @@ function Filters({
 
   function handleResetButtonClick() {
     setQueryParams({});
-    setSearchParams({});
-  }
-
-  function handlePriceMinChange(evt: ChangeEvent<HTMLInputElement>) {
-    if (handlerTimeout) {
-      clearTimeout(handlerTimeout);
-    }
-    const newQueryParams = {
-      ...queryParams,
-      'price_gte': evt.target.value === '' ? [] : [evt.target.value],
-    };
-    setQueryParams(newQueryParams);
-    const timeoutId = setTimeout(() => {
-      setSearchParams(newQueryParams);
-    }, 1000);
-    setHandlerTimeout(timeoutId);
-  }
-
-  function handlePriceMaxChange(evt: ChangeEvent<HTMLInputElement>) {
-    if (handlerTimeout) {
-      clearTimeout(handlerTimeout);
-    }
-    const newQueryParams = {
-      ...queryParams,
-      'price_lte': evt.target.value === '' ? [] : [evt.target.value],
-    };
-    setQueryParams(newQueryParams);
-    setHandlerTimeout(
-      setTimeout(() => {
-        setSearchParams(newQueryParams);
-      }, 1000)
-    );
+    // setSearchParams({});
+    onSubmit({});
   }
 
   return (
@@ -237,7 +248,7 @@ function Filters({
                         String(
                           queryParams['category']
                         ) as keyof typeof FilterProductCategory
-                    ] === value
+                      ] === value
                     : false
                 }
               />
@@ -263,8 +274,8 @@ function Filters({
                 checked={
                   queryParams['type']
                     ? queryParams['type']
-                      .map((t) => ProductType[t as keyof typeof ProductType])
-                      .includes(value)
+                        .map((t) => ProductType[t as keyof typeof ProductType])
+                        .includes(value)
                     : false
                 }
                 disabled={productTypesToDisable

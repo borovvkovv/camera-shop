@@ -16,6 +16,10 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 import useFilter from '../../hooks/use-filter';
 import Sorts from '../../components/sorts/sorts';
 import useSort from '../../hooks/use-sort';
+import { URLSearchParams } from 'url';
+import { useAppDispatch } from '../../hooks/use-app-dispatch';
+import { redirectToRoute } from '../../store/action';
+import { getStringFromQueryParams } from '../../utils';
 function CatalogScreen(): JSX.Element {
   const { pathname } = useLocation();
   const { id: pageAsString } = useParams();
@@ -65,6 +69,18 @@ function CatalogScreen(): JSX.Element {
     [setVisibility]
   );
 
+  const dispatch = useAppDispatch();
+  function handleFilterSubmit(queryParams: Record<string, string[]>) {
+    dispatch(
+      redirectToRoute(
+        `${AppRoute.Catalog.replace(
+          ':id',
+          String(1)
+        )}${getStringFromQueryParams(queryParams)}`
+      )
+    );
+  }
+
   if (
     isNaN(pageNumber) ||
     (maxPageNumber > 0 && pageNumber > maxPageNumber) ||
@@ -92,6 +108,7 @@ function CatalogScreen(): JSX.Element {
                     filter={filter}
                     sort={sort}
                     setSearchParams={setSearchParams}
+                    onSubmit={handleFilterSubmit}
                   />
                 </div>
               </div>
@@ -116,6 +133,8 @@ function CatalogScreen(): JSX.Element {
                 <Pagination
                   currentPage={currentPage}
                   maxPageNumber={maxPageNumber}
+                  filter={filter}
+                  sort={sort}
                 />
               </div>
             </div>

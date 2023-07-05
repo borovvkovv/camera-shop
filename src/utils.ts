@@ -311,3 +311,22 @@ export function getQueryParams(filter: Filter, sort: Sort): Record<string, strin
   }
   return searchParamsObject;
 }
+
+export function getStringFromQueryParams(queryParams: Record<string, string[]>) {
+  let result = '';
+  if (!queryParams || queryParams.length) {
+    return result;
+  }
+  result += '?';
+  Object.entries(queryParams).forEach(([key, value]) => {
+    if (value instanceof Array) {
+      value.forEach((v) => {
+        result += `&${key}=${v}`;
+      });
+    }
+    else {
+      result += `&${key}=${String(value)}`;
+    }
+  });
+  return result;
+}

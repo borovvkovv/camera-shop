@@ -1,6 +1,5 @@
 import { URLSearchParamsInit } from 'react-router-dom';
 import { URLSearchParams } from 'url';
-import { isStringObject } from 'util/types';
 import { AppRoute } from './const';
 import {
   FilterProductCategory,

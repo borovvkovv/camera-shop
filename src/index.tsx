@@ -7,6 +7,8 @@ import App from './components/app/app';
 import HistoryRouter from './components/history-router/history-router';
 import ScrollToTop from './components/scroll-to-top/scroll-to-top';
 import { store } from './store';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,15 +19,18 @@ root.render(
     <Provider store={store}>
       <HistoryRouter history={browserHistory}>
         <ScrollToTop />
+        <ToastContainer />
         <App />
         <Link
           className='up-btn'
           to='#'
-          onClick={() =>
+          onClick={(evt: React.MouseEvent) => {
+            evt.preventDefault();
             window.scrollTo({
               top: 0,
               behavior: 'smooth',
-            })}
+            });
+          }}
         >
           <svg
             width='12'

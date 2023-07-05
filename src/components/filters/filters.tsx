@@ -18,6 +18,7 @@ type FilterProps = {
   ) => void;
   products: ProductCard[];
   onSubmit: (queryParams: Record<string, string[]>) => void;
+  setFilteringState: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function Filters({
@@ -26,6 +27,7 @@ function Filters({
   setSearchParams,
   products,
   onSubmit,
+  setFilteringState,
 }: FilterProps): JSX.Element {
   const minPrice = getMinPrice(products);
   const maxPrice = getMaxPrice(products);
@@ -52,8 +54,8 @@ function Filters({
       price_gte: evt.target.value === '' ? [] : [evt.target.value],
     };
     setQueryParams(newQueryParams);
+    setFilteringState(true);
     const timeoutId = setTimeout(() => {
-      // setSearchParams(newQueryParams);
       onSubmit(newQueryParams);
     }, 1000);
     setHandlerTimeout(timeoutId);
@@ -68,9 +70,9 @@ function Filters({
       price_lte: evt.target.value === '' ? [] : [evt.target.value],
     };
     setQueryParams(newQueryParams);
+    setFilteringState(true);
     setHandlerTimeout(
       setTimeout(() => {
-        // setSearchParams(newQueryParams);
         onSubmit(newQueryParams);
       }, 1000)
     );
@@ -91,8 +93,8 @@ function Filters({
           : [],
       };
       setQueryParams(newQueryParams);
+      setFilteringState(true);
       const timeoutId = setTimeout(() => {
-        // setSearchParams(newQueryParams);
         onSubmit(newQueryParams);
       }, 1000);
       setHandlerTimeout(timeoutId);
@@ -103,8 +105,8 @@ function Filters({
         category: [(evt.target as HTMLInputElement).value],
       };
       setQueryParams(newQueryParams);
+      setFilteringState(true);
       const timeoutId = setTimeout(() => {
-        // setSearchParams(newQueryParams);
         onSubmit(newQueryParams);
       }, 1000);
       setHandlerTimeout(timeoutId);
@@ -131,9 +133,9 @@ function Filters({
         ],
       };
       setQueryParams((prev) => newQueryParams);
+      setFilteringState(true);
       setHandlerTimeout(
         setTimeout(() => {
-          // setSearchParams(newQueryParams);
           onSubmit(newQueryParams);
         }, 1000)
       );
@@ -143,9 +145,9 @@ function Filters({
         type: [...(queryParams['type'] ?? []), selectedTypeAsString],
       };
       setQueryParams(newQueryParams);
+      setFilteringState(true);
       setHandlerTimeout(
         setTimeout(() => {
-          // setSearchParams(newQueryParams);
           onSubmit(newQueryParams);
         }, 1000)
       );
@@ -172,9 +174,9 @@ function Filters({
         ],
       };
       setQueryParams(newQueryParams);
+      setFilteringState(true);
       setHandlerTimeout(
         setTimeout(() => {
-          // setSearchParams(newQueryParams);
           onSubmit(newQueryParams);
         }, 1000)
       );
@@ -184,9 +186,9 @@ function Filters({
         level: [...(queryParams['level'] ?? []), selectedLevelAsString],
       };
       setQueryParams(newQueryParams);
+      setFilteringState(true);
       setHandlerTimeout(
         setTimeout(() => {
-          // setSearchParams(newQueryParams);
           onSubmit(newQueryParams);
         }, 1000)
       );
@@ -195,7 +197,6 @@ function Filters({
 
   function handleResetButtonClick() {
     setQueryParams({});
-    // setSearchParams({});
     onSubmit({});
   }
 

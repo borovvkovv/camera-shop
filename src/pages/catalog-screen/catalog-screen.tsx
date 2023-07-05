@@ -16,7 +16,6 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 import useFilter from '../../hooks/use-filter';
 import Sorts from '../../components/sorts/sorts';
 import useSort from '../../hooks/use-sort';
-import { URLSearchParams } from 'url';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import { redirectToRoute } from '../../store/action';
 import { getStringFromQueryParams } from '../../utils';
@@ -40,6 +39,7 @@ function CatalogScreen(): JSX.Element {
     sortedProducts,
     pageNumber
   );
+  const [isFiltering, setIsFiltering] = useState(false);
 
   const ErrorState = () => (
     <h1 className='title title--h3'>
@@ -79,6 +79,7 @@ function CatalogScreen(): JSX.Element {
         )}${getStringFromQueryParams(queryParams)}`
       )
     );
+    setIsFiltering(false);
   }
 
   if (
@@ -109,6 +110,7 @@ function CatalogScreen(): JSX.Element {
                     sort={sort}
                     setSearchParams={setSearchParams}
                     onSubmit={handleFilterSubmit}
+                    setFilteringState={setIsFiltering}
                   />
                 </div>
               </div>
@@ -121,7 +123,7 @@ function CatalogScreen(): JSX.Element {
                   />
                 </div>
                 {(isProductsLoadingFailed && <ErrorState />) ||
-                  (isProductsLoading && products.length === 0 && (
+                  (((isProductsLoading && products.length === 0) || isFiltering) && (
                     <LoadingState />
                   )) ||
                   (processedProducts.length === 0 && <EmptyState />) || (

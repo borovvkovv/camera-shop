@@ -1,13 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { DataProcess } from '../../types/store';
-import { addReviewAction, fetchProductAction, fetchProductsAction, fetchPromoAction, fetchReviewsAction, fetchSimilarProductsAction } from '../api-actions';
+import { pushRatingIfNotExists } from '../../utils';
+import {
+  addReviewAction,
+  fetchProductAction,
+  fetchProductsAction,
+  fetchPromoAction,
+  fetchReviewsAction,
+  fetchSimilarProductsAction,
+} from '../api-actions';
 
 const initialState: DataProcess = {
   products: [],
   isProductsLoading: true,
   isProductsLoadingFailed: false,
   product: null,
+  productsRating: [],
   isProductLoading: true,
   similarProducts: [],
   promo: null,
@@ -61,6 +70,14 @@ export const dataProcess = createSlice({
       })
       .addCase(fetchReviewsAction.fulfilled, (state, action) => {
         state.reviews = action.payload;
+
+        if (action.payload.length > 0) {
+          state.productsRating = pushRatingIfNotExists(
+            state.productsRating,
+            action.payload,
+            action.payload[0].cameraId
+          );
+        }
       })
       .addCase(addReviewAction.pending, (state) => {
         state.isCommentSending = true;

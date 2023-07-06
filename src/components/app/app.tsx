@@ -4,12 +4,16 @@ import CatalogScreen from '../../pages/catalog-screen/catalog-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import ProductScreen from '../../pages/product-screen/product-screen';
 import { HelmetProvider } from 'react-helmet-async';
+import BasicLayout from '../basic-layout/basic-layout';
 
 function App(): JSX.Element {
   return (
     <HelmetProvider>
       <Routes>
-        <Route path={AppRoute.Root}>
+        <Route
+          path={AppRoute.Root}
+          element={<BasicLayout />}
+        >
           <Route
             index
             element={<CatalogScreen />}

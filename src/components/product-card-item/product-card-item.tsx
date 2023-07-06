@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { ProductCardMode } from '../../enums';
+import useRating from '../../hooks/use-rating';
 import { ProductCard } from '../../types/product-card';
 import { humanizeProductPrice } from '../../utils';
 import StarRating from '../star-rating/star-rating';
@@ -30,6 +31,8 @@ function ProductCardItem({
     previewImgWebp2x,
   } = product;
 
+  const { ratingInfo } = useRating(id);
+
   const content = (
     <>
       <div className='product-card__img'>
@@ -49,7 +52,7 @@ function ProductCardItem({
       </div>
       <div className='product-card__info'>
         <div className='rate product-card__rate'>
-          <StarRating rating={2} />
+          <StarRating rating={ratingInfo?.rating ?? null} />
           <p className='rate__count'>
             <span className='visually-hidden'>Всего оценок:</span>
             {reviewCount}

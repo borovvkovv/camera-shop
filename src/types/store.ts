@@ -1,5 +1,6 @@
 import { store } from '../store';
 import { ProductCard } from './product-card';
+import { ProductRating } from './product-rating';
 import { PromoProduct } from './promo-product';
 import { Review } from './review';
 
@@ -10,6 +11,7 @@ export type DataProcess = {
   isProductsLoading: boolean;
   isProductsLoadingFailed: boolean;
   product: ProductCard | null;
+  productsRating: ProductRating[];
   isProductLoading: boolean;
   similarProducts: ProductCard[];
   promo: PromoProduct | null;

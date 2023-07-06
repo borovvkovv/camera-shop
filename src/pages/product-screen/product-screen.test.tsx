@@ -22,6 +22,7 @@ describe('Component: ProductScreen', () => {
     const store = mockStore({
       [NameSpace.Data]: {
         product: product,
+        productsRating: [],
         isProductLoading: false,
         reviews: [],
         similarProducts: []
@@ -53,6 +54,7 @@ describe('Component: ProductScreen', () => {
     const store = mockStore({
       [NameSpace.Data]: {
         product: null,
+        productsRating: [],
         isProductLoading: true,
       },
     });
@@ -82,6 +84,7 @@ describe('Component: ProductScreen', () => {
     const store = mockStore({
       [NameSpace.Data]: {
         product: null,
+        productsRating: [],
         isProductLoading: false,
       },
     });

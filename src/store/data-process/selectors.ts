@@ -10,6 +10,8 @@ export const getIsProductsLoadingFailed = (state: State) =>
 export const getProduct = (state: State) => state[NameSpace.Data].product;
 export const getIsProductLoading = (state: State) =>
   state[NameSpace.Data].isProductLoading;
+export const getProductsRating = (state: State) =>
+  state[NameSpace.Data].productsRating;
 
 export const getSimilarProducts = (state: State) =>
   state[NameSpace.Data].similarProducts;

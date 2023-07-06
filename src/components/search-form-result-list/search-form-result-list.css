@@ -1,0 +1,4 @@
+.form-search__select-item--disabled {
+  cursor: default;
+  background-color: #f4f4fc;
+}

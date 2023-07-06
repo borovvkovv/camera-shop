@@ -134,8 +134,7 @@ function CatalogScreen(): JSX.Element {
                 <Pagination
                   currentPage={currentPage}
                   maxPageNumber={maxPageNumber}
-                  filter={filter}
-                  sort={sort}
+                  queryParams={searchParams}
                 />
               </div>
             </div>

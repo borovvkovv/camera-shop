@@ -31,7 +31,7 @@ export enum ProductCardMode {
   Slider = 'Slider'
 }
 
-export enum QueryParams {
+export enum QueryParam {
   PriceMin = 'price_gte',
   PriceMax = 'price_lte',
   Category = 'category',

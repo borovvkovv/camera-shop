@@ -3,7 +3,7 @@ import {
   FilterProductCategory,
   ProductLevel,
   ProductType,
-  QueryParams,
+  QueryParam,
 } from '../../enums';
 import { Filter } from '../../types/filter';
 import { ProductCard } from '../../types/product-card';
@@ -52,8 +52,8 @@ function Filters({
     ) {
       const newQueryParams = {
         ...queryParams,
-        type: queryParams[QueryParams.Type]
-          ? queryParams[QueryParams.Type].filter(
+        type: queryParams[QueryParam.Type]
+          ? queryParams[QueryParam.Type].filter(
             (x) => x !== 'Instant' && x !== 'Film'
           )
           : [],
@@ -70,7 +70,7 @@ function Filters({
     }
     const newQueryParams = {
       ...queryParams,
-      [QueryParams.PriceMin]: evt.target.value === '' ? [] : [evt.target.value],
+      [QueryParam.PriceMin]: evt.target.value === '' ? [] : [evt.target.value],
     };
     setQueryParams(newQueryParams);
     setFilteringState(true);
@@ -86,7 +86,7 @@ function Filters({
     }
     const newQueryParams = {
       ...queryParams,
-      [QueryParams.PriceMax]: evt.target.value === '' ? [] : [evt.target.value],
+      [QueryParam.PriceMax]: evt.target.value === '' ? [] : [evt.target.value],
     };
     setQueryParams(newQueryParams);
     setFilteringState(true);
@@ -106,8 +106,8 @@ function Filters({
       const newQueryParams = {
         ...queryParams,
         category: [(evt.target as HTMLInputElement).value],
-        type: queryParams[QueryParams.Type]
-          ? queryParams[QueryParams.Type].filter(
+        type: queryParams[QueryParam.Type]
+          ? queryParams[QueryParam.Type].filter(
             (x) => x !== 'Instant' && x !== 'Film'
           )
           : [],
@@ -138,16 +138,16 @@ function Filters({
     if (handlerTimeout) {
       clearTimeout(handlerTimeout);
     }
-    if (queryParams[QueryParams.Type]?.includes(selectedType)) {
+    if (queryParams[QueryParam.Type]?.includes(selectedType)) {
       const newQueryParams = {
         ...queryParams,
         type: [
-          ...queryParams[QueryParams.Type].slice(
+          ...queryParams[QueryParam.Type].slice(
             0,
-            queryParams[QueryParams.Type].indexOf(selectedType)
+            queryParams[QueryParam.Type].indexOf(selectedType)
           ),
-          ...queryParams[QueryParams.Type].slice(
-            queryParams[QueryParams.Type].indexOf(selectedType) + 1
+          ...queryParams[QueryParam.Type].slice(
+            queryParams[QueryParam.Type].indexOf(selectedType) + 1
           ),
         ],
       };
@@ -161,7 +161,7 @@ function Filters({
     } else {
       const newQueryParams = {
         ...queryParams,
-        type: [...(queryParams[QueryParams.Type] ?? []), selectedTypeAsString],
+        type: [...(queryParams[QueryParam.Type] ?? []), selectedTypeAsString],
       };
       setQueryParams(newQueryParams);
       setFilteringState(true);
@@ -179,16 +179,16 @@ function Filters({
     if (handlerTimeout) {
       clearTimeout(handlerTimeout);
     }
-    if (queryParams[QueryParams.Level]?.includes(selectedLevel)) {
+    if (queryParams[QueryParam.Level]?.includes(selectedLevel)) {
       const newQueryParams = {
         ...queryParams,
         level: [
-          ...queryParams[QueryParams.Level].slice(
+          ...queryParams[QueryParam.Level].slice(
             0,
-            queryParams[QueryParams.Level].indexOf(selectedLevel)
+            queryParams[QueryParam.Level].indexOf(selectedLevel)
           ),
-          ...queryParams[QueryParams.Level].slice(
-            queryParams[QueryParams.Level].indexOf(selectedLevel) + 1
+          ...queryParams[QueryParam.Level].slice(
+            queryParams[QueryParam.Level].indexOf(selectedLevel) + 1
           ),
         ],
       };
@@ -203,7 +203,7 @@ function Filters({
       const newQueryParams = {
         ...queryParams,
         level: [
-          ...(queryParams[QueryParams.Level] ?? []),
+          ...(queryParams[QueryParam.Level] ?? []),
           selectedLevelAsString,
         ],
       };
@@ -234,7 +234,7 @@ function Filters({
                 type='number'
                 name='price'
                 placeholder={isNaN(minPrice) ? 'от' : String(minPrice)}
-                value={queryParams[QueryParams.PriceMin] ?? ''}
+                value={queryParams[QueryParam.PriceMin] ?? ''}
                 onChange={handlePriceMinChange}
                 data-testid='minPriceFilterInput'
               />
@@ -246,7 +246,7 @@ function Filters({
                 type='number'
                 name='priceUp'
                 placeholder={isNaN(maxPrice) ? 'до' : String(maxPrice)}
-                value={queryParams[QueryParams.PriceMax] ?? ''}
+                value={queryParams[QueryParam.PriceMax] ?? ''}
                 onChange={handlePriceMaxChange}
                 data-testid='maxPriceFilterInput'
               />
@@ -268,10 +268,10 @@ function Filters({
                 onChange={handleProductCategoryChange}
                 value={key}
                 checked={
-                  queryParams[QueryParams.Category]?.length > 0
+                  queryParams[QueryParam.Category]?.length > 0
                     ? FilterProductCategory[
                         String(
-                          queryParams[QueryParams.Category]
+                          queryParams[QueryParam.Category]
                         ) as keyof typeof FilterProductCategory
                     ] === value
                     : false
@@ -298,8 +298,8 @@ function Filters({
                 onChange={handleProductTypeChange}
                 value={key}
                 checked={
-                  queryParams[QueryParams.Type]
-                    ? queryParams[QueryParams.Type]
+                  queryParams[QueryParam.Type]
+                    ? queryParams[QueryParam.Type]
                       .map((t) => ProductType[t as keyof typeof ProductType])
                       .includes(value)
                     : false
@@ -329,8 +329,8 @@ function Filters({
                 onChange={handleProductLevelChange}
                 value={key}
                 checked={
-                  queryParams[QueryParams.Level]
-                    ? queryParams[QueryParams.Level]
+                  queryParams[QueryParam.Level]
+                    ? queryParams[QueryParam.Level]
                       .map(
                         (t) => ProductLevel[t as keyof typeof ProductLevel]
                       )

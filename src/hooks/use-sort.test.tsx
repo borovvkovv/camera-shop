@@ -1,13 +1,13 @@
 import { renderHook } from '@testing-library/react';
-import { QueryParams } from '../enums';
+import { QueryParam } from '../enums';
 import { SortBy, SortOrder } from '../types/sort';
 import { getMaxPrice, getMinPrice } from '../utils';
 import { getFakeProducts } from '../utils/mock';
 import useSort from './use-sort';
 
 const searchParams = new URLSearchParams();
-searchParams.append(QueryParams.Order, SortBy.Price);
-searchParams.append(QueryParams.By, SortOrder.Asc);
+searchParams.append(QueryParam.Order, SortBy.Price);
+searchParams.append(QueryParam.By, SortOrder.Asc);
 
 describe('Hook: useSort', () => {
   it('should return sorted products considering query params', () => {

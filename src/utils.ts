@@ -171,14 +171,14 @@ export function filterProducts(
 export function getMinPrice(products: ProductCard[]): number {
   return products.length > 0
     ? products.reduce((prev, curr) => (prev.price <= curr.price ? prev : curr))
-        .price
+      .price
     : NaN;
 }
 
 export function getMaxPrice(products: ProductCard[]): number {
   return products.length > 0
     ? products.reduce((prev, curr) => (prev.price >= curr.price ? prev : curr))
-        .price
+      .price
     : NaN;
 }
 
@@ -191,8 +191,8 @@ export function getFilter(searchParams: URLSearchParams): Filter {
 
   const matchedKey = categoryAsString
     ? Object.keys(FilterProductCategory).find(
-        (key) => key.toLowerCase() === categoryAsString?.toLowerCase()
-      )
+      (key) => key.toLowerCase() === categoryAsString?.toLowerCase()
+    )
     : undefined;
 
   const category = matchedKey
@@ -238,16 +238,16 @@ export function getSort(searchParams: URLSearchParams): Sort {
 
   const matchedKey = orderAsSting
     ? Object.keys(SortOrder).find(
-        (key) => key.toLowerCase() === orderAsSting?.toLowerCase()
-      )
+      (key) => key.toLowerCase() === orderAsSting?.toLowerCase()
+    )
     : undefined;
 
   const order = matchedKey ? (matchedKey as keyof typeof SortOrder) : undefined;
 
   const matchedKeyBy = byAsString
     ? Object.keys(SortBy).find(
-        (key) => key.toLowerCase() === byAsString?.toLowerCase()
-      )
+      (key) => key.toLowerCase() === byAsString?.toLowerCase()
+    )
     : undefined;
 
   const by = matchedKeyBy ? (matchedKeyBy as keyof typeof SortBy) : undefined;

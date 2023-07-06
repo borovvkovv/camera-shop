@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import HistoryRouter from '../history-router/history-router';
 import { createMemoryHistory } from 'history';
-import BasicLayout from './basic-layout';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import thunk from 'redux-thunk';
 import { NameSpace } from '../../const';

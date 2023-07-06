@@ -126,11 +126,11 @@ function CatalogScreen(): JSX.Element {
                     <LoadingState />
                   )) ||
                   (processedProducts.length === 0 && <EmptyState />) || (
-                    <ProductCardsList
-                      products={pagedProducts}
-                      onBuyClick={handleProductCardBuyClick}
-                    />
-                  )}
+                  <ProductCardsList
+                    products={pagedProducts}
+                    onBuyClick={handleProductCardBuyClick}
+                  />
+                )}
                 <Pagination
                   currentPage={currentPage}
                   maxPageNumber={maxPageNumber}

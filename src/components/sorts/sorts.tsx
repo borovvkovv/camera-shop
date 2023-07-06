@@ -56,6 +56,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
               name='sort'
               checked={SortBy[sort.by ?? SortBy.Price] === SortBy.Price}
               onChange={handleSortByPriceChange}
+              data-testid='sortByPrice'
             />
             <label htmlFor='sortPrice'>по цене</label>
           </div>
@@ -66,6 +67,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
               name='sort'
               checked={SortBy[sort.by ?? SortBy.Price] === SortBy.Popularity}
               onChange={handleSortByPopularityChange}
+              data-testid='sortByPopularity'
             />
             <label htmlFor='sortPopular'>по популярности</label>
           </div>
@@ -79,6 +81,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
               checked={SortOrder[sort.order ?? SortOrder.Asc] === SortOrder.Asc}
               aria-label='По возрастанию'
               onChange={handleSortOrderAscChange}
+              data-testid='sortOrderAsc'
             />
             <label htmlFor='up'>
               <svg
@@ -100,6 +103,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
                 SortOrder[sort.order ?? SortOrder.Asc] === SortOrder.Desc
               }
               onChange={handleSortOrderDescChange}
+              data-testid='sortOrderDesc'
             />
             <label htmlFor='down'>
               <svg

@@ -2,8 +2,12 @@ import { render, screen } from '@testing-library/react';
 import HistoryRouter from '../history-router/history-router';
 import { createMemoryHistory } from 'history';
 import Pagination from './pagination';
+import { Filter } from '../../types/filter';
+import { Sort } from '../../types/sort';
 
 const history = createMemoryHistory();
+const filter:Filter = {};
+const sort: Sort = {};
 
 describe('Component: Pagination', () => {
   it('should render button "Next" when page is first', () => {
@@ -12,6 +16,8 @@ describe('Component: Pagination', () => {
         <Pagination
           currentPage={1}
           maxPageNumber={5}
+          filter={filter}
+          sort={sort}
         />
       </HistoryRouter>
     );
@@ -27,6 +33,8 @@ describe('Component: Pagination', () => {
         <Pagination
           currentPage={5}
           maxPageNumber={5}
+          filter={filter}
+          sort={sort}
         />
       </HistoryRouter>
     );
@@ -46,6 +54,8 @@ describe('Component: Pagination', () => {
         <Pagination
           currentPage={3}
           maxPageNumber={5}
+          filter={filter}
+          sort={sort}
         />
       </HistoryRouter>
     );

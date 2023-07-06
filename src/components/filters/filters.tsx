@@ -1,7 +1,10 @@
 import { ChangeEvent, memo, useEffect, useState } from 'react';
-import { NavigateOptions, URLSearchParamsInit } from 'react-router-dom';
-import { URLSearchParams } from 'url';
-import { FilterProductCategory, ProductLevel, ProductType } from '../../enums';
+import {
+  FilterProductCategory,
+  ProductLevel,
+  ProductType,
+  QueryParams,
+} from '../../enums';
 import { Filter } from '../../types/filter';
 import { ProductCard } from '../../types/product-card';
 import { Sort } from '../../types/sort';
@@ -10,12 +13,6 @@ import { getMaxPrice, getMinPrice, getQueryParams } from '../../utils';
 type FilterProps = {
   filter: Filter;
   sort: Sort;
-  setSearchParams: (
-    nextInit?:
-      | URLSearchParamsInit
-      | ((prev: URLSearchParams) => URLSearchParamsInit),
-    navigateOpts?: NavigateOptions
-  ) => void;
   products: ProductCard[];
   onSubmit: (queryParams: Record<string, string[]>) => void;
   setFilteringState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,7 +21,6 @@ type FilterProps = {
 function Filters({
   filter,
   sort,
-  setSearchParams,
   products,
   onSubmit,
   setFilteringState,
@@ -42,8 +38,7 @@ function Filters({
   >(undefined);
 
   const [productTypesToDisable, setProductTypesToDisable] = useState<
-    (keyof typeof ProductType)[]
-  >([]);
+    (keyof typeof ProductType)[]>([]);
 
   function handlePriceMinChange(evt: ChangeEvent<HTMLInputElement>) {
     if (handlerTimeout) {
@@ -51,7 +46,7 @@ function Filters({
     }
     const newQueryParams = {
       ...queryParams,
-      price_gte: evt.target.value === '' ? [] : [evt.target.value],
+      [QueryParams.PriceMin]: evt.target.value === '' ? [] : [evt.target.value],
     };
     setQueryParams(newQueryParams);
     setFilteringState(true);
@@ -67,7 +62,7 @@ function Filters({
     }
     const newQueryParams = {
       ...queryParams,
-      price_lte: evt.target.value === '' ? [] : [evt.target.value],
+      [QueryParams.PriceMax]: evt.target.value === '' ? [] : [evt.target.value],
     };
     setQueryParams(newQueryParams);
     setFilteringState(true);
@@ -88,8 +83,10 @@ function Filters({
       const newQueryParams = {
         ...queryParams,
         category: [(evt.target as HTMLInputElement).value],
-        type: queryParams['type']
-          ? queryParams['type'].filter((x) => x !== 'Instant' && x !== 'Film')
+        type: queryParams[QueryParams.Type]
+          ? queryParams[QueryParams.Type].filter(
+            (x) => x !== 'Instant' && x !== 'Film'
+          )
           : [],
       };
       setQueryParams(newQueryParams);
@@ -119,16 +116,16 @@ function Filters({
     if (handlerTimeout) {
       clearTimeout(handlerTimeout);
     }
-    if (queryParams['type']?.includes(selectedType)) {
+    if (queryParams[QueryParams.Type]?.includes(selectedType)) {
       const newQueryParams = {
         ...queryParams,
         type: [
-          ...queryParams['type'].slice(
+          ...queryParams[QueryParams.Type].slice(
             0,
-            queryParams['type'].indexOf(selectedType)
+            queryParams[QueryParams.Type].indexOf(selectedType)
           ),
-          ...queryParams['type'].slice(
-            queryParams['type'].indexOf(selectedType) + 1
+          ...queryParams[QueryParams.Type].slice(
+            queryParams[QueryParams.Type].indexOf(selectedType) + 1
           ),
         ],
       };
@@ -142,7 +139,7 @@ function Filters({
     } else {
       const newQueryParams = {
         ...queryParams,
-        type: [...(queryParams['type'] ?? []), selectedTypeAsString],
+        type: [...(queryParams[QueryParams.Type] ?? []), selectedTypeAsString],
       };
       setQueryParams(newQueryParams);
       setFilteringState(true);
@@ -160,16 +157,16 @@ function Filters({
     if (handlerTimeout) {
       clearTimeout(handlerTimeout);
     }
-    if (queryParams['level']?.includes(selectedLevel)) {
+    if (queryParams[QueryParams.Level]?.includes(selectedLevel)) {
       const newQueryParams = {
         ...queryParams,
         level: [
-          ...queryParams['level'].slice(
+          ...queryParams[QueryParams.Level].slice(
             0,
-            queryParams['level'].indexOf(selectedLevel)
+            queryParams[QueryParams.Level].indexOf(selectedLevel)
           ),
-          ...queryParams['level'].slice(
-            queryParams['level'].indexOf(selectedLevel) + 1
+          ...queryParams[QueryParams.Level].slice(
+            queryParams[QueryParams.Level].indexOf(selectedLevel) + 1
           ),
         ],
       };
@@ -183,7 +180,10 @@ function Filters({
     } else {
       const newQueryParams = {
         ...queryParams,
-        level: [...(queryParams['level'] ?? []), selectedLevelAsString],
+        level: [
+          ...(queryParams[QueryParams.Level] ?? []),
+          selectedLevelAsString,
+        ],
       };
       setQueryParams(newQueryParams);
       setFilteringState(true);
@@ -212,8 +212,9 @@ function Filters({
                 type='number'
                 name='price'
                 placeholder={isNaN(minPrice) ? 'от' : String(minPrice)}
-                value={queryParams['price_gte'] ?? ''}
+                value={queryParams[QueryParams.PriceMin] ?? ''}
                 onChange={handlePriceMinChange}
+                data-testid='minPriceFilterInput'
               />
             </label>
           </div>
@@ -223,8 +224,9 @@ function Filters({
                 type='number'
                 name='priceUp'
                 placeholder={isNaN(maxPrice) ? 'до' : String(maxPrice)}
-                value={queryParams['price_lte'] ?? ''}
+                value={queryParams[QueryParams.PriceMax] ?? ''}
                 onChange={handlePriceMaxChange}
+                data-testid='maxPriceFilterInput'
               />
             </label>
           </div>
@@ -244,14 +246,15 @@ function Filters({
                 onChange={handleProductCategoryChange}
                 value={key}
                 checked={
-                  queryParams['category']?.length > 0
+                  queryParams[QueryParams.Category]?.length > 0
                     ? FilterProductCategory[
                         String(
-                          queryParams['category']
+                          queryParams[QueryParams.Category]
                         ) as keyof typeof FilterProductCategory
-                      ] === value
+                    ] === value
                     : false
                 }
+                data-testid={`categoryFilterInput-${key}`}
               />
               <span className='custom-checkbox__icon' />
               <span className='custom-checkbox__label'>{value}</span>
@@ -273,15 +276,16 @@ function Filters({
                 onChange={handleProductTypeChange}
                 value={key}
                 checked={
-                  queryParams['type']
-                    ? queryParams['type']
-                        .map((t) => ProductType[t as keyof typeof ProductType])
-                        .includes(value)
+                  queryParams[QueryParams.Type]
+                    ? queryParams[QueryParams.Type]
+                      .map((t) => ProductType[t as keyof typeof ProductType])
+                      .includes(value)
                     : false
                 }
                 disabled={productTypesToDisable
                   .map((t) => ProductType[t])
                   .includes(value)}
+                data-testid={`typeFilterInput-${key}`}
               />
               <span className='custom-checkbox__icon' />
               <span className='custom-checkbox__label'>{value}</span>
@@ -303,14 +307,15 @@ function Filters({
                 onChange={handleProductLevelChange}
                 value={key}
                 checked={
-                  queryParams['level']
-                    ? queryParams['level']
-                        .map(
-                          (t) => ProductLevel[t as keyof typeof ProductLevel]
-                        )
-                        .includes(value)
+                  queryParams[QueryParams.Level]
+                    ? queryParams[QueryParams.Level]
+                      .map(
+                        (t) => ProductLevel[t as keyof typeof ProductLevel]
+                      )
+                      .includes(value)
                     : false
                 }
+                data-testid={`levelFilterInput-${key}`}
               />
               <span className='custom-checkbox__icon' />
               <span className='custom-checkbox__label'>{value}</span>

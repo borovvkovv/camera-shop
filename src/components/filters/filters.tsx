@@ -39,6 +39,30 @@ function Filters({
 
   const [productTypesToDisable, setProductTypesToDisable] = useState<
     (keyof typeof ProductType)[]>([]);
+  useEffect(() => {
+    if (filter.category === 'Video') {
+      setProductTypesToDisable(['Instant', 'Film']);
+    }
+    else {
+      setProductTypesToDisable([]);
+    }
+    if (
+      filter.category === 'Video' &&
+      (filter.type?.includes('Instant') || filter.type?.includes('Film'))
+    ) {
+      const newQueryParams = {
+        ...queryParams,
+        type: queryParams[QueryParams.Type]
+          ? queryParams[QueryParams.Type].filter(
+            (x) => x !== 'Instant' && x !== 'Film'
+          )
+          : [],
+      };
+      setQueryParams(newQueryParams);
+      setFilteringState(true);
+      onSubmit(newQueryParams);
+    }
+  }, [filter.category, filter.type, onSubmit, queryParams, setFilteringState]);
 
   function handlePriceMinChange(evt: ChangeEvent<HTMLInputElement>) {
     if (handlerTimeout) {
@@ -79,7 +103,6 @@ function Filters({
     }
 
     if ((evt.target as HTMLInputElement).value === 'Video') {
-      setProductTypesToDisable(['Instant', 'Film']);
       const newQueryParams = {
         ...queryParams,
         category: [(evt.target as HTMLInputElement).value],
@@ -96,7 +119,6 @@ function Filters({
       }, 1000);
       setHandlerTimeout(timeoutId);
     } else {
-      setProductTypesToDisable([]);
       const newQueryParams = {
         ...queryParams,
         category: [(evt.target as HTMLInputElement).value],

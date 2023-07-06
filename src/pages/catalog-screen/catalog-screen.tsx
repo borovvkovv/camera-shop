@@ -108,7 +108,6 @@ function CatalogScreen(): JSX.Element {
                     products={sortedProducts}
                     filter={filter}
                     sort={sort}
-                    setSearchParams={setSearchParams}
                     onSubmit={handleFilterSubmit}
                     setFilteringState={setIsFiltering}
                   />

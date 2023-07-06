@@ -6,6 +6,7 @@ import {
   ProductCategory,
   ProductLevel,
   ProductType,
+  QueryParams,
 } from './enums';
 import { productFilterCategoryMap } from './maps';
 import { Filter } from './types/filter';
@@ -113,43 +114,44 @@ export function filterProducts(
   const minPrice = getMinPrice(filteredProducts);
   const maxPrice = getMaxPrice(filteredProducts);
   if (
-    queryParams['price_lte'] &&
-    queryParams['price_gte'] &&
-    Number(queryParams['price_gte']) > Number(queryParams['price_lte'])
+    queryParams[QueryParams.PriceMax] &&
+    queryParams[QueryParams.PriceMin] &&
+    Number(queryParams[QueryParams.PriceMin]) >
+      Number(queryParams[QueryParams.PriceMax])
   ) {
     shouldUpdateQueryParams = true;
     queryParams = {
       ...queryParams,
-      price_lte: queryParams['price_gte'],
-      price_gte: queryParams['price_lte'],
+      [QueryParams.PriceMax]: queryParams[QueryParams.PriceMin],
+      [QueryParams.PriceMin]: queryParams[QueryParams.PriceMax],
     };
   }
-  if (queryParams['price_gte'] && Number(queryParams['price_gte']) < minPrice) {
+  if (queryParams[QueryParams.PriceMin] && Number(queryParams[QueryParams.PriceMin]) < minPrice) {
     shouldUpdateQueryParams = true;
     queryParams = {
       ...queryParams,
-      price_gte: String(minPrice),
+      [QueryParams.PriceMin]: [String(minPrice)],
     };
   }
-  if (queryParams['price_lte'] && Number(queryParams['price_lte']) > maxPrice) {
+  if (queryParams[QueryParams.PriceMax] && Number(queryParams[QueryParams.PriceMax]) > maxPrice) {
     shouldUpdateQueryParams = true;
     queryParams = {
       ...queryParams,
-      price_lte: String(maxPrice),
+      [QueryParams.PriceMax]: [String(maxPrice)],
     };
   }
-  if (queryParams['price_gte'] && Number(queryParams['price_gte']) > maxPrice) {
+  if (queryParams[QueryParams.PriceMin] && Number(queryParams[QueryParams.PriceMin]) > maxPrice) {
     shouldUpdateQueryParams = true;
     queryParams = {
       ...queryParams,
-      price_gte: String(maxPrice),
+      [QueryParams.PriceMin]: [String(maxPrice)],
     };
   }
-  if (queryParams['price_lte'] && Number(queryParams['price_lte']) < minPrice) {
+  if (queryParams[QueryParams.PriceMax] && Number(queryParams[QueryParams.PriceMax]) < minPrice) {
     shouldUpdateQueryParams = true;
     queryParams = {
       ...queryParams,
-      price_lte: String(minPrice),
+      [QueryParams.PriceMax]: [String(minPrice)],
     };
   }
 
@@ -181,11 +183,11 @@ export function getMaxPrice(products: ProductCard[]): number {
 }
 
 export function getFilter(searchParams: URLSearchParams): Filter {
-  const priceRangeMin = searchParams.get('price_gte') ?? undefined;
-  const priceRangeMax = searchParams.get('price_lte') ?? undefined;
-  const categoryAsString = searchParams.get('category');
-  const typesAsStringArray = searchParams.getAll('type');
-  const levelsAsStringArray = searchParams.getAll('level');
+  const priceRangeMin = searchParams.get(QueryParams.PriceMin) ?? undefined;
+  const priceRangeMax = searchParams.get(QueryParams.PriceMax) ?? undefined;
+  const categoryAsString = searchParams.get(QueryParams.Category);
+  const typesAsStringArray = searchParams.getAll(QueryParams.Type);
+  const levelsAsStringArray = searchParams.getAll(QueryParams.Level);
 
   const matchedKey = categoryAsString
     ? Object.keys(FilterProductCategory).find(
@@ -231,8 +233,8 @@ export function getFilter(searchParams: URLSearchParams): Filter {
 }
 
 export function getSort(searchParams: URLSearchParams): Sort {
-  const orderAsSting = searchParams.get('order') ?? undefined;
-  const byAsString = searchParams.get('by') ?? undefined;
+  const orderAsSting = searchParams.get(QueryParams.Order) ?? undefined;
+  const byAsString = searchParams.get(QueryParams.By) ?? undefined;
 
   const matchedKey = orderAsSting
     ? Object.keys(SortOrder).find(
@@ -251,8 +253,8 @@ export function getSort(searchParams: URLSearchParams): Sort {
   const by = matchedKeyBy ? (matchedKeyBy as keyof typeof SortBy) : undefined;
 
   return {
-    order: order,
-    by: by,
+    [QueryParams.Order]: order,
+    [QueryParams.By]: by,
   };
 }
 
@@ -269,43 +271,43 @@ export function getQueryParams(filter: Filter, sort: Sort): Record<string, strin
   if (priceMin) {
     searchParamsObject = {
       ...searchParamsObject,
-      price_gte: priceMin,
+      [QueryParams.PriceMin]: priceMin,
     };
   }
   if (priceMax) {
     searchParamsObject = {
       ...searchParamsObject,
-      price_lte: priceMax,
+      [QueryParams.PriceMax]: priceMax,
     };
   }
   if (category) {
     searchParamsObject = {
       ...searchParamsObject,
-      category,
+      [QueryParams.Category]: category,
     };
   }
   if (type) {
     searchParamsObject = {
       ...searchParamsObject,
-      type,
+      [QueryParams.Type]: type,
     };
   }
   if (level) {
     searchParamsObject = {
       ...searchParamsObject,
-      level,
+      [QueryParams.Level]: level,
     };
   }
   if (order) {
     searchParamsObject = {
       ...searchParamsObject,
-      order,
+      [QueryParams.Order]: order,
     };
   }
   if (by) {
     searchParamsObject = {
       ...searchParamsObject,
-      by,
+      [QueryParams.By]: by,
     };
   }
   return searchParamsObject;

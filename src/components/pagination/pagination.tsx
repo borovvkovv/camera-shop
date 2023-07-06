@@ -1,28 +1,18 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { Filter } from '../../types/filter';
-import { Sort } from '../../types/sort';
-import { getQueryParams, getStringFromQueryParams } from '../../utils';
 
 type PaginationProps = {
   currentPage: number;
   maxPageNumber: number;
-  filter: Filter;
-  sort: Sort;
+  queryParams: URLSearchParams;
 };
 
 function Pagination({
   currentPage,
   maxPageNumber,
-  filter,
-  sort,
+  queryParams,
 }: PaginationProps): JSX.Element | null {
-
-  const queryParams = useMemo(
-    () => getQueryParams(filter, sort),
-    [filter, sort]
-  );
 
   if (maxPageNumber < 2) {
     return null;
@@ -43,7 +33,7 @@ function Pagination({
                   ':id',
                   `${currentPage - 1}`
                 )}`,
-                search: getStringFromQueryParams(queryParams),
+                search: queryParams.toString(),
               }}
             >
               Назад
@@ -61,7 +51,7 @@ function Pagination({
               }`}
               to={{
                 pathname: `${AppRoute.Catalog.replace(':id', `${index + 1}`)}`,
-                search: getStringFromQueryParams(queryParams),
+                search: queryParams.toString(),
               }}
               data-testid={`page-${index + 1}`}
             >
@@ -81,7 +71,7 @@ function Pagination({
                   ':id',
                   `${currentPage + 1}`
                 )}`,
-                search: getStringFromQueryParams(queryParams),
+                search: queryParams.toString(),
               }}
             >
               Далее

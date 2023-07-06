@@ -115,27 +115,30 @@ function CatalogScreen(): JSX.Element {
               </div>
               <div className='catalog__content'>
                 <div className='catalog-sort'>
-                  <Sorts
-                    filter={filter}
-                    sort={sort}
-                    setSearchParams={setSearchParams}
-                  />
+                  {!isFiltering && (
+                    <Sorts
+                      filter={filter}
+                      sort={sort}
+                      setSearchParams={setSearchParams}
+                    />
+                  )}
                 </div>
                 {(isProductsLoadingFailed && <ErrorState />) ||
-                  (((isProductsLoading && products.length === 0) || isFiltering) && (
-                    <LoadingState />
-                  )) ||
+                  (((isProductsLoading && products.length === 0) ||
+                    isFiltering) && <LoadingState />) ||
                   (processedProducts.length === 0 && <EmptyState />) || (
                   <ProductCardsList
                     products={pagedProducts}
                     onBuyClick={handleProductCardBuyClick}
                   />
                 )}
-                <Pagination
-                  currentPage={currentPage}
-                  maxPageNumber={maxPageNumber}
-                  queryParams={searchParams}
-                />
+                {!isFiltering && (
+                  <Pagination
+                    currentPage={currentPage}
+                    maxPageNumber={maxPageNumber}
+                    queryParams={searchParams}
+                  />
+                )}
               </div>
             </div>
           </div>

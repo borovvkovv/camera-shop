@@ -18,7 +18,7 @@ export default function useCommentsPagination(allComments: Review[]) {
       ) {
         isLoadingActive = true;
         timerId = setTimeout(() => {
-          setCurrentPage((prev) => prev + 1);
+          setCurrentPage((previous) => previous + 1);
           isLoadingActive = false;
         }, 1000);
       }else if (

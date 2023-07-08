@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react';
+import { COMMENTS_ON_PAGE } from '../const';
 import { getFakeRevews } from '../utils/mock';
 import useCommentsPagination from './use-comments-pagination';
 
@@ -12,7 +13,7 @@ describe('Hook: useCommentsPagination', () => {
 
     const { pagedComments, currentPage, maxPageNumber } =
       result.current;
-    expect(pagedComments).toStrictEqual(reviews.splice(0, 3));
+    expect(pagedComments).toStrictEqual(reviews.splice(0, COMMENTS_ON_PAGE));
     expect(currentPage).toBe(1);
     expect(maxPageNumber).toBe(2);
   });

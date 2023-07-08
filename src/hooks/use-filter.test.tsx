@@ -11,9 +11,11 @@ describe('Hook: useFilter', () => {
   it('should return', () => {
     const products = getFakeProducts(40);
     const history = createMemoryHistory();
+    const selectedCategory: keyof typeof ProductCategory = 'Photo';
+    const selectedType: keyof typeof ProductType = 'Film';
     const searchParams: Record<string, string[]> = {
-      [QueryParam.Category]: ['Photo'],
-      [QueryParam.Type]: ['Film'],
+      [QueryParam.Category]: [selectedCategory],
+      [QueryParam.Type]: [selectedType],
     };
 
     history.push({
@@ -28,6 +30,12 @@ describe('Hook: useFilter', () => {
     });
 
     const { processedProducts } = result.current;
-    expect(processedProducts).toStrictEqual(products.filter((p) => p.category === ProductCategory['Photo'] && p.type === ProductType['Film']));
+    expect(processedProducts).toStrictEqual(
+      products.filter(
+        (product) =>
+          product.category === ProductCategory[selectedCategory] &&
+          product.type === ProductType[selectedType]
+      )
+    );
   });
 });

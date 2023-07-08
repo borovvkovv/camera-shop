@@ -1,3 +1,5 @@
+import { ProductCategory, ProductType } from './enums';
+
 export const MAX_RATING_STARS = 5;
 export const PRODUCTS_ON_PAGE = 9;
 export const PRODUCTS_ON_SLIDER = 3;
@@ -24,3 +26,7 @@ export const enum AppRoute {
 }
 
 export const CommentStarTitles = ['Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'];
+
+export const ProductCategoryToTriggerDisabling: keyof typeof ProductCategory = 'Video';
+
+export const ProductTypesToDisable: (keyof typeof ProductType)[] = ['Instant', 'Film'];

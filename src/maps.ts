@@ -14,8 +14,8 @@ export const productFilterCategoryMap = {
 };
 
 export const productsSortCallbackMap = {
-  [`${SortOrder.Asc}${SortBy.Popularity}`]: (p1: ProductCard, p2: ProductCard) => p1.reviewCount - p2.reviewCount,
-  [`${SortOrder.Desc}${SortBy.Popularity}`]: (p1: ProductCard, p2: ProductCard) => p2.reviewCount - p1.reviewCount,
-  [`${SortOrder.Asc}${SortBy.Price}`]: (p1: ProductCard, p2: ProductCard) => p1.price - p2.price,
-  [`${SortOrder.Desc}${SortBy.Price}`]: (p1: ProductCard, p2: ProductCard) => p2.price - p1.price,
+  [`${SortOrder.Asc}${SortBy.Popularity}`]: (product1: ProductCard, product2: ProductCard) => product1.reviewCount - product2.reviewCount,
+  [`${SortOrder.Desc}${SortBy.Popularity}`]: (product1: ProductCard, product2: ProductCard) => product2.reviewCount - product1.reviewCount,
+  [`${SortOrder.Asc}${SortBy.Price}`]: (product1: ProductCard, product2: ProductCard) => product1.price - product2.price,
+  [`${SortOrder.Desc}${SortBy.Price}`]: (product1: ProductCard, product2: ProductCard) => product2.price - product1.price,
 };

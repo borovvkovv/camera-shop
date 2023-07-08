@@ -16,7 +16,7 @@ const mockStore = configureMockStore<
   ThunkDispatch<State, typeof api, Action>
 >(middlewares);
 
-describe('Component: CommentForm', () => {
+describe('Component: UserComment', () => {
   it('should render correctly', () => {
     const store = mockStore({
       DATA: {

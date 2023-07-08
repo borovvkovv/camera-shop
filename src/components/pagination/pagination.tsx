@@ -14,7 +14,7 @@ function Pagination({
   queryParams,
 }: PaginationProps): JSX.Element | null {
 
-  if (maxPageNumber < 2) {
+  if (maxPageNumber <= 1) {
     return null;
   }
 

@@ -11,7 +11,7 @@ export default function usePopup(
 
       if (modalRef.current !== null) {
         const refClasses = Object.values(modalRef.current.classList)
-          .map((c) => `.${c}`)
+          .map((className) => `.${className}`)
           .join('');
 
         if (!target.closest(refClasses)) {
@@ -36,7 +36,7 @@ export default function usePopup(
         const firstElement = focusables[0] as HTMLElement;
         const lastElement = focusables[focusables.length - 1] as HTMLElement;
         const refClasses = Object.values(modalRef.current.classList)
-          .map((c) => `.${c}`)
+          .map((className) => `.${className}`)
           .join('');
 
         if (!target.closest(refClasses)) {

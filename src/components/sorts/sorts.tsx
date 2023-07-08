@@ -11,7 +11,7 @@ type SortsProps = {
   setSearchParams: (
     nextInit?:
       | URLSearchParamsInit
-      | ((prev: URLSearchParams) => URLSearchParamsInit),
+      | ((previous: URLSearchParams) => URLSearchParamsInit),
     navigateOpts?: NavigateOptions
   ) => void;
 };

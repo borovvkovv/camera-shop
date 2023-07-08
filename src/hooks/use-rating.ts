@@ -9,7 +9,7 @@ export default function useRating(productId: number) {
 
   const ratings = useAppSelector(getProductsRating);
 
-  const rating = ratings.find((r) => r.productId === productId);
+  const rating = ratings.find((ratingItem) => ratingItem.productId === productId);
 
   useEffect(() => {
     if (!rating) {

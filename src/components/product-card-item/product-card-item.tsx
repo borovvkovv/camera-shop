@@ -90,4 +90,4 @@ function ProductCardItem({
   );
 }
 
-export default memo(ProductCardItem, (prev, next) => prev.product === next.product);
+export default memo(ProductCardItem, (previous, next) => previous.product === next.product);

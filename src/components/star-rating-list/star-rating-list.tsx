@@ -21,7 +21,7 @@ function StarRatingList({
 }: StarRatingListProps): JSX.Element {
   const starIds = Array.from(
     { length: MAX_RATING_STARS },
-    (_, i) => MAX_RATING_STARS - i
+    (_, index) => MAX_RATING_STARS - index
   );
 
   return (

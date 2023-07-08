@@ -8,11 +8,13 @@ const queryParams = new URLSearchParams();
 
 describe('Component: Pagination', () => {
   it('should render button "Next" when page is first', () => {
+    const currentPage = 1;
+    const maxPageNumber = 5;
     render(
       <HistoryRouter history={history}>
         <Pagination
-          currentPage={1}
-          maxPageNumber={5}
+          currentPage={currentPage}
+          maxPageNumber={maxPageNumber}
           queryParams={queryParams}
         />
       </HistoryRouter>
@@ -20,15 +22,19 @@ describe('Component: Pagination', () => {
 
     expect(screen.getByTestId('paginationNext')).toBeInTheDocument();
     expect(screen.queryByTestId('paginationPrevious')).not.toBeInTheDocument();
-    expect(screen.getByTestId('page-1')).toHaveClass('pagination__link--active');
+    expect(screen.getByTestId(`page-${currentPage}`)).toHaveClass(
+      'pagination__link--active'
+    );
   });
 
   it('should render button "Pervious" when page is last', () => {
+    const currentPage = 5;
+    const maxPageNumber = 5;
     render(
       <HistoryRouter history={history}>
         <Pagination
-          currentPage={5}
-          maxPageNumber={5}
+          currentPage={currentPage}
+          maxPageNumber={maxPageNumber}
           queryParams={queryParams}
         />
       </HistoryRouter>
@@ -38,17 +44,19 @@ describe('Component: Pagination', () => {
       screen.queryByTestId('paginationNext')
     ).not.toBeInTheDocument();
     expect(screen.getByTestId('paginationPrevious')).toBeInTheDocument();
-    expect(screen.getByTestId('page-5')).toHaveClass(
+    expect(screen.getByTestId(`page-${currentPage}`)).toHaveClass(
       'pagination__link--active'
     );
   });
 
   it('should render buttons "Pervious", "Next" when page is middle', () => {
+    const currentPage = 3;
+    const maxPageNumber = 5;
     render(
       <HistoryRouter history={history}>
         <Pagination
-          currentPage={3}
-          maxPageNumber={5}
+          currentPage={currentPage}
+          maxPageNumber={maxPageNumber}
           queryParams={queryParams}
         />
       </HistoryRouter>
@@ -56,7 +64,7 @@ describe('Component: Pagination', () => {
 
     expect(screen.getByTestId('paginationNext')).toBeInTheDocument();
     expect(screen.getByTestId('paginationPrevious')).toBeInTheDocument();
-    expect(screen.getByTestId('page-3')).toHaveClass(
+    expect(screen.getByTestId(`page-${currentPage}`)).toHaveClass(
       'pagination__link--active'
     );
   });

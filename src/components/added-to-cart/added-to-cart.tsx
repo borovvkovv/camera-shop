@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 type AddedToCartProps = {
@@ -13,6 +14,11 @@ function AddedToCart({
 }: AddedToCartProps): JSX.Element {
 
   function handlePopupCrossClick() {
+    setVisibility(false);
+  }
+
+  function handleContinueButtonClick(evt: MouseEvent) {
+    evt.preventDefault();
     setVisibility(false);
   }
 
@@ -39,8 +45,8 @@ function AddedToCart({
           <div className='modal__buttons'>
             <Link
               className='btn btn--transparent modal__btn'
-              to='#'
-              onClick={() => setVisibility(false)}
+              to=''
+              onClick={handleContinueButtonClick}
             >
               Продолжить покупки
             </Link>

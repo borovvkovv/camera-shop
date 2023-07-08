@@ -61,7 +61,7 @@ function ReviewList({ productId }: ReviewListProps): JSX.Element {
                 <button
                   className='btn btn--purple'
                   type='button'
-                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                  onClick={() => setCurrentPage((previous) => previous + 1)}
                   data-testid='loadMoreReviewsButton'
                 >
                   Показать больше отзывов

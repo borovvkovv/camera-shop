@@ -71,27 +71,27 @@ function UserComment({
 
   const handleRatingChange = useCallback(
     (starsNumber: number) => {
-      setUserReview((prev) => ({ ...prev, rating: starsNumber }));
+      setUserReview((previous) => ({ ...previous, rating: starsNumber }));
     },
     [setUserReview]
   );
 
   function handleNameChange({ target }: ChangeEvent<HTMLInputElement>) {
-    setUserReview((prev) => ({ ...prev, userName: target.value }));
+    setUserReview((previous) => ({ ...previous, userName: target.value }));
   }
 
   function handleAdvantagesChange({ target }: ChangeEvent<HTMLInputElement>) {
-    setUserReview((prev) => ({ ...prev, advantage: target.value }));
+    setUserReview((previous) => ({ ...previous, advantage: target.value }));
   }
 
   function handleDisadvantagesChange({
     target,
   }: ChangeEvent<HTMLInputElement>) {
-    setUserReview((prev) => ({ ...prev, disadvantage: target.value }));
+    setUserReview((previous) => ({ ...previous, disadvantage: target.value }));
   }
 
   function handleTextChange({ target }: ChangeEvent<HTMLTextAreaElement>) {
-    setUserReview((prev) => ({ ...prev, review: target.value }));
+    setUserReview((previous) => ({ ...previous, review: target.value }));
   }
 
   const onSubmitValid: SubmitHandler<UserReview> = () => {
@@ -103,8 +103,8 @@ function UserComment({
   }
 
   const handleStarRatingChange = useMemo(
-    () => (num: number) => {
-      handleRatingChange(num);
+    () => (number: number) => {
+      handleRatingChange(number);
       unregister('rating');
     },
     [handleRatingChange, unregister]

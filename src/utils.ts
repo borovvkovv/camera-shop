@@ -56,7 +56,7 @@ export function formatDateToYearMonthDay(date: Date): string {
 export function getAverageRating(reviews: Review[]) {
   const ratingSum = reviews
     .map((review) => review.rating)
-    .reduce((prev, curr) => prev + curr);
+    .reduce((previous, current) => previous + current);
 
   return Math.ceil(ratingSum / reviews.length);
 }
@@ -71,7 +71,7 @@ export function pushRatingIfNotExists(
     rating: getAverageRating(reviews),
   };
 
-  if (!storeRatings.find((r) => r.productId === productId)) {
+  if (!storeRatings.find((storeRating) => storeRating.productId === productId)) {
     storeRatings.push(rating);
   }
 
@@ -170,14 +170,14 @@ export function filterProducts(
 
 export function getMinPrice(products: ProductCard[]): number {
   return products.length > 0
-    ? products.reduce((prev, curr) => (prev.price <= curr.price ? prev : curr))
+    ? products.reduce((previous, current) => (previous.price <= current.price ? previous : current))
       .price
     : NaN;
 }
 
 export function getMaxPrice(products: ProductCard[]): number {
   return products.length > 0
-    ? products.reduce((prev, curr) => (prev.price >= curr.price ? prev : curr))
+    ? products.reduce((previous, current) => (previous.price >= current.price ? previous : current))
       .price
     : NaN;
 }
@@ -202,7 +202,7 @@ export function getFilter(searchParams: URLSearchParams): Filter {
   const types: (keyof typeof ProductType)[] = [];
   typesAsStringArray.forEach((type) => {
     const matchedType = Object.keys(ProductType).find(
-      (k) => k.toLowerCase() === type?.toLowerCase()
+      (key) => key.toLowerCase() === type?.toLowerCase()
     );
 
     if (matchedType) {
@@ -213,7 +213,7 @@ export function getFilter(searchParams: URLSearchParams): Filter {
   const levels: (keyof typeof ProductLevel)[] = [];
   levelsAsStringArray.forEach((level) => {
     const matchedLevel = Object.keys(ProductLevel).find(
-      (k) => k.toLowerCase() === level.toLowerCase()
+      (key) => key.toLowerCase() === level.toLowerCase()
     );
 
     if (matchedLevel) {
@@ -321,8 +321,8 @@ export function getStringFromQueryParams(queryParams: Record<string, string[]>) 
   result += '?';
   Object.entries(queryParams).forEach(([key, value]) => {
     if (value instanceof Array) {
-      value.forEach((v) => {
-        result += `&${key}=${v}`;
+      value.forEach((valueItem) => {
+        result += `&${key}=${valueItem}`;
       });
     }
     else {

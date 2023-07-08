@@ -5,8 +5,8 @@ const getNodeRef = () => ({
   current: document.createElement('ul'),
 });
 
-describe('Hook: usePopupList', () => {
-  it('should return array with 2 elements and attach event listeners when isSortOptionsOpen=true', () => {
+describe('Hook: usePopup', () => {
+  it('should return param and function for popup visibility', () => {
     const { result } = renderHook(() => usePopup(getNodeRef()));
 
     const {isVisible: initialIsVisible, setVisibility} = result.current;

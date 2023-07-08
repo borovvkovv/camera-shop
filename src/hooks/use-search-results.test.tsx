@@ -9,6 +9,7 @@ import { Action } from 'redux';
 import { getFakeProducts } from '../utils/mock';
 import useSearchResults from './use-search-results';
 import { getTopNProductsByPattern } from '../utils';
+import { ProductCard } from '../types/product-card';
 
 const api = createAPI();
 const middlewares = [thunk.withExtraArgument(api)];
@@ -21,9 +22,10 @@ const mockStore = configureMockStore<
 
 describe('Hook: useSearchResults', () => {
   it('should fetch products if storage is empty and search pattern is not empty', () => {
+    const products: ProductCard[] = [];
     const store = mockStore({
       [NameSpace.Data]: {
-        products: [],
+        products: products,
       },
     });
 
@@ -36,7 +38,7 @@ describe('Hook: useSearchResults', () => {
 
     const {foundProducts} = result.current;
 
-    expect(foundProducts).toHaveLength(0);
+    expect(foundProducts).toHaveLength(products.length);
   });
 
   it('should return products from storage', () => {

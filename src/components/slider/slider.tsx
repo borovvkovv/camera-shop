@@ -1,5 +1,5 @@
 import { memo, MouseEvent, useMemo, useRef, useState } from 'react';
-import { ProductCardMode } from '../../enums';
+import { ProductCardMode, SliderKeyFrames } from '../../enums';
 import useSlider from '../../hooks/use-slider';
 import { ProductCard } from '../../types/product-card';
 import ProductCardItem from '../product-card-item/product-card-item';
@@ -13,7 +13,7 @@ type SliderProps = {
 function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
   const slider = useRef(null);
   const [currentSliderPage, setCurrentSliderPage] = useState(1);
-  const [trigger, setTrigger] = useState('fade');
+  const [trigger, setTrigger] = useState('');
   const { currentPageIndexes, maxPageNumber } = useSlider(
     products.length,
     currentSliderPage
@@ -24,10 +24,10 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
       if (evt.target instanceof HTMLButtonElement) {
         evt.target.disabled = true;
       }
-      setTrigger('fadeOut');
+      setTrigger(SliderKeyFrames.FadeOut);
       global.setTimeout(() => {
-        setCurrentSliderPage((prev) => prev + 1);
-        setTrigger('fadeIn');
+        setCurrentSliderPage((previous) => previous + 1);
+        setTrigger(SliderKeyFrames.FadeIn);
         if (evt.target instanceof HTMLButtonElement) {
           evt.target.disabled = false;
         }
@@ -41,10 +41,10 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
       if (evt.target instanceof HTMLButtonElement) {
         evt.target.disabled = true;
       }
-      setTrigger('fadeOutReverse');
+      setTrigger(SliderKeyFrames.FadeOutReverse);
       global.setTimeout(() => {
-        setCurrentSliderPage((prev) => prev - 1);
-        setTrigger('fadeInReverse');
+        setCurrentSliderPage((previous) => previous - 1);
+        setTrigger(SliderKeyFrames.FadeInReverse);
         if (evt.target instanceof HTMLButtonElement) {
           evt.target.disabled = false;
         }
@@ -128,5 +128,5 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
 
 export default memo(
   Slider,
-  (prevProps, nextProps) => prevProps.products === nextProps.products
+  (previousProps, nextProps) => previousProps.products === nextProps.products
 );

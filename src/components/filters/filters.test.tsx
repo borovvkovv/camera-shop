@@ -73,12 +73,12 @@ describe('Component: Filters', () => {
       screen.getByTestId(`categoryFilterInput-${filter.category ?? ''}`)
     ).toBeChecked();
 
-    filter.type?.forEach((c) => {
-      expect(screen.getByTestId(`typeFilterInput-${c}`)).toBeChecked();
+    filter.type?.forEach((type) => {
+      expect(screen.getByTestId(`typeFilterInput-${type}`)).toBeChecked();
     });
 
-    filter.level?.forEach((l) => {
-      expect(screen.getByTestId(`levelFilterInput-${l}`)).toBeChecked();
+    filter.level?.forEach((level) => {
+      expect(screen.getByTestId(`levelFilterInput-${level}`)).toBeChecked();
     });
   });
 });

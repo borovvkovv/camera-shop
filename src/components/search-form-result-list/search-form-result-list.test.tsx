@@ -23,7 +23,7 @@ describe('Component: SearchFormResultList', () => {
 
     render(fakeApp);
 
-    searchResultProducts.forEach((product, index) => {
+    searchResultProducts.forEach((_, index) => {
       expect(
         screen.getByTestId(`searchResultItem-${index}`)
       ).toBeInTheDocument();
@@ -47,14 +47,10 @@ describe('Component: SearchFormResultList', () => {
 
     render(fakeApp);
 
-    searchResultProducts.forEach((product, index) => {
-      expect(
-        screen.queryByTestId('searchResultItem-0')
-      ).not.toBeInTheDocument();
+    expect(screen.queryByTestId('searchResultItem-0')).not.toBeInTheDocument();
 
-      expect(
-        screen.getByText('По вашему запросу ничего не найдено')
-      ).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText('По вашему запросу ничего не найдено')
+    ).toBeInTheDocument();
   });
 });

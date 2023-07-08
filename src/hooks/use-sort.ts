@@ -8,9 +8,9 @@ import { getSort } from '../utils';
 export default function useSort(searchParams: URLSearchParams, processedProducts: ProductCard[]) {
   const sort = useMemo(() => getSort(searchParams), [searchParams]);
 
-  const cb = productsSortCallbackMap[`${sort.order ?? SortOrder.Asc}${sort.by ?? SortBy.Price}`];
+  const callback = productsSortCallbackMap[`${sort.order ?? SortOrder.Asc}${sort.by ?? SortBy.Price}`];
 
-  const sortedProducts = useMemo(() => [...processedProducts].sort(cb), [processedProducts, cb]);
+  const sortedProducts = useMemo(() => [...processedProducts].sort(callback), [processedProducts, callback]);
 
   return { sort, sortedProducts };
 }

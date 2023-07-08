@@ -40,3 +40,10 @@ export enum QueryParam {
   Order = 'order',
   By = 'by'
 }
+
+export enum SliderKeyFrames {
+  FadeIn = 'fadeIn',
+  FadeOut = 'fadeOut',
+  FadeInReverse = 'fadeInReverse',
+  FadeOutReverse = 'fadeOutReverse',
+}

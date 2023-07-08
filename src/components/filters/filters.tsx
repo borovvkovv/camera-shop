@@ -1,5 +1,9 @@
 import { ChangeEvent, memo, useEffect, useState } from 'react';
 import {
+  ProductCategoryToTriggerDisabling,
+  ProductTypesToDisable,
+} from '../../const';
+import {
   FilterProductCategory,
   ProductLevel,
   ProductType,
@@ -40,21 +44,23 @@ function Filters({
   const [productTypesToDisable, setProductTypesToDisable] = useState<
     (keyof typeof ProductType)[]>([]);
   useEffect(() => {
-    if (filter.category === 'Video') {
-      setProductTypesToDisable(['Instant', 'Film']);
-    }
-    else {
+    if (filter.category === ProductCategoryToTriggerDisabling) {
+      setProductTypesToDisable(ProductTypesToDisable);
+    } else {
       setProductTypesToDisable([]);
     }
     if (
-      filter.category === 'Video' &&
-      (filter.type?.includes('Instant') || filter.type?.includes('Film'))
+      filter.category === ProductCategoryToTriggerDisabling &&
+      filter.type?.some((typeItem) => ProductTypesToDisable.includes(typeItem))
     ) {
       const newQueryParams = {
         ...queryParams,
         type: queryParams[QueryParam.Type]
           ? queryParams[QueryParam.Type].filter(
-            (x) => x !== 'Instant' && x !== 'Film'
+            (typeItem) =>
+              !ProductTypesToDisable.includes(
+                typeItem as keyof typeof ProductType
+              )
           )
           : [],
       };
@@ -102,13 +108,16 @@ function Filters({
       clearTimeout(handlerTimeout);
     }
 
-    if ((evt.target as HTMLInputElement).value === 'Video') {
+    if ((evt.target as HTMLInputElement).value === ProductCategoryToTriggerDisabling) {
       const newQueryParams = {
         ...queryParams,
         category: [(evt.target as HTMLInputElement).value],
         type: queryParams[QueryParam.Type]
           ? queryParams[QueryParam.Type].filter(
-            (x) => x !== 'Instant' && x !== 'Film'
+            (typeItem) =>
+              !ProductTypesToDisable.includes(
+                typeItem as keyof typeof ProductType
+              )
           )
           : [],
       };
@@ -151,7 +160,7 @@ function Filters({
           ),
         ],
       };
-      setQueryParams((prev) => newQueryParams);
+      setQueryParams(newQueryParams);
       setFilteringState(true);
       setHandlerTimeout(
         setTimeout(() => {
@@ -300,12 +309,15 @@ function Filters({
                 checked={
                   queryParams[QueryParam.Type]
                     ? queryParams[QueryParam.Type]
-                      .map((t) => ProductType[t as keyof typeof ProductType])
+                      .map(
+                        (typeItem) =>
+                          ProductType[typeItem as keyof typeof ProductType]
+                      )
                       .includes(value)
                     : false
                 }
                 disabled={productTypesToDisable
-                  .map((t) => ProductType[t])
+                  .map((typeToDisable) => ProductType[typeToDisable])
                   .includes(value)}
                 data-testid={`typeFilterInput-${key}`}
               />
@@ -332,7 +344,8 @@ function Filters({
                   queryParams[QueryParam.Level]
                     ? queryParams[QueryParam.Level]
                       .map(
-                        (t) => ProductLevel[t as keyof typeof ProductLevel]
+                        (levelItem) =>
+                          ProductLevel[levelItem as keyof typeof ProductLevel]
                       )
                       .includes(value)
                     : false

@@ -12,14 +12,10 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 
 const product = getFakeProduct();
-
 const history = createMemoryHistory();
-
 const onBuyClick = jest.fn();
-
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-
 const store = mockStore({
   [NameSpace.Data]: {
     productsRating: getFakeProductsRating(5),

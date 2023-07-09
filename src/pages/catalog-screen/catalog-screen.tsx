@@ -75,7 +75,7 @@ function CatalogScreen(): JSX.Element {
       redirectToRoute(
         `${AppRoute.Catalog.replace(
           ':id',
-          String(1)
+          '1'
         )}${getStringFromQueryParams(queryParams)}`
       )
     );

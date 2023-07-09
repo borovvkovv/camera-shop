@@ -36,6 +36,7 @@ describe('Hook: useReviews', () => {
   });
 
   it('should return reviews', () => {
+    const cameraId = 2;
     const fakeReviews = getFakeRevews(5);
     const store = mockStore({
       [NameSpace.Data]: {
@@ -43,11 +44,13 @@ describe('Hook: useReviews', () => {
       },
     });
 
-    const { result } = renderHook(() => useReviews(2), {
+    const { result } = renderHook(() => useReviews(cameraId), {
       wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
     });
 
     const { reviews } = result.current;
-    expect(reviews).toStrictEqual(fakeReviews);
+    expect(reviews).toStrictEqual(
+      fakeReviews.filter((review) => review.cameraId === cameraId)
+    );
   });
 });

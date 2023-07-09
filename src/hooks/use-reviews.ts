@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { fetchReviewsAction } from '../store/api-actions';
 import { getReviews } from '../store/data-process/selectors';
 import { useAppDispatch } from './use-app-dispatch';
@@ -11,7 +11,11 @@ export default function useReviews(productId: number) {
     dispatch(fetchReviewsAction(productId));
   }, [dispatch, productId]);
 
-  const reviews = useAppSelector(getReviews);
+  const allReviews = useAppSelector(getReviews);
+  const reviews = useMemo(
+    () => allReviews.filter((reviewItem) => reviewItem.cameraId === productId),
+    [productId, allReviews]
+  );
 
   return { reviews };
 }

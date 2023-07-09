@@ -14,15 +14,19 @@ export const createAPI = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError<{ error: string }>) => {
       if (error.code === AxiosError.ERR_NETWORK) {
-        switch (error.config.url) {
-          case ApiRoute.Promo:
-            toast.warn('Ошибка загрузки промо -предложения');
-            break;
-          case ApiRoute.Products:
-            toast.warn('Ошибка загрузки списка товаров');
-            break;
-          default:
-            toast.warn('Сетевая ошибка');
+        if (error.config.url === ApiRoute.Promo) {
+          toast.warn('Ошибка загрузки промо -предложения');
+        }
+        if (error.config.url === ApiRoute.Products) {
+          toast.warn('Ошибка загрузки списка товаров');
+        }
+        if (new RegExp(/cameras\/\d+\/similar/).test(error.config.url ?? '')) {
+          toast.warn('Ошибка загрузки списка похожих товаров');
+        }
+        if (
+          new RegExp(/cameras\/\d+\/reviews/).test(error.config.url ?? '')
+        ) {
+          toast.warn('Ошибка загрузки списка отзывов');
         }
       }
       throw error;

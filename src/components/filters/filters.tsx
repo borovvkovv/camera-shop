@@ -291,7 +291,7 @@ function Filters({
           >
             <label>
               <input
-                type='radio'
+                type='checkbox'
                 name='category'
                 onChange={() => void 0}
                 value={key}

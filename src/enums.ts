@@ -14,10 +14,10 @@ export enum ProductInfoTabMode {
 }
 
 export enum ProductType {
-  Collect = 'Коллекционная',
-  Instant = 'Моментальная',
   Digital = 'Цифровая',
   Film = 'Плёночная',
+  Instant = 'Моментальная',
+  Collect = 'Коллекционная',
 }
 
 export enum ProductLevel {

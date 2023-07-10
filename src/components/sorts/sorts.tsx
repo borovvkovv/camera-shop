@@ -54,7 +54,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
               type='radio'
               id='sortPrice'
               name='sort'
-              checked={SortBy[sort.by ?? SortBy.Price] === SortBy.Price}
+              checked={sort.by ? SortBy[sort.by] === SortBy.Price : false}
               onChange={handleSortByPriceChange}
               data-testid='sortByPrice'
             />
@@ -65,7 +65,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
               type='radio'
               id='sortPopular'
               name='sort'
-              checked={SortBy[sort.by ?? SortBy.Price] === SortBy.Popularity}
+              checked={sort.by ? SortBy[sort.by] === SortBy.Popularity : false}
               onChange={handleSortByPopularityChange}
               data-testid='sortByPopularity'
             />
@@ -78,7 +78,9 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
               type='radio'
               id='up'
               name='sort-icon'
-              checked={SortOrder[sort.order ?? SortOrder.Asc] === SortOrder.Asc}
+              checked={
+                sort.order ? SortOrder[sort.order] === SortOrder.Asc : false
+              }
               aria-label='По возрастанию'
               onChange={handleSortOrderAscChange}
               data-testid='sortOrderAsc'
@@ -100,7 +102,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
               name='sort-icon'
               aria-label='По убыванию'
               checked={
-                SortOrder[sort.order ?? SortOrder.Asc] === SortOrder.Desc
+                sort.order ? SortOrder[sort.order] === SortOrder.Desc : false
               }
               onChange={handleSortOrderDescChange}
               data-testid='sortOrderDesc'

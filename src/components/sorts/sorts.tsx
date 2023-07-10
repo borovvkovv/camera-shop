@@ -53,7 +53,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
             <input
               type='radio'
               id='sortPrice'
-              name='sort'
+              name='sort_1'
               checked={sort.by ? SortBy[sort.by] === SortBy.Price : false}
               onChange={handleSortByPriceChange}
               data-testid='sortByPrice'
@@ -64,7 +64,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
             <input
               type='radio'
               id='sortPopular'
-              name='sort'
+              name='sort_2'
               checked={sort.by ? SortBy[sort.by] === SortBy.Popularity : false}
               onChange={handleSortByPopularityChange}
               data-testid='sortByPopularity'
@@ -77,7 +77,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
             <input
               type='radio'
               id='up'
-              name='sort-icon'
+              name='sort-icon_1'
               checked={
                 sort.order ? SortOrder[sort.order] === SortOrder.Asc : false
               }
@@ -99,7 +99,7 @@ function Sorts({ filter, setSearchParams, sort }: SortsProps): JSX.Element {
             <input
               type='radio'
               id='down'
-              name='sort-icon'
+              name='sort-icon_2'
               aria-label='По убыванию'
               checked={
                 sort.order ? SortOrder[sort.order] === SortOrder.Desc : false

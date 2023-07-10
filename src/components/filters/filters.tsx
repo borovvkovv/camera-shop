@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, useEffect, useState } from 'react';
+import { ChangeEvent, memo, MouseEvent, useEffect, useState } from 'react';
 import {
   ProductCategoryToTriggerDisabling,
   ProductTypesToDisable,
@@ -103,12 +103,31 @@ function Filters({
     );
   }
 
-  function handleProductCategoryChange(evt: ChangeEvent<HTMLInputElement>) {
+  function handleProductCategoryClick(evt: MouseEvent<HTMLInputElement>) {
     if (handlerTimeout) {
       clearTimeout(handlerTimeout);
     }
 
-    if ((evt.target as HTMLInputElement).value === ProductCategoryToTriggerDisabling) {
+    if (
+      queryParams[QueryParam.Category]?.includes(
+        (evt.target as HTMLInputElement).value
+      )
+    ) {
+      const newQueryParams = {
+        ...queryParams,
+        category: [],
+      };
+      setQueryParams(newQueryParams);
+      setFilteringState(true);
+      setHandlerTimeout(
+        setTimeout(() => {
+          onSubmit(newQueryParams);
+        }, 1000)
+      );
+    } else if (
+      (evt.target as HTMLInputElement).value ===
+      ProductCategoryToTriggerDisabling
+    ) {
       const newQueryParams = {
         ...queryParams,
         category: [(evt.target as HTMLInputElement).value],
@@ -274,7 +293,7 @@ function Filters({
               <input
                 type='radio'
                 name='category'
-                onChange={handleProductCategoryChange}
+                onChange={() => void 0}
                 value={key}
                 checked={
                   queryParams[QueryParam.Category]?.length > 0
@@ -285,6 +304,7 @@ function Filters({
                     ] === value
                     : false
                 }
+                onClick={handleProductCategoryClick}
                 data-testid={`categoryFilterInput-${key}`}
               />
               <span className='custom-checkbox__icon' />

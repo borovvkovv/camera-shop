@@ -23,9 +23,9 @@ describe('Component: Sorts', () => {
     expect(screen.getByText(/по цене/)).toBeInTheDocument();
     expect(screen.getByText(/по популярности/)).toBeInTheDocument();
 
-    expect(screen.getByTestId('sortByPrice')).toBeChecked();
+    expect(screen.getByTestId('sortByPrice')).not.toBeChecked();
     expect(screen.getByTestId('sortByPopularity')).not.toBeChecked();
-    expect(screen.getByTestId('sortOrderAsc')).toBeChecked();
+    expect(screen.getByTestId('sortOrderAsc')).not.toBeChecked();
     expect(screen.getByTestId('sortOrderDesc')).not.toBeChecked();
   });
 

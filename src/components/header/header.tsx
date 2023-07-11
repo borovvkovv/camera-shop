@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent, FormEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
@@ -99,7 +99,7 @@ function Header(): JSX.Element {
           ref={ref}
           data-testid='formSearchContainer'
         >
-          <form>
+          <form onSubmit={(evt: FormEvent) => evt.preventDefault()}>
             <label>
               <svg
                 className='form-search__icon'

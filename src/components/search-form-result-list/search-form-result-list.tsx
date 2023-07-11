@@ -1,3 +1,4 @@
+import { KeyboardEvent } from 'react';
 import { SearchResultProduct } from '../../types/search-result-product';
 import './search-form-result-list.css';
 
@@ -15,6 +16,12 @@ function SearchFormResultList({
 
   function handleResultProductClick(productInfo: SearchResultProduct) {
     if (currentPath !== productInfo.urlPath) {
+      onClick(productInfo.urlPath);
+    }
+  }
+
+  function handleResultProductKeyDown(productInfo: SearchResultProduct, evt: KeyboardEvent) {
+    if (evt.key === 'Enter' && currentPath !== productInfo.urlPath) {
       onClick(productInfo.urlPath);
     }
   }
@@ -41,6 +48,7 @@ function SearchFormResultList({
               }`}
               tabIndex={0}
               onClick={() => handleResultProductClick(productInfo)}
+              onKeyDown={(evt: KeyboardEvent) => handleResultProductKeyDown(productInfo, evt)}
               data-testid={`searchResultItem-${index}`}
             >
               {productInfo.productName}

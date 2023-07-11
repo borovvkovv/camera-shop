@@ -33,11 +33,47 @@ export default function useSearchForm(
           setFormSearchOpened(false);
           (evt.target as HTMLElement).blur();
         }
-
         if (
-          modalRef.current !== null &&
-          (evt.key === 'ArrowUp')
+          evt.key === 'Tab' &&
+          !evt.shiftKey &&
+          evt.target &&
+          modalRef.current !== null
         ) {
+          const focusablesExceptReset =
+            modalRef.current.querySelectorAll('li,input');
+          focusablesExceptReset.forEach((element) => {
+            if (
+              element === evt.target &&
+              currentFocusableIndex < focusablesExceptReset.length - 1
+            ) {
+              currentFocusableIndex += 1;
+            }
+            if (evt.target === modalRef.current?.querySelector('button')) {
+              setFormSearchOpened(false);
+            }
+          });
+        }
+        if (
+          evt.key === 'Tab' &&
+          evt.shiftKey &&
+          evt.target &&
+          modalRef.current !== null
+        ) {
+          const focusablesExceptReset =
+            modalRef.current.querySelectorAll('li,input');
+          focusablesExceptReset.forEach((element) => {
+            if (
+              element === evt.target &&
+              currentFocusableIndex > 0
+            ) {
+              currentFocusableIndex -= 1;
+            }
+            if (evt.target === modalRef.current?.querySelector('input')) {
+              setFormSearchOpened(false);
+            }
+          });
+        }
+        if (modalRef.current !== null && evt.key === 'ArrowUp') {
           evt.preventDefault();
           const focusablesExceptReset =
             modalRef.current?.querySelectorAll('li,input');
@@ -51,10 +87,7 @@ export default function useSearchForm(
             ).focus();
           }
         }
-        if (
-          modalRef.current !== null &&
-          (evt.key === 'ArrowDown')
-        ) {
+        if (modalRef.current !== null && evt.key === 'ArrowDown') {
           evt.preventDefault();
           const focusablesExceptReset =
             modalRef.current?.querySelectorAll('li,input');
@@ -82,11 +115,7 @@ export default function useSearchForm(
       document.removeEventListener('keydown', handleKeyDownClosure);
       document.removeEventListener('click', handleClick, true);
     };
-  }, [
-    isFormSearchOpened,
-    modalRef,
-    searchPattern,
-  ]);
+  }, [isFormSearchOpened, modalRef, searchPattern]);
 
   return {
     isFormSearchOpened,

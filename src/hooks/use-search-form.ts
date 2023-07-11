@@ -36,7 +36,7 @@ export default function useSearchForm(
 
         if (
           modalRef.current !== null &&
-          (evt.key === 'ArrowUp' || (evt.key === 'Tab' && evt.shiftKey))
+          (evt.key === 'ArrowUp')
         ) {
           evt.preventDefault();
           const focusablesExceptReset =
@@ -53,7 +53,7 @@ export default function useSearchForm(
         }
         if (
           modalRef.current !== null &&
-          (evt.key === 'ArrowDown' || (evt.key === 'Tab' && !evt.shiftKey))
+          (evt.key === 'ArrowDown')
         ) {
           evt.preventDefault();
           const focusablesExceptReset =

@@ -7,6 +7,7 @@ export const COMMENTS_ON_PAGE = 3;
 
 export enum NameSpace {
   Data = 'DATA',
+  App= 'APP'
 }
 
 export const enum ApiRoute {
@@ -16,6 +17,7 @@ export const enum ApiRoute {
   Promo = '/promo',
   Reviews = '/cameras/{:cameraId}/reviews',
   PostReview = '/reviews',
+  PromoCode = '/coupons',
 }
 
 export const enum AppRoute {
@@ -23,6 +25,7 @@ export const enum AppRoute {
   Catalog = '/page/:id',
   Product = '/cameras/:id',
   ProductTab = '/cameras/:id/:tab',
+  Basket = '/basket'
 }
 
 export const CommentStarTitles = ['Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'];
@@ -30,3 +33,7 @@ export const CommentStarTitles = ['Ужасно', 'Плохо', 'Нормаль�
 export const ProductCategoryToTriggerDisabling: keyof typeof ProductCategory = 'Video';
 
 export const ProductTypesToDisable: (keyof typeof ProductType)[] = ['Instant', 'Film'];
+
+export const ValidPromoCodes = ['camera-333', 'camera-444', 'camera-555'] as const;
+
+export const PRODUCTS_IN_BASKET = 'PRODUTS_IN_BASKET';

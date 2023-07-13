@@ -9,6 +9,7 @@ import {
   QueryParam,
 } from './enums';
 import { productFilterCategoryMap } from './maps';
+import { BasketProduct } from './types/basket';
 import { Filter } from './types/filter';
 import { ProductCard } from './types/product-card';
 import { ProductRating } from './types/product-rating';
@@ -330,4 +331,32 @@ export function getStringFromQueryParams(queryParams: Record<string, string[]>) 
     }
   });
   return result;
+}
+
+export function calculateProductPrice(products: BasketProduct[], discount: number | undefined) {
+  return calculateProductPriceWithDiscount(products, undefined);
+}
+
+export function calculateProductPriceWithDiscount(
+  basketProducts: BasketProduct[],
+  discount: number | undefined
+) {
+  let productSum = basketProducts.reduce(
+    (accumulator, current) => accumulator + current.product.price * current.quantity,
+    0
+  );
+  if (discount) {
+    productSum = productSum * ((100 - discount) / 100);
+  }
+  return productSum;
+}
+
+export function calculateDiscountPrice(
+  products: BasketProduct[],
+  discount: number | undefined
+) {
+  return (
+    calculateProductPriceWithDiscount(products, undefined) -
+    calculateProductPriceWithDiscount(products, discount)
+  );
 }

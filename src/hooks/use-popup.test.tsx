@@ -1,13 +1,9 @@
 import { act, renderHook } from '@testing-library/react';
 import usePopup from './use-popup';
 
-const getNodeRef = () => ({
-  current: document.createElement('ul'),
-});
-
 describe('Hook: usePopup', () => {
   it('should return param and function for popup visibility', () => {
-    const { result } = renderHook(() => usePopup(getNodeRef()));
+    const { result } = renderHook(() => usePopup());
 
     const {isVisible: initialIsVisible, setVisibility} = result.current;
 

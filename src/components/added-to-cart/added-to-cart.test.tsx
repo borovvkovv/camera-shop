@@ -5,12 +5,16 @@ import AddedToCart from './added-to-cart';
 
 const history = createMemoryHistory();
 const setVisibility = jest.fn();
+const getNodeRef = () => ({
+  current: document.createElement('div'),
+});
 
 describe('Component: AddedToCart', () => {
   it('should render correctly', () => {
     const fakeApp = (
       <HistoryRouter history={history}>
         <AddedToCart
+          modalRef={getNodeRef()}
           isVisible
           setVisibility={setVisibility}
         />
@@ -31,6 +35,7 @@ describe('Component: AddedToCart', () => {
     const fakeApp = (
       <HistoryRouter history={history}>
         <AddedToCart
+          modalRef={getNodeRef()}
           isVisible={false}
           setVisibility={setVisibility}
         />

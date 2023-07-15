@@ -16,6 +16,10 @@ const mockStore = configureMockStore<
   ThunkDispatch<State, typeof api, Action>
 >(middlewares);
 
+const getNodeRef = () => ({
+  current: document.createElement('div'),
+});
+
 describe('Component: UserComment', () => {
   it('should render correctly', () => {
     const store = mockStore({
@@ -28,6 +32,7 @@ describe('Component: UserComment', () => {
     render(
       <Provider store={store}>
         <UserComment
+          modalRef={getNodeRef()}
           productId={1}
           isVisible
           setVisibility={jest.fn()}

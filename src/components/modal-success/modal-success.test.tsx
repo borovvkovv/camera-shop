@@ -4,8 +4,12 @@ import ModalSuccess from './modal-success';
 const setVisibility = jest.fn();
 
 const modalTitle = 'Спасибо за отзыв';
+const getNodeRef = () => ({
+  current: document.createElement('div'),
+});
 const fakeApp = (
   <ModalSuccess
+    modalRef={getNodeRef()}
     isVisible
     setVisibility={setVisibility}
     title={modalTitle}

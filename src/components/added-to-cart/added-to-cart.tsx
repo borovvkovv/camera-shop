@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import { redirectToRoute } from '../../store/action';
 
 type AddedToCartProps = {
-  modalRef?: React.MutableRefObject<null>;
+  modalRef: React.RefObject<HTMLDivElement>;
   isVisible: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 };

@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 import AddToCart from '../../components/add-to-cart/add-to-cart';
 import Banner from '../../components/banner/banner';
@@ -28,8 +28,7 @@ function CatalogScreen(): JSX.Element {
   const [selectedProduct, setSelectedProduct] = useState<ProductCard | null>(
     null
   );
-  const modalRef = useRef(null);
-  const { isVisible, setVisibility } = usePopup(modalRef);
+  const { modalRef, isVisible, setVisibility } = usePopup();
   const { products, isProductsLoading, isProductsLoadingFailed } =
     useProducts();
   const { filter, processedProducts, searchParams, setSearchParams } =

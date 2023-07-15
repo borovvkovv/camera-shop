@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import DeleteProduct from '../../components/delete-product/delete-product';
@@ -26,8 +26,7 @@ function BasketScreen(): JSX.Element {
     []
   );
 
-  const modalRef = useRef(null);
-  const { isVisible, setVisibility } = usePopup(modalRef);
+  const { modalRef, isVisible, setVisibility } = usePopup();
 
   const {
     promoCode,

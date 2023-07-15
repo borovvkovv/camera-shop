@@ -4,7 +4,6 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -20,7 +19,7 @@ import ModalSuccess from '../modal-success/modal-success';
 
 type UserReviewProps = {
   productId: number;
-  modalRef?: React.MutableRefObject<null>;
+  modalRef: React.RefObject<HTMLDivElement>;
   isVisible: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -55,11 +54,11 @@ function UserComment({
     mode: 'onBlur',
   });
   const isCommentSent = useAppSelector(getIsCommentSent);
-  const modalCommentSuccessRef = useRef(null);
   const {
+    modalRef: modalCommentSuccessRef,
     isVisible: isModalCommentSuccessVisible,
     setVisibility: setCommentSuccessVisibility,
-  } = usePopup(modalCommentSuccessRef);
+  } = usePopup();
 
   useEffect(() => {
     if (isCommentSent) {

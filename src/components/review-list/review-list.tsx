@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef } from 'react';
+import { memo, useMemo } from 'react';
 import useCommentsPagination from '../../hooks/use-comments-pagination';
 import usePopup from '../../hooks/use-popup';
 import useReviews from '../../hooks/use-reviews';
@@ -22,11 +22,11 @@ function ReviewList({ productId }: ReviewListProps): JSX.Element {
   const { pagedComments, currentPage, setCurrentPage, maxPageNumber } =
     useCommentsPagination(reviewsSorted);
 
-  const modalUserCommentRef = useRef(null);
   const {
+    modalRef: modalUserCommentRef,
     isVisible: isModalUserCommentVisible,
     setVisibility: setModalUserCommentVisibility,
-  } = usePopup(modalUserCommentRef);
+  } = usePopup();
 
   return (
     <>

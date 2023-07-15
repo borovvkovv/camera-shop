@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import AddToCart from '../../components/add-to-cart/add-to-cart';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
@@ -38,8 +38,7 @@ function ProductScreen(): JSX.Element {
   const [selectedProduct, setSelectedProduct] = useState<ProductCard | null>(
     null
   );
-  const modalRef = useRef(null);
-  const { isVisible, setVisibility } = usePopup(modalRef);
+  const { modalRef, isVisible, setVisibility } = usePopup();
 
   const crumbs = useMemo(
     () => [

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 type UserCommentSuccessProps = {
-  modalRef?: React.MutableRefObject<null>;
+  modalRef: React.RefObject<HTMLDivElement>;
   isVisible: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
   onClick?: () => void;

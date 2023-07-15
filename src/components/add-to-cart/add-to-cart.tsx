@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import usePopup from '../../hooks/use-popup';
 import { incrementProduct } from '../../store/app-process/app-process';
@@ -8,7 +7,7 @@ import AddedToCart from '../added-to-cart/added-to-cart';
 
 type AddToCartProps = {
   product: ProductCard | null;
-  modalRef?: React.MutableRefObject<null>;
+  modalRef: React.RefObject<HTMLDivElement>;
   isVisible: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -20,11 +19,11 @@ function AddToCart({
   setVisibility,
 }: AddToCartProps): JSX.Element | null {
   const dispatch = useAppDispatch();
-  const modalReviewRef = useRef(null);
   const {
+    modalRef: modalReviewRef,
     isVisible: isModalReviewVisible,
     setVisibility: setModalReviewVisibility,
-  } = usePopup(modalReviewRef);
+  } = usePopup();
 
   function handlePopupCrossClick() {
     setVisibility(false);

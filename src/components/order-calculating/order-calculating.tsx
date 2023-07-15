@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import usePopup from '../../hooks/use-popup';
@@ -27,11 +26,11 @@ function OrderCalculation({
 }: OrderCalculationProps): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const modalSuccessRef = useRef(null);
   const {
+    modalRef: modalSuccessRef,
     isVisible,
     setVisibility,
-  } = usePopup(modalSuccessRef, handleModalSuccessClose);
+  } = usePopup(handleModalSuccessClose);
 
   const totalSumWithoutDiscount = humanizeProductPrice(
     calculateProductPrice(productsInBasket, undefined)

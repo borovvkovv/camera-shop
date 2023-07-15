@@ -7,7 +7,7 @@ import { makeProductName } from '../../utils';
 
 type DeleteProductProps = {
   product: ProductCard | undefined;
-  modalRef?: React.MutableRefObject<null>;
+  modalRef: React.RefObject<HTMLDivElement>;
   isVisible: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 };

@@ -1,10 +1,10 @@
-import { MutableRefObject, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function usePopup(
-  modalRef: MutableRefObject<HTMLElement | null>,
   onClose?: () => void
 ) {
   const [isVisible, setVisibility] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClick(evt: MouseEvent) {
@@ -87,5 +87,5 @@ export default function usePopup(
     };
   }, [isVisible, modalRef, onClose]);
 
-  return { isVisible, setVisibility };
+  return { modalRef, isVisible, setVisibility };
 }

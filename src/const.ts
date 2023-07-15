@@ -18,6 +18,7 @@ export const enum ApiRoute {
   Reviews = '/cameras/{:cameraId}/reviews',
   PostReview = '/reviews',
   PromoCode = '/coupons',
+  Order = '/orders'
 }
 
 export const enum AppRoute {

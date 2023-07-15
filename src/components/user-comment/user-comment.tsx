@@ -13,10 +13,10 @@ import { useAppSelector } from '../../hooks/use-app-selector';
 import useFormDisable from '../../hooks/use-form-disable';
 import usePopup from '../../hooks/use-popup';
 import { addReviewAction } from '../../store/api-actions';
-import { getIsCommentSent } from '../../store/data-process/selectors';
+import { getIsCommentSending, getIsCommentSent } from '../../store/data-process/selectors';
 import { UserReview } from '../../types/user-review';
 import StarRatingList from '../star-rating-list/star-rating-list';
-import UserCommentSuccess from '../user-comment-success/user-comment-success';
+import ModalSuccess from '../modal-success/modal-success';
 
 type UserReviewProps = {
   productId: number;
@@ -45,7 +45,7 @@ function UserComment({
 
   const dispatch = useAppDispatch();
   const [userReview, setUserReview] = useState<UserReview>(initialState);
-  const isFormDisabled = useFormDisable();
+  const isFormDisabled = useFormDisable(getIsCommentSending);
   const {
     register,
     unregister,
@@ -302,10 +302,11 @@ function UserComment({
           </div>
         </div>
       </div>
-      <UserCommentSuccess
+      <ModalSuccess
         modalRef={modalCommentSuccessRef}
         isVisible={isModalCommentSuccessVisible}
         setVisibility={setCommentSuccessVisibility}
+        title='Спасибо за отзыв'
       />
     </>
   );

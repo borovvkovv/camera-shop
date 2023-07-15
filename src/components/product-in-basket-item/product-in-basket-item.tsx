@@ -1,13 +1,24 @@
+import { ChangeEvent } from 'react';
+import { ProductsInBasketLimitation } from '../../enums';
+import { useAppDispatch } from '../../hooks/use-app-dispatch';
+import { dicrementProduct, incrementProduct, setProductAmount } from '../../store/app-process/app-process';
 import { BasketProduct } from '../../types/basket';
-import { humanizeProductPrice, makeProductName } from '../../utils';
+import {
+  calculateProductPrice,
+  humanizeProductPrice,
+  makeProductName,
+} from '../../utils';
 
 type ProductInBasketItemProps = {
-  product: BasketProduct;
+  productInfo: BasketProduct;
+  onProductDelete: (productInfo: BasketProduct) => void;
 };
 
 function ProductInBasketItem({
-  product,
+  productInfo,
+  onProductDelete,
 }: ProductInBasketItemProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const {
     name,
     vendorCode,
@@ -16,9 +27,43 @@ function ProductInBasketItem({
     previewImg,
     previewImg2x,
     previewImgWebp,
-    previewImgWebp2x
-  } = product.product;
-  const productSumPrice = price * product.quantity;
+    previewImgWebp2x,
+  } = productInfo.product;
+
+  const productSumPrice = calculateProductPrice([productInfo], undefined);
+
+  const isDicreaseProductsButtonDisabled =
+    productInfo.quantity <= ProductsInBasketLimitation.Min;
+  const isIncreaseProductsButtonDisabled =
+    productInfo.quantity >= ProductsInBasketLimitation.Max;
+
+  function handleDicrementProductsButtonClick() {
+    dispatch(dicrementProduct(productInfo.product));
+  }
+
+  function handleIncrementProductsButtonClick() {
+    dispatch(incrementProduct(productInfo.product));
+  }
+
+  function handleRemoveProductButtonClick() {
+    onProductDelete(productInfo);
+  }
+
+  function handleProductQuantityChange(evt: ChangeEvent) {
+    let quantity = Number((evt.target as HTMLInputElement).value);
+    if (!isNaN(quantity)) {
+      quantity =
+        quantity < ProductsInBasketLimitation.Min
+          ? ProductsInBasketLimitation.Min
+          : quantity;
+      quantity =
+        quantity > ProductsInBasketLimitation.Max
+          ? ProductsInBasketLimitation.Max
+          : quantity;
+      dispatch(setProductAmount({ ...productInfo, quantity }));
+    }
+  }
+
   return (
     <li className='basket-item'>
       <div className='basket-item__img'>
@@ -32,7 +77,7 @@ function ProductInBasketItem({
             srcSet={`${previewImg2x} 2x`}
             width='140'
             height='120'
-            alt={makeProductName(product.product)}
+            alt={makeProductName(productInfo.product)}
           />
         </picture>
       </div>
@@ -44,9 +89,9 @@ function ProductInBasketItem({
             <span className='basket-item__number'>{vendorCode}</span>
           </li>
           <li className='basket-item__list-item'>
-            {makeProductName(product.product)}
+            {makeProductName(productInfo.product)}
           </li>
-          <li className='basket-item__list-item'>{level}</li>
+          <li className='basket-item__list-item'>{level} уровень</li>
         </ul>
       </div>
       <p className='basket-item__price'>
@@ -57,6 +102,8 @@ function ProductInBasketItem({
         <button
           className='btn-icon btn-icon--prev'
           aria-label='уменьшить количество товара'
+          onClick={handleDicrementProductsButtonClick}
+          disabled={isDicreaseProductsButtonDisabled}
         >
           <svg
             width='7'
@@ -73,14 +120,17 @@ function ProductInBasketItem({
         <input
           type='number'
           id='counter1'
-          value='2'
+          value={productInfo.quantity}
           min='1'
           max='99'
           aria-label='количество товара'
+          onChange={handleProductQuantityChange}
         />
         <button
           className='btn-icon btn-icon--next'
           aria-label='увеличить количество товара'
+          onClick={handleIncrementProductsButtonClick}
+          disabled={isIncreaseProductsButtonDisabled}
         >
           <svg
             width='7'
@@ -99,6 +149,7 @@ function ProductInBasketItem({
         className='cross-btn'
         type='button'
         aria-label='Удалить товар'
+        onClick={handleRemoveProductButtonClick}
       >
         <svg
           width='10'

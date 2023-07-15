@@ -5,7 +5,7 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import ProductScreen from '../../pages/product-screen/product-screen';
 import { HelmetProvider } from 'react-helmet-async';
 import BasicLayout from '../basic-layout/basic-layout';
-import Basket from '../../pages/basket-screen/basket-screen';
+import BasketScreen from '../../pages/basket-screen/basket-screen';
 
 function App(): JSX.Element {
   return (
@@ -33,7 +33,7 @@ function App(): JSX.Element {
           />
           <Route
             path={AppRoute.Basket}
-            element={<Basket />}
+            element={<BasketScreen />}
           />
           <Route
             path='*'

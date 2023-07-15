@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import UserCommentSuccess from './user-comment-success';
+import ModalSuccess from './modal-success';
 
 const setVisibility = jest.fn();
 
 const fakeApp = (
-  <UserCommentSuccess
+  <ModalSuccess
     isVisible
     setVisibility={setVisibility}
   />

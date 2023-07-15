@@ -2,6 +2,7 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { renderHook } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { NameSpace } from '../const';
+import { getIsCommentSending } from '../store/data-process/selectors';
 import useFormDisable from './use-form-disable';
 
 const mockStore = configureMockStore();
@@ -14,7 +15,7 @@ describe('Hook: useFormDisable', () => {
       },
     });
 
-    const { result } = renderHook(() => useFormDisable(), {
+    const { result } = renderHook(() => useFormDisable(getIsCommentSending), {
       wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
     });
 
@@ -30,7 +31,7 @@ describe('Hook: useFormDisable', () => {
       },
     });
 
-    const { result } = renderHook(() => useFormDisable(), {
+    const { result } = renderHook(() => useFormDisable(getIsCommentSending), {
       wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
     });
 

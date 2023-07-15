@@ -1,15 +1,17 @@
-import { ChangeEvent, MouseEvent, useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
+import DeleteProduct from '../../components/delete-product/delete-product';
+import OrderCalculation from '../../components/order-calculating/order-calculating';
 import ProductInBasketList from '../../components/product-in-basket-list/product-in-basket-list';
+import PromoCode from '../../components/promo-code/promo-code';
 import { AppRoute } from '../../const';
-import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import { useAppSelector } from '../../hooks/use-app-selector';
-import { fetchPromoCodeAction } from '../../store/api-actions';
-import { getIsPromoCodeChecked, getIsPromoCodeChecking, getProductsInBasket, getPromoCode } from '../../store/app-process/selectors';
-import { calculateDiscountPrice, calculateProductPrice, humanizeProductPrice } from '../../utils';
-
-function Basket(): JSX.Element {
+import usePopup from '../../hooks/use-popup';
+import usePromoCode from '../../hooks/use-promo-code';
+import { getProductsInBasket } from '../../store/app-process/selectors';
+import { BasketProduct } from '../../types/basket';
+function BasketScreen(): JSX.Element {
   const crumbs = useMemo(
     () => [
       {
@@ -24,29 +26,28 @@ function Basket(): JSX.Element {
     []
   );
 
-  const dispatch = useAppDispatch();
-  const isPromoCodeChecked = useAppSelector(getIsPromoCodeChecked);
-  const isPromoCodeChecking = useAppSelector(getIsPromoCodeChecking);
+  const modalRef = useRef(null);
+  const { isVisible, setVisibility } = usePopup(modalRef);
 
-  const promoCode = useAppSelector(getPromoCode);
-  const [currentPromoCode, setCurrentPromoCode] = useState<string | undefined>(promoCode?.coupon.coupon);
+  const {
+    promoCode,
+    currentPromoCode,
+    setCurrentPromoCode,
+    isPromoCodeChecking,
+    isPromoCodeChecked,
+  } = usePromoCode();
 
   const productsInBasket = useAppSelector(getProductsInBasket);
 
-  function handlePromoCodeChange(evt: ChangeEvent) {
-    setCurrentPromoCode((evt.target as HTMLInputElement).value);
-  }
+  const [productInfoToDelete, setProductInfoToDelete] = useState<
+    BasketProduct | undefined
+  >(undefined);
 
-  function handlePromoCodeSubmit(evt: MouseEvent) {
-    evt.preventDefault();
-    dispatch(fetchPromoCodeAction(currentPromoCode ?? ''));
-  }
+  function handleDeleteProductButtonClick(productInfo: BasketProduct) {
+    setProductInfoToDelete(productInfo);
 
-  const isPromoCodeInvalid = !isPromoCodeChecking && isPromoCodeChecked && !promoCode;
-  const isPromoCodeValid = !!promoCode;
-  const inputClassNames = `custom-input ${
-    isPromoCodeInvalid ? 'is-invalid' : ''
-  }${isPromoCodeValid ? 'is-valid' : ''}`;
+    setVisibility(true);
+  }
 
   return (
     <>
@@ -58,84 +59,48 @@ function Basket(): JSX.Element {
         <section className='basket'>
           <div className='container'>
             <h1 className='title title--h2'>Корзина</h1>
-            <ProductInBasketList />
-            <div className='basket__summary'>
-              <div className='basket__promo'>
-                <p className='title title--h4'>
-                  Если у вас есть промокод на скидку, примените его в этом поле
-                </p>
-                <div className='basket-form'>
-                  <form action='#'>
-                    <div className={inputClassNames}>
-                      <label>
-                        <span className='custom-input__label'>Промокод</span>
-                        <input
-                          type='text'
-                          name='promo'
-                          placeholder='Введите промокод'
-                          value={currentPromoCode}
-                          onChange={handlePromoCodeChange}
-                        />
-                      </label>
-                      <p className='custom-input__error'>Промокод неверный</p>
-                      <p className='custom-input__success'>Промокод принят!</p>
+            {productsInBasket.length === 0 ? (
+              <h1 className='title title--h3'>Нет товаров в корзине</h1>
+            ) : (
+              <>
+                <ProductInBasketList
+                  productsInBasket={productsInBasket}
+                  onProductDelete={handleDeleteProductButtonClick}
+                />
+                <div className='basket__summary'>
+                  <div className='basket__promo'>
+                    <p className='title title--h4'>
+                      Если у вас есть промокод на скидку, примените его в этом
+                      поле
+                    </p>
+                    <div className='basket-form'>
+                      <PromoCode
+                        promoCode={promoCode}
+                        currentPromoCode={currentPromoCode}
+                        setCurrentPromoCode={setCurrentPromoCode}
+                        isPromoCodeChecked={isPromoCodeChecked}
+                        isPromoCodeChecking={isPromoCodeChecking}
+                      />
                     </div>
-                    <button
-                      className='btn'
-                      type='submit'
-                      onClick={handlePromoCodeSubmit}
-                    >
-                      Применить
-                    </button>
-                  </form>
+                  </div>
+                  <OrderCalculation
+                    productsInBasket={productsInBasket}
+                    promoCode={promoCode}
+                  />
                 </div>
-              </div>
-              <div className='basket__summary-order'>
-                <p className='basket__summary-item'>
-                  <span className='basket__summary-text'>Всего:</span>
-                  <span className='basket__summary-value'>
-                    {humanizeProductPrice(
-                      calculateProductPrice(productsInBasket, undefined)
-                    )}{' '}
-                    ₽
-                  </span>
-                </p>
-                <p className='basket__summary-item'>
-                  <span className='basket__summary-text'>Скидка:</span>
-                  <span className='basket__summary-value basket__summary-value--bonus'>
-                    {humanizeProductPrice(
-                      calculateDiscountPrice(
-                        productsInBasket,
-                        promoCode?.discount
-                      )
-                    )}
-                    ₽
-                  </span>
-                </p>
-                <p className='basket__summary-item'>
-                  <span className='basket__summary-text basket__summary-text--total'>
-                    К оплате:
-                  </span>
-                  <span className='basket__summary-value basket__summary-value--total'>
-                    {humanizeProductPrice(
-                      calculateProductPrice(productsInBasket, promoCode?.discount)
-                    )}{' '}
-                    ₽
-                  </span>
-                </p>
-                <button
-                  className='btn btn--purple'
-                  type='submit'
-                >
-                  Оформить заказ
-                </button>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </section>
       </div>
+      <DeleteProduct
+        product={productInfoToDelete?.product}
+        modalRef={modalRef}
+        isVisible={isVisible}
+        setVisibility={setVisibility}
+      />
     </>
   );
 }
 
-export default Basket;
+export default BasketScreen;

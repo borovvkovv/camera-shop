@@ -1,16 +1,22 @@
-import { useAppSelector } from '../../hooks/use-app-selector';
-import { getProductsInBasket } from '../../store/app-process/selectors';
+import { BasketProduct } from '../../types/basket';
 import ProductInBasketItem from '../product-in-basket-item/product-in-basket-item';
 
-function ProductInBasketList(): JSX.Element {
-  const products = useAppSelector(getProductsInBasket);
+type ProductInBasketListProps = {
+  productsInBasket: BasketProduct[];
+  onProductDelete: ((productInfo: BasketProduct) => void);
+};
 
+function ProductInBasketList({
+  productsInBasket,
+  onProductDelete,
+}: ProductInBasketListProps): JSX.Element {
   return (
     <ul className='basket__list'>
-      {products.map((basketProduct) => (
+      {productsInBasket.map((basketProduct) => (
         <ProductInBasketItem
           key={basketProduct.product.id}
-          product={basketProduct}
+          productInfo={basketProduct}
+          onProductDelete={onProductDelete}
         />
       ))}
     </ul>

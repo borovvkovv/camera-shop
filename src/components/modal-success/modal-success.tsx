@@ -1,18 +1,33 @@
 import { memo } from 'react';
-
 type UserCommentSuccessProps = {
   modalRef?: React.MutableRefObject<null>;
   isVisible: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+  onClick?: () => void;
+  onClose?: () => void;
+  title: string;
 };
 
-function UserCommentSuccess({
+function ModalSuccess({
   modalRef,
   isVisible,
   setVisibility,
+  onClick,
+  onClose,
+  title,
 }: UserCommentSuccessProps): JSX.Element {
 
   function handlePopupCrossClick() {
+    if (onClose) {
+      onClose();
+    }
+    setVisibility(false);
+  }
+
+  function handleButtonClick() {
+    if (onClick) {
+      onClick();
+    }
     setVisibility(false);
   }
 
@@ -24,7 +39,7 @@ function UserCommentSuccess({
           className='modal__content'
           ref={modalRef}
         >
-          <p className='title title--h4'>Спасибо за отзыв</p>
+          <p className='title title--h4'>{title}</p>
           <svg
             className='modal__icon'
             width='80'
@@ -37,7 +52,7 @@ function UserCommentSuccess({
             <button
               className='btn btn--purple modal__btn modal__btn--fit-width'
               type='button'
-              onClick={() => setVisibility(false)}
+              onClick={handleButtonClick}
             >
               Вернуться к покупкам
             </button>
@@ -62,4 +77,4 @@ function UserCommentSuccess({
   );
 }
 
-export default memo(UserCommentSuccess);
+export default memo(ModalSuccess);

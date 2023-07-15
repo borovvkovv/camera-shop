@@ -1,5 +1,8 @@
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import { useAppDispatch } from '../../hooks/use-app-dispatch';
+import { redirectToRoute } from '../../store/action';
 
 type AddedToCartProps = {
   modalRef?: React.MutableRefObject<null>;
@@ -12,6 +15,7 @@ function AddedToCart({
   isVisible,
   setVisibility,
 }: AddedToCartProps): JSX.Element {
+  const dispatch = useAppDispatch();
 
   function handlePopupCrossClick() {
     setVisibility(false);
@@ -20,6 +24,10 @@ function AddedToCart({
   function handleContinueButtonClick(evt: MouseEvent) {
     evt.preventDefault();
     setVisibility(false);
+  }
+
+  function handleGoToBasketClick() {
+    dispatch(redirectToRoute(AppRoute.Basket));
   }
 
   return (
@@ -50,7 +58,7 @@ function AddedToCart({
             >
               Продолжить покупки
             </Link>
-            <button className='btn btn--purple modal__btn modal__btn--fit-width'>
+            <button className='btn btn--purple modal__btn modal__btn--fit-width' onClick={handleGoToBasketClick}>
               Перейти в корзину
             </button>
           </div>

@@ -12,6 +12,7 @@ type ProductCardItemProps = {
   onBuyClick: (product: ProductCard) => void;
   addClass?: string;
   mode?: ProductCardMode;
+  basketProductIds: number[];
 };
 
 function ProductCardItem({
@@ -19,6 +20,7 @@ function ProductCardItem({
   onBuyClick,
   addClass,
   mode,
+  basketProductIds,
 }: ProductCardItemProps): JSX.Element {
   const {
     id,
@@ -32,6 +34,30 @@ function ProductCardItem({
   } = product;
 
   const { ratingInfo } = useRating(id);
+
+  const buyButton = basketProductIds.includes(product.id) ? (
+    <Link
+      className='btn btn--purple-border product-card__btn product-card__btn--in-cart'
+      to={AppRoute.Basket}
+    >
+      <svg
+        width='16'
+        height='16'
+        aria-hidden='true'
+      >
+        <use xlinkHref='#icon-basket'></use>
+      </svg>
+      В корзине
+    </Link>
+  ) : (
+    <button
+      className='btn btn--purple product-card__btn'
+      type='button'
+      onClick={() => onBuyClick(product)}
+    >
+      Купить
+    </button>
+  );
 
   const content = (
     <>
@@ -65,13 +91,7 @@ function ProductCardItem({
         </p>
       </div>
       <div className='product-card__buttons'>
-        <button
-          className='btn btn--purple product-card__btn'
-          type='button'
-          onClick={() => onBuyClick(product)}
-        >
-          Купить
-        </button>
+        {buyButton}
         <Link
           className='btn btn--transparent'
           to={AppRoute.Product.replace(':id', String(id))}
@@ -90,4 +110,7 @@ function ProductCardItem({
   );
 }
 
-export default memo(ProductCardItem, (previous, next) => previous.product === next.product);
+export default memo(
+  ProductCardItem,
+  (previous, next) => previous.product === next.product && previous.basketProductIds.length === next.basketProductIds.length
+);

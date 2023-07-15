@@ -47,3 +47,8 @@ export enum SliderKeyFrames {
   FadeInReverse = 'fadeInReverse',
   FadeOutReverse = 'fadeOutReverse',
 }
+
+export enum ProductsInBasketLimitation {
+  Min = 1,
+  Max = 99,
+}

@@ -1,5 +1,7 @@
 import { useRef } from 'react';
+import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import usePopup from '../../hooks/use-popup';
+import { incrementProduct } from '../../store/app-process/app-process';
 import { ProductCard } from '../../types/product-card';
 import { humanizeProductPrice, makeProductName } from '../../utils';
 import AddedToCart from '../added-to-cart/added-to-cart';
@@ -17,6 +19,7 @@ function AddToCart({
   isVisible,
   setVisibility,
 }: AddToCartProps): JSX.Element | null {
+  const dispatch = useAppDispatch();
   const modalReviewRef = useRef(null);
   const {
     isVisible: isModalReviewVisible,
@@ -28,6 +31,10 @@ function AddToCart({
   }
 
   function handleAddToCartButtonClick() {
+    if (product) {
+      dispatch(incrementProduct(product));
+    }
+
     setModalReviewVisibility(true);
     setVisibility(false);
   }

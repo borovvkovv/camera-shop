@@ -34,6 +34,7 @@ const fakeComponent = (
               onBuyClick={onBuyClick}
               addClass=''
               mode={ProductCardMode.Card}
+              basketProductIds={[]}
             />
           }
         />

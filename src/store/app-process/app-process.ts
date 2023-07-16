@@ -3,7 +3,7 @@ import { NameSpace } from '../../const';
 import { BasketProduct } from '../../types/basket';
 import { ProductCard } from '../../types/product-card';
 import { AppProcess } from '../../types/store';
-import { fetchPromoCodeAction } from '../api-actions';
+import { fetchPromoCodeAction, makeOrderAction } from '../api-actions';
 
 const initialState: AppProcess = {
   productsInBasket: [],
@@ -88,6 +88,15 @@ export const appProcess = createSlice({
       .addCase(fetchPromoCodeAction.rejected, (state) => {
         state.isPromoCodeChecking = false;
         state.isPromoCodeChecked = true;
+      })
+      .addCase(makeOrderAction.pending, (state) => {
+        state.isOrderSentSuccessfully = false;
+      })
+      .addCase(makeOrderAction.fulfilled, (state) => {
+        state.isOrderSentSuccessfully = true;
+      })
+      .addCase(makeOrderAction.rejected, (state) => {
+        state.isOrderSentSuccessfully = false;
       });
   },
 });

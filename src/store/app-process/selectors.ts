@@ -9,3 +9,5 @@ export const getIsPromoCodeChecked = (state: State) =>
   state[NameSpace.App].isPromoCodeChecked;
 export const getIsPromoCodeChecking = (state: State) =>
   state[NameSpace.App].isPromoCodeChecking;
+export const getIsOrderSentSuccessfully = (state: State) =>
+  state[NameSpace.App].isOrderSentSuccessfully;

@@ -55,6 +55,7 @@ function ModalSuccess({
               className='btn btn--purple modal__btn modal__btn--fit-width'
               type='button'
               onClick={handleButtonClick}
+              data-testid='ReturnToProductsButton'
             >
               Вернуться к покупкам
             </button>
@@ -64,6 +65,7 @@ function ModalSuccess({
             type='button'
             aria-label='Закрыть попап'
             onClick={handlePopupCrossClick}
+            data-testid='ClosePopupButton'
           >
             <svg
               width='10'

@@ -1,7 +1,11 @@
 import { ChangeEvent } from 'react';
 import { ProductsInBasketLimitation } from '../../enums';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
-import { dicrementProduct, incrementProduct, setProductAmount } from '../../store/app-process/app-process';
+import {
+  dicrementProduct,
+  incrementProduct,
+  setProductAmount,
+} from '../../store/app-process/app-process';
 import { BasketProduct } from '../../types/basket';
 import {
   calculateProductPrice,
@@ -65,7 +69,10 @@ function ProductInBasketItem({
   }
 
   return (
-    <li className='basket-item'>
+    <li
+      className='basket-item'
+      data-testid='ProductInBasketItem'
+    >
       <div className='basket-item__img'>
         <picture>
           <source
@@ -94,7 +101,10 @@ function ProductInBasketItem({
           <li className='basket-item__list-item'>{level} уровень</li>
         </ul>
       </div>
-      <p className='basket-item__price'>
+      <p
+        className='basket-item__price'
+        data-testid='ProductPrice'
+      >
         <span className='visually-hidden'>Цена:</span>
         {humanizeProductPrice(price)} ₽
       </p>
@@ -141,7 +151,10 @@ function ProductInBasketItem({
           </svg>
         </button>
       </div>
-      <div className='basket-item__total-price'>
+      <div
+        className='basket-item__total-price'
+        data-testid='ProductSumPrice'
+      >
         <span className='visually-hidden'>Общая цена:</span>
         {humanizeProductPrice(productSumPrice)} ₽
       </div>
@@ -150,6 +163,7 @@ function ProductInBasketItem({
         type='button'
         aria-label='Удалить товар'
         onClick={handleRemoveProductButtonClick}
+        data-testid='DeleteProductButton'
       >
         <svg
           width='10'

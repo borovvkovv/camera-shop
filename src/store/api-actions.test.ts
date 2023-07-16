@@ -4,16 +4,19 @@ import { State } from '../types/store';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import { createAPI } from '../services/api';
 import MockAdapter from 'axios-mock-adapter';
-import { ApiRoute } from '../const';
+import { ApiRoute, ValidPromoCodes } from '../const';
 import {
   addReviewAction,
   fetchProductAction,
   fetchProductsAction,
   fetchPromoAction,
+  fetchPromoCodeAction,
   fetchReviewsAction,
   fetchSimilarProductsAction,
+  makeOrderAction,
 } from './api-actions';
 import {
+  getFakeOrder,
   getFakeProduct,
   getFakeProducts,
   getFakePromoProduct,
@@ -142,6 +145,41 @@ describe('Async actions', () => {
     expect(actions).toEqual([
       addReviewAction.pending.type,
       addReviewAction.fulfilled.type,
+    ]);
+  });
+
+  it('should get discount when POST /coupons', async () => {
+    const store = mockStore();
+    const discount = 15;
+    const promoCode = ValidPromoCodes[0];
+
+    mockApi.onPost(ApiRoute.PromoCode).reply(200, discount);
+    expect(store.getActions()).toEqual([]);
+
+    await store.dispatch(fetchPromoCodeAction(promoCode));
+
+    const actions = store.getActions().map(({ type }) => type);
+
+    expect(actions).toEqual([
+      fetchPromoCodeAction.pending.type,
+      fetchPromoCodeAction.fulfilled.type,
+    ]);
+  });
+
+  it('should send order when POST /orders', async () => {
+    const store = mockStore();
+    const order = getFakeOrder();
+
+    mockApi.onPost(ApiRoute.Order).reply(201);
+    expect(store.getActions()).toEqual([]);
+
+    await store.dispatch(makeOrderAction(order));
+
+    const actions = store.getActions().map(({ type }) => type);
+
+    expect(actions).toEqual([
+      makeOrderAction.pending.type,
+      makeOrderAction.fulfilled.type,
     ]);
   });
 });

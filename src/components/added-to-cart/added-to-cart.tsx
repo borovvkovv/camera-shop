@@ -16,7 +16,6 @@ function AddedToCart({
   setVisibility,
 }: AddedToCartProps): JSX.Element {
   const dispatch = useAppDispatch();
-
   const popupElementClasses = `modal ${
     isVisible ? 'is-active' : ''
   } modal--narrow`;

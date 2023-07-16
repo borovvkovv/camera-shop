@@ -1,25 +1,20 @@
 import { ChangeEvent, MouseEvent } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import useFormDisable from '../../hooks/use-form-disable';
+import usePromoCode from '../../hooks/use-promo-code';
 import { fetchPromoCodeAction } from '../../store/api-actions';
 import { getIsPromoCodeChecking } from '../../store/app-process/selectors';
-import { PromoCodeInfo } from '../../types/promo-code-info';
-type PromoCodeProps = {
-  promoCode: PromoCodeInfo | undefined;
-  currentPromoCode: string;
-  setCurrentPromoCode: React.Dispatch<React.SetStateAction<string>>;
-  isPromoCodeChecking: boolean;
-  isPromoCodeChecked: boolean;
-};
 
-function PromoCode({
-  promoCode,
-  currentPromoCode,
-  setCurrentPromoCode,
-  isPromoCodeChecking,
-  isPromoCodeChecked,
-}: PromoCodeProps): JSX.Element {
+function PromoCode(): JSX.Element {
   const dispatch = useAppDispatch();
+
+  const {
+    promoCode,
+    currentPromoCode,
+    setCurrentPromoCode,
+    isPromoCodeChecking,
+    isPromoCodeChecked,
+  } = usePromoCode();
 
   const isPromoCodeInvalid =
     !isPromoCodeChecking && isPromoCodeChecked && !promoCode;
@@ -41,7 +36,7 @@ function PromoCode({
 
   return (
     <form>
-      <div className={inputClassNames}>
+      <div className={inputClassNames} data-testid='PromoCodeInput'>
         <label>
           <span className='custom-input__label'>Промокод</span>
           <input

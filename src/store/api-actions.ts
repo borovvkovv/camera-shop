@@ -102,7 +102,7 @@ export const fetchPromoCodeAction = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->('data/addReview', async (promoCode, { extra: api }) => {
+>('data/checkPromoCode', async (promoCode, { extra: api }) => {
   const { data } = await api.post<number>(ApiRoute.PromoCode, {coupon: promoCode});
   const coupon: Coupon = promoCode as typeof ValidPromoCodes[number];
   const promoCodeInfo: PromoCodeInfo = {

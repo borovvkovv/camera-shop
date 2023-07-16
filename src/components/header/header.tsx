@@ -24,11 +24,18 @@ function Header(): JSX.Element {
     setSearchPattern,
   } = useSearchForm(ref);
   const { foundProducts } = useSearchResults(searchPattern);
-  const productsInBasketLength = calculateProductsInBasket(useAppSelector(getProductsInBasket));
+  const productsInBasketLength = calculateProductsInBasket(
+    useAppSelector(getProductsInBasket)
+  );
 
   const productsInBasketCounter =
     productsInBasketLength === 0 ? null : (
-      <span className='header__basket-count'>{productsInBasketLength}</span>
+      <span
+        className='header__basket-count'
+        data-testid='ProductsInBasketCounter'
+      >
+        {productsInBasketLength}
+      </span>
     );
 
   function handleInputSearchChange({ target }: ChangeEvent<HTMLInputElement>) {

@@ -54,7 +54,10 @@ function DeleteProduct({
   }
 
   return (
-    <div className={popupElementClasses}>
+    <div
+      className={popupElementClasses}
+      data-testid='DeleteProductPopup'
+    >
       <div className='modal__wrapper'>
         <div className='modal__overlay'></div>
         <div
@@ -97,6 +100,7 @@ function DeleteProduct({
               className='btn btn--purple modal__btn modal__btn--half-width'
               type='button'
               onClick={handleDeleteButtonClick}
+              data-testid='DeleteButton'
             >
               Удалить
             </button>
@@ -113,6 +117,7 @@ function DeleteProduct({
             type='button'
             aria-label='Закрыть попап'
             onClick={handlePopupCrossClick}
+            data-testid='ClosePopupButton'
           >
             <svg
               width='10'

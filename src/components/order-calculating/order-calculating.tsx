@@ -6,10 +6,9 @@ import usePopup from '../../hooks/use-popup';
 import { redirectToRoute } from '../../store/action';
 import { makeOrderAction } from '../../store/api-actions';
 import { emptyBasket } from '../../store/app-process/app-process';
-import { getIsOrderSentSuccessfully } from '../../store/app-process/selectors';
+import { getIsOrderSentSuccessfully, getPromoCode } from '../../store/app-process/selectors';
 import { BasketProduct } from '../../types/basket';
 import { Order } from '../../types/order';
-import { PromoCodeInfo } from '../../types/promo-code-info';
 import {
   calculateDiscountPrice,
   calculateProductPrice,
@@ -20,12 +19,10 @@ import ModalSuccess from '../modal-success/modal-success';
 
 type OrderCalculationProps = {
   productsInBasket: BasketProduct[];
-  promoCode: PromoCodeInfo | undefined;
 };
 
 function OrderCalculation({
   productsInBasket,
-  promoCode,
 }: OrderCalculationProps): JSX.Element {
   const dispatch = useAppDispatch();
 
@@ -37,6 +34,8 @@ function OrderCalculation({
     isVisible,
     setVisibility,
   } = usePopup(handleModalSuccessClose);
+
+  const promoCode = useAppSelector(getPromoCode);
 
   useEffect(() => {
     if (isInitialMount.current) {
@@ -86,13 +85,19 @@ function OrderCalculation({
       <div className='basket__summary-order'>
         <p className='basket__summary-item'>
           <span className='basket__summary-text'>Всего:</span>
-          <span className='basket__summary-value'>
+          <span
+            className='basket__summary-value'
+            data-testid='TotalSum'
+          >
             {totalSumWithoutDiscount} ₽
           </span>
         </p>
         <p className='basket__summary-item'>
           <span className='basket__summary-text'>Скидка:</span>
-          <span className={`basket__summary-value ${discountSumStyleClass}`}>
+          <span
+            className={`basket__summary-value ${discountSumStyleClass}`}
+            data-testid='Discount'
+          >
             {discountSum} ₽
           </span>
         </p>
@@ -100,7 +105,10 @@ function OrderCalculation({
           <span className='basket__summary-text basket__summary-text--total'>
             К оплате:
           </span>
-          <span className='basket__summary-value basket__summary-value--total'>
+          <span
+            className='basket__summary-value basket__summary-value--total'
+            data-testid='TotalSumWithDiscount'
+          >
             {totalSumWithDiscount} ₽
           </span>
         </p>

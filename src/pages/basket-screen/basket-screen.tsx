@@ -8,7 +8,6 @@ import PromoCode from '../../components/promo-code/promo-code';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks/use-app-selector';
 import usePopup from '../../hooks/use-popup';
-import usePromoCode from '../../hooks/use-promo-code';
 import { getProductsInBasket } from '../../store/app-process/selectors';
 import { BasketProduct } from '../../types/basket';
 import { BreadCrumb } from '../../types/bread-crumb';
@@ -28,14 +27,6 @@ function BasketScreen(): JSX.Element {
   );
 
   const { modalRef, isVisible, setVisibility } = usePopup();
-
-  const {
-    promoCode,
-    currentPromoCode,
-    setCurrentPromoCode,
-    isPromoCodeChecking,
-    isPromoCodeChecked,
-  } = usePromoCode();
 
   const productsInBasket = useAppSelector(getProductsInBasket);
 
@@ -62,7 +53,7 @@ function BasketScreen(): JSX.Element {
         <Breadcrumbs crumbs={crumbs} />
         <section className='basket'>
           <div className='container'>
-            <h1 className='title title--h2'>Корзина</h1>
+            <h1 className='title title--h2' data-testid='BasketScreenTitle'>Корзина</h1>
             {productsInBasket.length === 0 ? (
               emptyBasketStub
             ) : (
@@ -78,18 +69,11 @@ function BasketScreen(): JSX.Element {
                       поле
                     </p>
                     <div className='basket-form'>
-                      <PromoCode
-                        promoCode={promoCode}
-                        currentPromoCode={currentPromoCode}
-                        setCurrentPromoCode={setCurrentPromoCode}
-                        isPromoCodeChecked={isPromoCodeChecked}
-                        isPromoCodeChecking={isPromoCodeChecking}
-                      />
+                      <PromoCode />
                     </div>
                   </div>
                   <OrderCalculation
                     productsInBasket={productsInBasket}
-                    promoCode={promoCode}
                   />
                 </div>
               </>

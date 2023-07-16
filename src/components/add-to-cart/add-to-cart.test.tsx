@@ -6,6 +6,8 @@ import HistoryRouter from '../history-router/history-router';
 import AddToCart from './add-to-cart';
 import { MutableRefObject } from 'react';
 import userEvent from '@testing-library/user-event';
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { Provider } from 'react-redux';
 
 const setVisibility = jest.fn();
 const product = getFakeProduct();
@@ -13,17 +15,22 @@ const ref = { current: null } as MutableRefObject<null>;
 
 const history = createMemoryHistory();
 
+const mockStore = configureMockStore();
+const store = mockStore({});
+
 describe('Component: AddToCart', () => {
   it('should render correctly', () => {
     const fakeApp = (
-      <HistoryRouter history={history}>
-        <AddToCart
-          product={product}
-          modalRef={ref}
-          isVisible
-          setVisibility={setVisibility}
-        />
-      </HistoryRouter>
+      <Provider store={store}>
+        <HistoryRouter history={history}>
+          <AddToCart
+            product={product}
+            modalRef={ref}
+            isVisible
+            setVisibility={setVisibility}
+          />
+        </HistoryRouter>
+      </Provider>
     );
 
     render(fakeApp);
@@ -41,14 +48,16 @@ describe('Component: AddToCart', () => {
 
   it('AddToCard popup should be hidden when prop isVisible=false', () => {
     const fakeApp = (
-      <HistoryRouter history={history}>
-        <AddToCart
-          product={product}
-          modalRef={ref}
-          isVisible={false}
-          setVisibility={setVisibility}
-        />
-      </HistoryRouter>
+      <Provider store={store}>
+        <HistoryRouter history={history}>
+          <AddToCart
+            product={product}
+            modalRef={ref}
+            isVisible={false}
+            setVisibility={setVisibility}
+          />
+        </HistoryRouter>
+      </Provider>
     );
 
     render(fakeApp);
@@ -58,14 +67,16 @@ describe('Component: AddToCart', () => {
 
   it('should render AddedToCard popup about successful adding to cart', async () => {
     const fakeApp = (
-      <HistoryRouter history={history}>
-        <AddToCart
-          product={product}
-          modalRef={ref}
-          isVisible
-          setVisibility={setVisibility}
-        />
-      </HistoryRouter>
+      <Provider store={store}>
+        <HistoryRouter history={history}>
+          <AddToCart
+            product={product}
+            modalRef={ref}
+            isVisible
+            setVisibility={setVisibility}
+          />
+        </HistoryRouter>
+      </Provider>
     );
 
     render(fakeApp);

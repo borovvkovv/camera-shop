@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router';
 import HistoryRouter from '../../components/history-router/history-router';
 import ProductScreen from './product-screen';
 import { HelmetProvider } from 'react-helmet-async';
+import { getProductUrl } from '../../utils';
 
 const product = getFakeProduct();
 
@@ -25,7 +26,10 @@ describe('Component: ProductScreen', () => {
         productsRating: [],
         isProductLoading: false,
         reviews: [],
-        similarProducts: []
+        similarProducts: [],
+      },
+      [NameSpace.App]: {
+        productsInBasket: [],
       },
     });
 
@@ -44,7 +48,7 @@ describe('Component: ProductScreen', () => {
       </Provider>
     );
 
-    history.push(AppRoute.Product.replace(':id', String(product.id)));
+    history.push(getProductUrl(product.id));
     render(fakeApp);
 
     expect(screen.getByText(product.description)).toBeInTheDocument();
@@ -57,35 +61,8 @@ describe('Component: ProductScreen', () => {
         productsRating: [],
         isProductLoading: true,
       },
-    });
-
-    const fakeApp = (
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <HelmetProvider>
-            <Routes>
-              <Route
-                path={AppRoute.Product}
-                element={<ProductScreen />}
-              />
-            </Routes>
-          </HelmetProvider>
-        </HistoryRouter>
-      </Provider>
-    );
-
-    history.push(AppRoute.Product.replace(':id', String(product.id)));
-    render(fakeApp);
-
-    expect(screen.getByText(/Загрузка.../)).toBeInTheDocument();
-  });
-
-  it('should set 404 page when product loading failed', () => {
-    const store = mockStore({
-      [NameSpace.Data]: {
-        product: null,
-        productsRating: [],
-        isProductLoading: false,
+      [NameSpace.App]: {
+        productsInBasket: [],
       },
     });
 
@@ -104,7 +81,40 @@ describe('Component: ProductScreen', () => {
       </Provider>
     );
 
-    history.push(AppRoute.Product.replace(':id', String(product.id)));
+    history.push(getProductUrl(product.id));
+    render(fakeApp);
+
+    expect(screen.getByText(/Загрузка.../)).toBeInTheDocument();
+  });
+
+  it('should set 404 page when product loading failed', () => {
+    const store = mockStore({
+      [NameSpace.Data]: {
+        product: null,
+        productsRating: [],
+        isProductLoading: false,
+      },
+      [NameSpace.App]: {
+        productsInBasket: [],
+      },
+    });
+
+    const fakeApp = (
+      <Provider store={store}>
+        <HistoryRouter history={history}>
+          <HelmetProvider>
+            <Routes>
+              <Route
+                path={AppRoute.Product}
+                element={<ProductScreen />}
+              />
+            </Routes>
+          </HelmetProvider>
+        </HistoryRouter>
+      </Provider>
+    );
+
+    history.push(getProductUrl(product.id));
     render(fakeApp);
 
     expect(screen.getByText(/Страница не найдена/i)).toBeInTheDocument();

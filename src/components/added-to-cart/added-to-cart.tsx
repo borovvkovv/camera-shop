@@ -17,6 +17,10 @@ function AddedToCart({
 }: AddedToCartProps): JSX.Element {
   const dispatch = useAppDispatch();
 
+  const popupElementClasses = `modal ${
+    isVisible ? 'is-active' : ''
+  } modal--narrow`;
+
   function handlePopupCrossClick() {
     setVisibility(false);
   }
@@ -32,7 +36,7 @@ function AddedToCart({
 
   return (
     <div
-      className={`modal ${isVisible ? 'is-active' : ''} modal--narrow`}
+      className={popupElementClasses}
       data-testid='addedToCartPopup'
     >
       <div className='modal__wrapper'>
@@ -58,7 +62,10 @@ function AddedToCart({
             >
               Продолжить покупки
             </Link>
-            <button className='btn btn--purple modal__btn modal__btn--fit-width' onClick={handleGoToBasketClick}>
+            <button
+              className='btn btn--purple modal__btn modal__btn--fit-width'
+              onClick={handleGoToBasketClick}
+            >
               Перейти в корзину
             </button>
           </div>

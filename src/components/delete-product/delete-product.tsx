@@ -34,6 +34,8 @@ function DeleteProduct({
     name,
   } = product;
 
+  const popupElementClasses = `modal ${isVisible ? 'is-active' : ''}`;
+
   function handlePopupCrossClick() {
     setVisibility(false);
   }
@@ -52,7 +54,7 @@ function DeleteProduct({
   }
 
   return (
-    <div className={`modal ${isVisible ? 'is-active' : ''}`}>
+    <div className={popupElementClasses}>
       <div className='modal__wrapper'>
         <div className='modal__overlay'></div>
         <div

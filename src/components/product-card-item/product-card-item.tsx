@@ -4,7 +4,7 @@ import { AppRoute } from '../../const';
 import { ProductCardMode } from '../../enums';
 import useRating from '../../hooks/use-rating';
 import { ProductCard } from '../../types/product-card';
-import { humanizeProductPrice } from '../../utils';
+import { getProductUrl, humanizeProductPrice } from '../../utils';
 import StarRating from '../star-rating/star-rating';
 
 type ProductCardItemProps = {
@@ -78,7 +78,7 @@ function ProductCardItem({
       </div>
       <div className='product-card__info'>
         <div className='rate product-card__rate'>
-          <StarRating rating={ratingInfo?.rating ?? null} />
+          <StarRating rating={ratingInfo?.rating} />
           <p className='rate__count'>
             <span className='visually-hidden'>Всего оценок:</span>
             {reviewCount}
@@ -94,7 +94,7 @@ function ProductCardItem({
         {buyButton}
         <Link
           className='btn btn--transparent'
-          to={AppRoute.Product.replace(':id', String(id))}
+          to={getProductUrl(id)}
           data-testid='productCardMoreInfo'
         >
           Подробнее

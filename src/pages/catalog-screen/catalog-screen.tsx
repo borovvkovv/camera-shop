@@ -18,7 +18,8 @@ import Sorts from '../../components/sorts/sorts';
 import useSort from '../../hooks/use-sort';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import { redirectToRoute } from '../../store/action';
-import { getStringFromQueryParams } from '../../utils';
+import { getCatalogUrl, getStringFromQueryParams } from '../../utils';
+import { BreadCrumb } from '../../types/bread-crumb';
 function CatalogScreen(): JSX.Element {
   const { pathname } = useLocation();
   const { id: pageAsString } = useParams();
@@ -50,7 +51,7 @@ function CatalogScreen(): JSX.Element {
     <h1 className='title title--h3'>Товары не найдены</h1>
   );
 
-  const crumbs = useMemo(
+  const crumbs: BreadCrumb[] = useMemo(
     () => [
       {
         name: 'Каталог',
@@ -72,10 +73,7 @@ function CatalogScreen(): JSX.Element {
   function handleFilterSubmit(queryParams: Record<string, string[]>) {
     dispatch(
       redirectToRoute(
-        `${AppRoute.Catalog.replace(
-          ':id',
-          '1'
-        )}${getStringFromQueryParams(queryParams)}`
+        `${getCatalogUrl(1)}${getStringFromQueryParams(queryParams)}`
       )
     );
     setIsFiltering(false);

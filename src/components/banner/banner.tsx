@@ -1,11 +1,13 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
 import useProduct from '../../hooks/use-product';
 import usePromo from '../../hooks/use-promo';
 import { productLevelMap } from '../../maps';
+import { getProductUrl } from '../../utils';
 
-function Banner(): JSX.Element {
+function Banner(): JSX.Element | null {
+  const { promo, isPromoLoading } = usePromo();
+  const { product, isProductLoading } = useProduct(promo?.id ?? 0);
 
   const stub = (
     <div className='banner'>
@@ -16,15 +18,12 @@ function Banner(): JSX.Element {
     </div>
   );
 
-  const { promo, isPromoLoading } = usePromo();
-  const { product, isProductLoading } = useProduct(promo?.id ?? 0);
-
   if (isPromoLoading || isProductLoading) {
     return stub;
   }
 
   if (!promo) {
-    return (<div />);
+    return null;
   }
 
   const productLevel = product ? productLevelMap[product.level] : null;
@@ -53,7 +52,7 @@ function Banner(): JSX.Element {
         </span>
         <Link
           className='btn'
-          to={AppRoute.Product.replace(':id', String(promo.id))}
+          to={getProductUrl(promo.id)}
         >
           Подробнее
         </Link>

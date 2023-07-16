@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { getCatalogUrl } from '../../utils';
 
 type PaginationProps = {
   currentPage: number;
@@ -18,28 +18,50 @@ function Pagination({
     return null;
   }
 
+  let backPageElement: JSX.Element | null = null;
+  if (currentPage > 1) {
+    backPageElement = (
+      <li
+        className='pagination__item'
+        data-testid='paginationPrevious'
+      >
+        <Link
+          className='pagination__link pagination__link--text'
+          to={{
+            pathname: getCatalogUrl(currentPage - 1),
+            search: queryParams.toString(),
+          }}
+        >
+          Назад
+        </Link>
+      </li>
+    );
+  }
+
+  let forwardPageElement: JSX.Element | null = null;
+  if (currentPage < maxPageNumber) {
+    forwardPageElement = (
+      <li
+        className='pagination__item'
+        data-testid='paginationNext'
+      >
+        <Link
+          className='pagination__link pagination__link--text'
+          to={{
+            pathname: getCatalogUrl(currentPage + 1),
+            search: queryParams.toString(),
+          }}
+        >
+          Далее
+        </Link>
+      </li>
+    );
+  }
+
   return (
     <div className='pagination'>
       <ul className='pagination__list'>
-        {currentPage > 1 && (
-          <li
-            className='pagination__item'
-            data-testid='paginationPrevious'
-          >
-            <Link
-              className='pagination__link pagination__link--text'
-              to={{
-                pathname: `${AppRoute.Catalog.replace(
-                  ':id',
-                  `${currentPage - 1}`
-                )}`,
-                search: queryParams.toString(),
-              }}
-            >
-              Назад
-            </Link>
-          </li>
-        )}
+        {backPageElement}
         {Array.from({ length: maxPageNumber }).map((_, index) => (
           <li
             className='pagination__item'
@@ -50,7 +72,7 @@ function Pagination({
                 index + 1 === currentPage ? 'pagination__link--active' : ''
               }`}
               to={{
-                pathname: `${AppRoute.Catalog.replace(':id', `${index + 1}`)}`,
+                pathname: getCatalogUrl(index + 1),
                 search: queryParams.toString(),
               }}
               data-testid={`page-${index + 1}`}
@@ -59,25 +81,7 @@ function Pagination({
             </Link>
           </li>
         ))}
-        {currentPage < maxPageNumber && (
-          <li
-            className='pagination__item'
-            data-testid='paginationNext'
-          >
-            <Link
-              className='pagination__link pagination__link--text'
-              to={{
-                pathname: `${AppRoute.Catalog.replace(
-                  ':id',
-                  `${currentPage + 1}`
-                )}`,
-                search: queryParams.toString(),
-              }}
-            >
-              Далее
-            </Link>
-          </li>
-        )}
+        {forwardPageElement}
       </ul>
     </div>
   );

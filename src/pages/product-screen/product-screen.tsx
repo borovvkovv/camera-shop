@@ -10,12 +10,13 @@ import usePopup from '../../hooks/use-popup';
 import useProduct from '../../hooks/use-product';
 import useSimilarProducts from '../../hooks/use-similar-products';
 import { ProductCard } from '../../types/product-card';
-import { humanizeProductPrice } from '../../utils';
+import { getProductUrl, humanizeProductPrice } from '../../utils';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import StarRating from '../../components/star-rating/star-rating';
 import ProductInfoTabs from '../../components/product-info-tabs/product-info-tabs';
 import { ProductInfoTabMode } from '../../enums';
 import useRating from '../../hooks/use-rating';
+import { BreadCrumb } from '../../types/bread-crumb';
 
 function ProductScreen(): JSX.Element {
   const { id: idAsString, tab: tabAsString } = useParams();
@@ -40,7 +41,7 @@ function ProductScreen(): JSX.Element {
   );
   const { modalRef, isVisible, setVisibility } = usePopup();
 
-  const crumbs = useMemo(
+  const crumbs: BreadCrumb[] = useMemo(
     () => [
       {
         name: 'Каталог',
@@ -48,7 +49,7 @@ function ProductScreen(): JSX.Element {
       },
       {
         name: !product ? '' : product.name,
-        path: AppRoute.Product.replace(':id', String(id)),
+        path: getProductUrl(id),
       },
     ],
     [id, product]
@@ -115,7 +116,7 @@ function ProductScreen(): JSX.Element {
             <div className='product__content'>
               <h1 className='title title--h3'>{name}</h1>
               <div className='rate product__rate'>
-                <StarRating rating={ratingInfo?.rating ?? null} />
+                <StarRating rating={ratingInfo?.rating} />
                 <p className='rate__count'>
                   <span className='visually-hidden'>Всего оценок:</span>
                   {reviewCount}

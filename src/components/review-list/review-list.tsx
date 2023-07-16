@@ -28,6 +28,42 @@ function ReviewList({ productId }: ReviewListProps): JSX.Element {
     setVisibility: setModalUserCommentVisibility,
   } = usePopup();
 
+  let loadMoreReviewsButtonElement: JSX.Element | null = null;
+  if (currentPage < maxPageNumber) {
+    loadMoreReviewsButtonElement = (
+      <div className='review-block__buttons'>
+        <button
+          className='btn btn--purple'
+          type='button'
+          onClick={handleLoadMoreReviewsButtonClick}
+          data-testid='loadMoreReviewsButton'
+        >
+          Показать больше отзывов
+        </button>
+      </div>
+    );
+  }
+
+  const noReviewsElement = <h1 className='title title--h3'>Нет отзывов</h1>;
+  const reviewsElements = !reviews.length ? noReviewsElement : (
+    <ul className='review-block__list'>
+      {pagedComments.map((review) => (
+        <ReviewItem
+          key={review.id}
+          reviewItem={review}
+        />
+      ))}
+    </ul>
+  );
+
+  function handleAddReviewButtonClick() {
+    setModalUserCommentVisibility(true);
+  }
+
+  function handleLoadMoreReviewsButtonClick() {
+    setCurrentPage((previous) => previous + 1);
+  }
+
   return (
     <>
       <div className='page-content__section'>
@@ -38,36 +74,14 @@ function ReviewList({ productId }: ReviewListProps): JSX.Element {
               <button
                 className='btn'
                 type='button'
-                onClick={() => setModalUserCommentVisibility(true)}
+                onClick={handleAddReviewButtonClick}
                 data-testid='leaveYourReviewButton'
               >
                 Оставить свой отзыв
               </button>
             </div>
-            {!reviews.length ? (
-              <h1 className='title title--h3'>Нет отзывов</h1>
-            ) : (
-              <ul className='review-block__list'>
-                {pagedComments.map((review) => (
-                  <ReviewItem
-                    key={review.id}
-                    reviewItem={review}
-                  />
-                ))}
-              </ul>
-            )}
-            {currentPage < maxPageNumber && (
-              <div className='review-block__buttons'>
-                <button
-                  className='btn btn--purple'
-                  type='button'
-                  onClick={() => setCurrentPage((previous) => previous + 1)}
-                  data-testid='loadMoreReviewsButton'
-                >
-                  Показать больше отзывов
-                </button>
-              </div>
-            )}
+            {reviewsElements}
+            {loadMoreReviewsButtonElement}
           </div>
         </section>
       </div>

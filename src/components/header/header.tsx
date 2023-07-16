@@ -7,6 +7,9 @@ import useSearchResults from '../../hooks/use-search-results';
 import { redirectToRoute } from '../../store/action';
 import SearchFormResultList from '../search-form-result-list/search-form-result-list';
 import { useLocation } from 'react-router';
+import { useAppSelector } from '../../hooks/use-app-selector';
+import { getProductsInBasket } from '../../store/app-process/selectors';
+import { calculateProductsInBasket } from '../../utils';
 
 function Header(): JSX.Element {
   const ref = useRef(null);
@@ -21,6 +24,12 @@ function Header(): JSX.Element {
     setSearchPattern,
   } = useSearchForm(ref);
   const { foundProducts } = useSearchResults(searchPattern);
+  const productsInBasketLength = calculateProductsInBasket(useAppSelector(getProductsInBasket));
+
+  const productsInBasketCounter =
+    productsInBasketLength === 0 ? null : (
+      <span className='header__basket-count'>{productsInBasketLength}</span>
+    );
 
   function handleInputSearchChange({ target }: ChangeEvent<HTMLInputElement>) {
     setSearchPattern(target.value);
@@ -142,7 +151,7 @@ function Header(): JSX.Element {
         </div>
         <Link
           className='header__basket-link'
-          to='/'
+          to={AppRoute.Basket}
         >
           <svg
             width='16'
@@ -151,6 +160,7 @@ function Header(): JSX.Element {
           >
             <use xlinkHref='#icon-basket'></use>
           </svg>
+          {productsInBasketCounter}
         </Link>
       </div>
     </header>

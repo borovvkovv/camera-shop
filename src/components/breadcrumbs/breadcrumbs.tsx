@@ -1,15 +1,13 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { BreadCrumb } from '../../types/bread-crumb';
 
 type BreadcrumbsProps = {
-  crumbs: {
-    name: string;
-    path: string;
-  }[];
+  crumbs: BreadCrumb[];
 };
 
-function Breadcrumbs(props: BreadcrumbsProps): JSX.Element {
+function Breadcrumbs({ crumbs }: BreadcrumbsProps): JSX.Element {
   return (
     <div className='breadcrumbs'>
       <div className='container'>
@@ -29,40 +27,39 @@ function Breadcrumbs(props: BreadcrumbsProps): JSX.Element {
               </svg>
             </Link>
           </li>
-          {props.crumbs.map((prop, index) => {
-            if (props.crumbs.length - 1 === index) {
+          {crumbs.map((crumb, index) => {
+            if (crumbs.length - 1 === index) {
               return (
                 <li
                   className='breadcrumbs__item'
-                  key={`index-${prop.name}`}
+                  key={`index-${crumb.name}`}
                 >
                   <span className='breadcrumbs__link breadcrumbs__link--active'>
-                    {prop.name}
+                    {crumb.name}
                   </span>
                 </li>
               );
-            } else {
-              return (
-                <li
-                  className='breadcrumbs__item'
-                  key={`index-${prop.name}`}
-                >
-                  <Link
-                    className='breadcrumbs__link'
-                    to={prop.path}
-                  >
-                    {prop.name}
-                    <svg
-                      width='5'
-                      height='8'
-                      aria-hidden='true'
-                    >
-                      <use xlinkHref='#icon-arrow-mini'></use>
-                    </svg>
-                  </Link>
-                </li>
-              );
             }
+            return (
+              <li
+                className='breadcrumbs__item'
+                key={`index-${crumb.name}`}
+              >
+                <Link
+                  className='breadcrumbs__link'
+                  to={crumb.path}
+                >
+                  {crumb.name}
+                  <svg
+                    width='5'
+                    height='8'
+                    aria-hidden='true'
+                  >
+                    <use xlinkHref='#icon-arrow-mini'></use>
+                  </svg>
+                </Link>
+              </li>
+            );
           })}
         </ul>
       </div>

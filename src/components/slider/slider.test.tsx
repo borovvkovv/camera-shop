@@ -20,6 +20,9 @@ const store = mockStore({
   [NameSpace.Data]: {
     productsRating: [],
   },
+  [NameSpace.App]: {
+    productsInBasket: [],
+  },
 });
 
 const fakeComponent = (

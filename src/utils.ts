@@ -72,7 +72,9 @@ export function pushRatingIfNotExists(
     rating: getAverageRating(reviews),
   };
 
-  if (!storeRatings.find((storeRating) => storeRating.productId === productId)) {
+  if (
+    !storeRatings.find((storeRating) => storeRating.productId === productId)
+  ) {
     storeRatings.push(rating);
   }
 
@@ -127,28 +129,40 @@ export function filterProducts(
       [QueryParam.PriceMin]: queryParams[QueryParam.PriceMax],
     };
   }
-  if (queryParams[QueryParam.PriceMin] && Number(queryParams[QueryParam.PriceMin]) < minPrice) {
+  if (
+    queryParams[QueryParam.PriceMin] &&
+    Number(queryParams[QueryParam.PriceMin]) < minPrice
+  ) {
     shouldUpdateQueryParams = true;
     queryParams = {
       ...queryParams,
       [QueryParam.PriceMin]: [String(minPrice)],
     };
   }
-  if (queryParams[QueryParam.PriceMax] && Number(queryParams[QueryParam.PriceMax]) > maxPrice) {
+  if (
+    queryParams[QueryParam.PriceMax] &&
+    Number(queryParams[QueryParam.PriceMax]) > maxPrice
+  ) {
     shouldUpdateQueryParams = true;
     queryParams = {
       ...queryParams,
       [QueryParam.PriceMax]: [String(maxPrice)],
     };
   }
-  if (queryParams[QueryParam.PriceMin] && Number(queryParams[QueryParam.PriceMin]) > maxPrice) {
+  if (
+    queryParams[QueryParam.PriceMin] &&
+    Number(queryParams[QueryParam.PriceMin]) > maxPrice
+  ) {
     shouldUpdateQueryParams = true;
     queryParams = {
       ...queryParams,
       [QueryParam.PriceMin]: [String(maxPrice)],
     };
   }
-  if (queryParams[QueryParam.PriceMax] && Number(queryParams[QueryParam.PriceMax]) < minPrice) {
+  if (
+    queryParams[QueryParam.PriceMax] &&
+    Number(queryParams[QueryParam.PriceMax]) < minPrice
+  ) {
     shouldUpdateQueryParams = true;
     queryParams = {
       ...queryParams,
@@ -171,15 +185,17 @@ export function filterProducts(
 
 export function getMinPrice(products: ProductCard[]): number {
   return products.length > 0
-    ? products.reduce((previous, current) => (previous.price <= current.price ? previous : current))
-      .price
+    ? products.reduce((previous, current) =>
+      previous.price <= current.price ? previous : current
+    ).price
     : NaN;
 }
 
 export function getMaxPrice(products: ProductCard[]): number {
   return products.length > 0
-    ? products.reduce((previous, current) => (previous.price >= current.price ? previous : current))
-      .price
+    ? products.reduce((previous, current) =>
+      previous.price >= current.price ? previous : current
+    ).price
     : NaN;
 }
 
@@ -259,7 +275,10 @@ export function getSort(searchParams: URLSearchParams): Sort {
   };
 }
 
-export function getQueryParams(filter: Filter, sort: Sort): Record<string, string[]> {
+export function getQueryParams(
+  filter: Filter,
+  sort: Sort
+): Record<string, string[]> {
   const priceMin = filter.priceRange?.min?.toString();
   const priceMax = filter.priceRange?.max?.toString();
   const category = filter.category;
@@ -314,7 +333,9 @@ export function getQueryParams(filter: Filter, sort: Sort): Record<string, strin
   return searchParamsObject;
 }
 
-export function getStringFromQueryParams(queryParams: Record<string, string[]>) {
+export function getStringFromQueryParams(
+  queryParams: Record<string, string[]>
+) {
   let result = '';
   if (!queryParams || queryParams.length) {
     return result;
@@ -325,15 +346,17 @@ export function getStringFromQueryParams(queryParams: Record<string, string[]>) 
       value.forEach((valueItem) => {
         result += `&${key}=${valueItem}`;
       });
-    }
-    else {
+    } else {
       result += `&${key}=${String(value)}`;
     }
   });
   return result;
 }
 
-export function calculateProductPrice(products: BasketProduct[], discount: number | undefined) {
+export function calculateProductPrice(
+  products: BasketProduct[],
+  discount: number | undefined
+) {
   return calculateProductPriceWithDiscount(products, undefined);
 }
 
@@ -342,7 +365,8 @@ export function calculateProductPriceWithDiscount(
   discount: number | undefined
 ) {
   let productSum = basketProducts.reduce(
-    (accumulator, current) => accumulator + current.product.price * current.quantity,
+    (accumulator, current) =>
+      accumulator + current.product.price * current.quantity,
     0
   );
   if (discount) {
@@ -359,4 +383,23 @@ export function calculateDiscountPrice(
     calculateProductPriceWithDiscount(products, undefined) -
     calculateProductPriceWithDiscount(products, discount)
   );
+}
+
+export function calculateProductsInBasket(basketProducts: BasketProduct[]) {
+  return basketProducts.reduce(
+    (accumulator, current) => accumulator + current.quantity,
+    0
+  );
+}
+
+export function getProductUrl(id: number) {
+  return AppRoute.Product.replace(':id', String(id));
+}
+
+export function getProductTabUrl(id: number, tab: string) {
+  return AppRoute.ProductTab.replace(':id', String(id)).replace(':tab', tab);
+}
+
+export function getCatalogUrl(pageId: number) {
+  return AppRoute.Catalog.replace(':id', String(pageId));
 }

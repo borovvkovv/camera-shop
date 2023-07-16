@@ -11,8 +11,9 @@ import usePopup from '../../hooks/use-popup';
 import usePromoCode from '../../hooks/use-promo-code';
 import { getProductsInBasket } from '../../store/app-process/selectors';
 import { BasketProduct } from '../../types/basket';
+import { BreadCrumb } from '../../types/bread-crumb';
 function BasketScreen(): JSX.Element {
-  const crumbs = useMemo(
+  const crumbs: BreadCrumb[] = useMemo(
     () => [
       {
         name: 'Каталог',
@@ -42,6 +43,10 @@ function BasketScreen(): JSX.Element {
     BasketProduct | undefined
   >(undefined);
 
+  const emptyBasketStub = (
+    <h1 className='title title--h3'>Нет товаров в корзине</h1>
+  );
+
   function handleDeleteProductButtonClick(productInfo: BasketProduct) {
     setProductInfoToDelete(productInfo);
 
@@ -59,7 +64,7 @@ function BasketScreen(): JSX.Element {
           <div className='container'>
             <h1 className='title title--h2'>Корзина</h1>
             {productsInBasket.length === 0 ? (
-              <h1 className='title title--h3'>Нет товаров в корзине</h1>
+              emptyBasketStub
             ) : (
               <>
                 <ProductInBasketList

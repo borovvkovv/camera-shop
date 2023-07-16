@@ -17,6 +17,8 @@ function ModalSuccess({
   title,
 }: UserCommentSuccessProps): JSX.Element {
 
+  const popupElementClasses = `modal ${isVisible ? 'is-active' : ''} modal--narrow`;
+
   function handlePopupCrossClick() {
     if (onClose) {
       onClose();
@@ -32,7 +34,7 @@ function ModalSuccess({
   }
 
   return (
-    <div className={`modal ${isVisible ? 'is-active' : ''} modal--narrow`}>
+    <div className={popupElementClasses}>
       <div className='modal__wrapper'>
         <div className='modal__overlay'></div>
         <div

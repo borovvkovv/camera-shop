@@ -13,6 +13,9 @@ const mockStore = configureMockStore(middlewares);
 
 const store = mockStore({
   [NameSpace.Data]: {},
+  [NameSpace.App]: {
+    productsInBasket: [],
+  },
 });
 
 const fakeApp = (

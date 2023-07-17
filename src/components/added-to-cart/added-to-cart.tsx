@@ -8,12 +8,14 @@ type AddedToCartProps = {
   modalRef: React.RefObject<HTMLDivElement>;
   isVisible: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+  redirectAfterAddingUrl?: string;
 };
 
 function AddedToCart({
   modalRef,
   isVisible,
   setVisibility,
+  redirectAfterAddingUrl,
 }: AddedToCartProps): JSX.Element {
   const dispatch = useAppDispatch();
   const popupElementClasses = `modal ${
@@ -27,6 +29,9 @@ function AddedToCart({
   function handleContinueButtonClick(evt: MouseEvent) {
     evt.preventDefault();
     setVisibility(false);
+    if (redirectAfterAddingUrl) {
+      dispatch(redirectToRoute(redirectAfterAddingUrl));
+    }
   }
 
   function handleGoToBasketClick() {

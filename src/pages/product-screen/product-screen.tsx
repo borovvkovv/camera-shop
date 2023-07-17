@@ -158,6 +158,7 @@ function ProductScreen(): JSX.Element {
         modalRef={modalRef}
         isVisible={isVisible}
         setVisibility={setVisibility}
+        redirectAfterAddingUrl={AppRoute.Root}
       />
     </>
   );

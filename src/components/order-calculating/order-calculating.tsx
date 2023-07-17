@@ -6,7 +6,10 @@ import usePopup from '../../hooks/use-popup';
 import { redirectToRoute } from '../../store/action';
 import { makeOrderAction } from '../../store/api-actions';
 import { emptyBasket } from '../../store/app-process/app-process';
-import { getIsOrderSentSuccessfully, getPromoCode } from '../../store/app-process/selectors';
+import {
+  getIsOrderSentSuccessfully,
+  getPromoCode,
+} from '../../store/app-process/selectors';
 import { BasketProduct } from '../../types/basket';
 import { Order } from '../../types/order';
 import {
@@ -36,6 +39,15 @@ function OrderCalculation({
   } = usePopup(handleModalSuccessClose);
 
   const promoCode = useAppSelector(getPromoCode);
+
+  useEffect(() => {
+    if (!isInitialMount.current) {
+      isInitialMount.current = true;
+    }
+    return () => {
+      isInitialMount.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (isInitialMount.current) {

@@ -26,7 +26,9 @@ function PromoCode(): JSX.Element {
   const CheckPromoCodeButtonName = isFormDisabled ? 'Проверяем' : 'Применить';
 
   function handlePromoCodeChange(evt: ChangeEvent) {
-    setCurrentPromoCode((evt.target as HTMLInputElement).value);
+    const value = (evt.target as HTMLInputElement).value;
+    const trimmedValue = value.replaceAll(' ', '');
+    setCurrentPromoCode(trimmedValue);
   }
 
   function handlePromoCodeSubmit(evt: MouseEvent) {

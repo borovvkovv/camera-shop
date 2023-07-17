@@ -10,6 +10,7 @@ type AddToCartProps = {
   modalRef: React.RefObject<HTMLDivElement>;
   isVisible: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+  redirectAfterAddingUrl?: string;
 };
 
 function AddToCart({
@@ -17,6 +18,7 @@ function AddToCart({
   modalRef,
   isVisible,
   setVisibility,
+  redirectAfterAddingUrl
 }: AddToCartProps): JSX.Element | null {
   const dispatch = useAppDispatch();
 
@@ -135,6 +137,7 @@ function AddToCart({
         modalRef={modalAddedRef}
         isVisible={isModalAddedVisible}
         setVisibility={setModalAddedVisibility}
+        redirectAfterAddingUrl={redirectAfterAddingUrl}
       />
     </>
   );

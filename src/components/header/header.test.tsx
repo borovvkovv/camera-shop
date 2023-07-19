@@ -6,20 +6,24 @@ import thunk from 'redux-thunk';
 import { NameSpace } from '../../const';
 import { Provider } from 'react-redux';
 import Header from './header';
-import { getFakeProductsInBasket } from '../../utils/mock';
+import { getFakeProductsInBasket, getFakeProductsInLocalStorage } from '../../utils/mock';
 import { calculateProductsInBasket } from '../../utils';
 
 const history = createMemoryHistory();
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-const productsInBasket = getFakeProductsInBasket(7);
+const productsInBasket = getFakeProductsInBasket(9);
+const productsInLocalStorage = getFakeProductsInLocalStorage(productsInBasket);
+const productsInLocalStorageAsString = JSON.stringify(productsInLocalStorage);
+const products = productsInBasket.map((productInfo) => productInfo.product);
 
 const store = mockStore({
-  [NameSpace.Data]: {},
-  [NameSpace.App]: {
-    productsInBasket: productsInBasket,
+  [NameSpace.Data]: {
+    products,
   },
 });
+
+global.Storage.prototype.getItem = (key: string) => productsInLocalStorageAsString;
 
 const fakeApp = (
   <Provider store={store}>
@@ -44,9 +48,8 @@ describe('Header: Header', () => {
 
   it('should not render counter when correct number of products in basket is empty', () => {
     const storeLocal = mockStore({
-      [NameSpace.Data]: {},
-      [NameSpace.App]: {
-        productsInBasket: [],
+      [NameSpace.Data]: {
+        products: [],
       },
     });
 

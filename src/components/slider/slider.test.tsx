@@ -18,6 +18,7 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const store = mockStore({
   [NameSpace.Data]: {
+    products: [],
     productsRating: [],
   },
   [NameSpace.App]: {

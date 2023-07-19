@@ -2,24 +2,32 @@ import { render, screen } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { NameSpace } from '../../const';
-import { getFakeProductsInBasket } from '../../utils/mock';
+import { getFakeProductsInBasket, getFakeProductsInLocalStorage } from '../../utils/mock';
 import { Provider } from 'react-redux';
 import BasketScreen from './basket-screen';
 import HistoryRouter from '../../components/history-router/history-router';
 import { createMemoryHistory } from 'history';
-
-const mockStore = configureMockStore();
+import thunk from 'redux-thunk';
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 const history = createMemoryHistory();
 
 describe('Component: BasketScreen', () => {
   it('should render correctly if basket not empty', () => {
-    const productsInBasket = getFakeProductsInBasket(9);
+    const basketProducts = getFakeProductsInBasket(9);
+    const productsInLocalStorage =
+      getFakeProductsInLocalStorage(basketProducts);
+    const products = basketProducts.map((productInfo) => productInfo.product);
     const store = mockStore({
+      [NameSpace.Data]: {
+        products,
+      },
       [NameSpace.App]: {
-        productsInBasket
+        promoCode: undefined,
       },
     });
-
+    const productsInBasketAsString = JSON.stringify(productsInLocalStorage);
+    global.Storage.prototype.getItem = (_: string) => productsInBasketAsString;
 
     render(
       <Provider store={store}>
@@ -31,8 +39,12 @@ describe('Component: BasketScreen', () => {
       </Provider>
     );
 
-    expect(screen.queryByText(/Нет товаров в корзине/i)).not.toBeInTheDocument();
-    expect(screen.getByTestId('BasketScreenTitle')).toHaveTextContent(/Корзина/i);
+    expect(
+      screen.queryByText(/Нет товаров в корзине/i)
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId('BasketScreenTitle')).toHaveTextContent(
+      /Корзина/i
+    );
     expect(
       screen.getByText(
         /Если у вас есть промокод на скидку, примените его в этом поле/i
@@ -42,8 +54,8 @@ describe('Component: BasketScreen', () => {
 
   it('should render stub if basket empty', () => {
     const store = mockStore({
-      [NameSpace.App]: {
-        productsInBasket: [],
+      [NameSpace.Data]: {
+        products: [],
       },
     });
 

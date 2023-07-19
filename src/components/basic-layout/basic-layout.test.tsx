@@ -6,15 +6,15 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import thunk from 'redux-thunk';
 import { NameSpace } from '../../const';
 import { Provider } from 'react-redux';
+import { getFakeProducts } from '../../utils/mock';
 
 const history = createMemoryHistory();
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-
+const products = getFakeProducts(9);
 const store = mockStore({
-  [NameSpace.Data]: {},
-  [NameSpace.App]: {
-    productsInBasket: [],
+  [NameSpace.Data]: {
+    products
   },
 });
 

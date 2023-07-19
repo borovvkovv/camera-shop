@@ -22,6 +22,7 @@ describe('Component: ProductScreen', () => {
   it('should render correctly', () => {
     const store = mockStore({
       [NameSpace.Data]: {
+        products: [],
         product: product,
         productsRating: [],
         isProductLoading: false,
@@ -57,6 +58,7 @@ describe('Component: ProductScreen', () => {
   it('should render loading when product is loading', () => {
     const store = mockStore({
       [NameSpace.Data]: {
+        products: [],
         product: null,
         productsRating: [],
         isProductLoading: true,
@@ -90,6 +92,7 @@ describe('Component: ProductScreen', () => {
   it('should set 404 page when product loading failed', () => {
     const store = mockStore({
       [NameSpace.Data]: {
+        products: [],
         product: null,
         productsRating: [],
         isProductLoading: false,

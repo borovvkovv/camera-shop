@@ -1,11 +1,6 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { ProductsInBasketLimitation } from '../../enums';
-import { useAppDispatch } from '../../hooks/use-app-dispatch';
-import {
-  dicrementProduct,
-  incrementProduct,
-  setProductAmount,
-} from '../../store/app-process/app-process';
+import { dicrementProduct, incrementProduct, setProductAmount } from '../../services/products-in-basket';
 import { BasketProduct } from '../../types/basket';
 import {
   calculateProductPrice,
@@ -22,7 +17,7 @@ function ProductInBasketItem({
   productInfo,
   onProductDelete,
 }: ProductInBasketItemProps): JSX.Element {
-  const dispatch = useAppDispatch();
+  const [productQuantity, setProductQuantity] = useState(productInfo.quantity);
   const {
     name,
     vendorCode,
@@ -42,11 +37,13 @@ function ProductInBasketItem({
     productInfo.quantity >= ProductsInBasketLimitation.Max;
 
   function handleDicrementProductsButtonClick() {
-    dispatch(dicrementProduct(productInfo.product));
+    setProductQuantity((prev) => prev - 1);
+    dicrementProduct(productInfo.product);
   }
 
   function handleIncrementProductsButtonClick() {
-    dispatch(incrementProduct(productInfo.product));
+    setProductQuantity((prev) => prev + 1);
+    incrementProduct(productInfo.product);
   }
 
   function handleRemoveProductButtonClick() {
@@ -56,15 +53,13 @@ function ProductInBasketItem({
   function handleProductQuantityChange(evt: ChangeEvent) {
     let quantity = Number((evt.target as HTMLInputElement).value);
     if (!isNaN(quantity)) {
-      quantity =
-        quantity < ProductsInBasketLimitation.Min
-          ? ProductsInBasketLimitation.Min
-          : quantity;
-      quantity =
-        quantity > ProductsInBasketLimitation.Max
-          ? ProductsInBasketLimitation.Max
-          : quantity;
-      dispatch(setProductAmount({ ...productInfo, quantity }));
+      if (quantity < ProductsInBasketLimitation.Min) {
+        quantity = ProductsInBasketLimitation.Min;
+      } else if (quantity > ProductsInBasketLimitation.Max) {
+        quantity = ProductsInBasketLimitation.Max;
+      }
+      setProductQuantity(quantity);
+      setProductAmount({ ...productInfo, quantity });
     }
   }
 
@@ -130,7 +125,7 @@ function ProductInBasketItem({
         <input
           type='number'
           id='counter1'
-          value={productInfo.quantity}
+          value={productQuantity}
           min='1'
           max='99'
           aria-label='количество товара'

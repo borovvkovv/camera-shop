@@ -1,8 +1,7 @@
 import { memo, MouseEvent, useMemo, useRef, useState } from 'react';
 import { ProductCardMode, SliderKeyFrames } from '../../enums';
-import { useAppSelector } from '../../hooks/use-app-selector';
+import useProductsInBasket from '../../hooks/use-products-in-basket';
 import useSlider from '../../hooks/use-slider';
-import { getProductsInBasket } from '../../store/app-process/selectors';
 import { ProductCard } from '../../types/product-card';
 import ProductCardItem from '../product-card-item/product-card-item';
 import './slider.css';
@@ -20,8 +19,8 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
     products.length,
     currentSliderPage
   );
-  const basketProducts = useAppSelector(getProductsInBasket);
-  const basketProductIds = basketProducts.map(
+  const { productsInBasket } = useProductsInBasket();
+  const basketProductIds = productsInBasket.map(
     (productInfo) => productInfo.product.id
   );
 

@@ -1,7 +1,6 @@
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/use-app-dispatch';
-import { removeProduct } from '../../store/app-process/app-process';
+import { removeProduct } from '../../services/products-in-basket';
 import { ProductCard } from '../../types/product-card';
 import { makeProductName } from '../../utils';
 
@@ -18,7 +17,6 @@ function DeleteProduct({
   isVisible,
   setVisibility,
 }: DeleteProductProps): JSX.Element | null {
-  const dispatch = useAppDispatch();
 
   if (!product) {
     return null;
@@ -47,7 +45,7 @@ function DeleteProduct({
 
   function handleDeleteButtonClick() {
     if (product) {
-      dispatch(removeProduct(product));
+      removeProduct(product);
     }
 
     setVisibility(false);

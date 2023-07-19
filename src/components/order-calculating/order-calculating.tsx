@@ -3,9 +3,9 @@ import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import { useAppSelector } from '../../hooks/use-app-selector';
 import usePopup from '../../hooks/use-popup';
+import { emptyBasket } from '../../services/products-in-basket';
 import { redirectToRoute } from '../../store/action';
 import { makeOrderAction } from '../../store/api-actions';
-import { emptyBasket } from '../../store/app-process/app-process';
 import {
   getIsOrderSentSuccessfully,
   getPromoCode,
@@ -84,11 +84,11 @@ function OrderCalculation({
   }
 
   function handleModalSuccessClose() {
-    dispatch(emptyBasket());
+    emptyBasket();
   }
 
   function handleModalSuccessClick() {
-    dispatch(emptyBasket());
+    emptyBasket();
     dispatch(redirectToRoute(AppRoute.Root));
   }
 

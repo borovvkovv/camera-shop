@@ -1,8 +1,6 @@
 import { NameSpace } from '../../const';
 import { State } from '../../types/store';
 
-export const getProductsInBasket = (state: State) =>
-  state[NameSpace.App].productsInBasket;
 export const getPromoCode = (state: State) =>
   state[NameSpace.App].promoCode;
 export const getIsPromoCodeChecked = (state: State) =>

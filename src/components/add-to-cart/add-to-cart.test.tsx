@@ -19,7 +19,7 @@ const mockStore = configureMockStore();
 const store = mockStore({});
 
 describe('Component: AddToCart', () => {
-  it('should render correctly', () => {
+  it('AddToCard popup should be visible when prop isVisible=true', () => {
     const fakeApp = (
       <Provider store={store}>
         <HistoryRouter history={history}>
@@ -36,6 +36,7 @@ describe('Component: AddToCart', () => {
     render(fakeApp);
 
     expect(screen.getByTestId('AddToCartPopup')).toHaveClass('is-active');
+
     expect(screen.getByText(/Добавить товар в корзину/i)).toBeInTheDocument();
     expect(screen.getByText(product.name)).toBeInTheDocument();
     expect(screen.getByText(product.vendorCode)).toBeInTheDocument();

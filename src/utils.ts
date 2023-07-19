@@ -9,6 +9,7 @@ import {
   QueryParam,
 } from './enums';
 import { productFilterCategoryMap } from './maps';
+import { getProductsFromLocalStorage } from './services/products-in-basket';
 import { BasketProduct } from './types/basket';
 import { Filter } from './types/filter';
 import { ProductCard } from './types/product-card';
@@ -402,4 +403,21 @@ export function getProductTabUrl(id: number, tab: string) {
 
 export function getCatalogUrl(pageId: number) {
   return AppRoute.Catalog.replace(':id', String(pageId));
+}
+
+export function getProductsInBasket(allProducts: ProductCard[]): BasketProduct[] {
+  const productsInLocalStorage = getProductsFromLocalStorage();
+  const productsInBasket: BasketProduct[] = [];
+  productsInLocalStorage.forEach((item) => {
+    const foundedProduct = allProducts.find(
+      (product) => product.id === item.productId
+    );
+    if (foundedProduct) {
+      productsInBasket.push({
+        product: foundedProduct,
+        quantity: item.quantity,
+      });
+    }
+  });
+  return productsInBasket;
 }

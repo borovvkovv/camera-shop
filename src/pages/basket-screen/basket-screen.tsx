@@ -6,11 +6,11 @@ import OrderCalculation from '../../components/order-calculating/order-calculati
 import ProductInBasketList from '../../components/product-in-basket-list/product-in-basket-list';
 import PromoCode from '../../components/promo-code/promo-code';
 import { AppRoute } from '../../const';
-import { useAppSelector } from '../../hooks/use-app-selector';
 import usePopup from '../../hooks/use-popup';
-import { getProductsInBasket } from '../../store/app-process/selectors';
+import useProductsInBasket from '../../hooks/use-products-in-basket';
 import { BasketProduct } from '../../types/basket';
 import { BreadCrumb } from '../../types/bread-crumb';
+
 function BasketScreen(): JSX.Element {
   const crumbs: BreadCrumb[] = useMemo(
     () => [
@@ -28,7 +28,8 @@ function BasketScreen(): JSX.Element {
 
   const { modalRef, isVisible, setVisibility } = usePopup();
 
-  const productsInBasket = useAppSelector(getProductsInBasket);
+  const { productsInBasket } =
+    useProductsInBasket();
 
   const [productInfoToDelete, setProductInfoToDelete] = useState<
     BasketProduct | undefined
@@ -53,7 +54,12 @@ function BasketScreen(): JSX.Element {
         <Breadcrumbs crumbs={crumbs} />
         <section className='basket'>
           <div className='container'>
-            <h1 className='title title--h2' data-testid='BasketScreenTitle'>Корзина</h1>
+            <h1
+              className='title title--h2'
+              data-testid='BasketScreenTitle'
+            >
+              Корзина
+            </h1>
             {productsInBasket.length === 0 ? (
               emptyBasketStub
             ) : (
@@ -72,9 +78,7 @@ function BasketScreen(): JSX.Element {
                       <PromoCode />
                     </div>
                   </div>
-                  <OrderCalculation
-                    productsInBasket={productsInBasket}
-                  />
+                  <OrderCalculation productsInBasket={productsInBasket} />
                 </div>
               </>
             )}

@@ -9,7 +9,7 @@ function Banner(): JSX.Element | null {
   const { promo, isPromoLoading } = usePromo();
   const { product, isProductLoading } = useProduct(promo?.id ?? 0);
 
-  const stub = (
+  const loadingStub = (
     <div className='banner'>
       <div
         style={{ width: '1280px', height: '280px', backgroundColor: '#333333' }}
@@ -19,7 +19,7 @@ function Banner(): JSX.Element | null {
   );
 
   if (isPromoLoading || isProductLoading) {
-    return stub;
+    return loadingStub;
   }
 
   if (!promo) {
@@ -33,7 +33,7 @@ function Banner(): JSX.Element | null {
       <picture>
         <source
           type='image/webp'
-          srcSet={`/${promo?.previewImgWebp}, /${promo?.previewImgWebp2x} 2x`}
+          srcSet={`/${promo.previewImgWebp}, /${promo.previewImgWebp2x} 2x`}
         />
         <img
           src={`/${promo.previewImg}`}

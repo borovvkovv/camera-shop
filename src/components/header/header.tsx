@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useRef } from 'react';
+import { ChangeEvent, FormEvent, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
@@ -7,9 +7,8 @@ import useSearchResults from '../../hooks/use-search-results';
 import { redirectToRoute } from '../../store/action';
 import SearchFormResultList from '../search-form-result-list/search-form-result-list';
 import { useLocation } from 'react-router';
-import { useAppSelector } from '../../hooks/use-app-selector';
-import { getProductsInBasket } from '../../store/app-process/selectors';
 import { calculateProductsInBasket } from '../../utils';
+import useProductsInBasket from '../../hooks/use-products-in-basket';
 
 function Header(): JSX.Element {
   const ref = useRef(null);
@@ -24,17 +23,21 @@ function Header(): JSX.Element {
     setSearchPattern,
   } = useSearchForm(ref);
   const { foundProducts } = useSearchResults(searchPattern);
-  const productsInBasketLength = calculateProductsInBasket(
-    useAppSelector(getProductsInBasket)
+
+  const { productsInBasket } = useProductsInBasket();
+
+  const numberOfProducts = useMemo(
+    () => calculateProductsInBasket(productsInBasket),
+    [productsInBasket]
   );
 
   const productsInBasketCounter =
-    productsInBasketLength === 0 ? null : (
+    numberOfProducts === 0 ? null : (
       <span
         className='header__basket-count'
         data-testid='ProductsInBasketCounter'
       >
-        {productsInBasketLength}
+        {numberOfProducts}
       </span>
     );
 

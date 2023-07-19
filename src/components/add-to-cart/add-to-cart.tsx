@@ -1,6 +1,5 @@
-import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import usePopup from '../../hooks/use-popup';
-import { incrementProduct } from '../../store/app-process/app-process';
+import { incrementProduct } from '../../services/products-in-basket';
 import { ProductCard } from '../../types/product-card';
 import { humanizeProductPrice, makeProductName } from '../../utils';
 import AddedToCart from '../added-to-cart/added-to-cart';
@@ -20,7 +19,6 @@ function AddToCart({
   setVisibility,
   redirectAfterAddingUrl
 }: AddToCartProps): JSX.Element | null {
-  const dispatch = useAppDispatch();
 
   const {
     modalRef: modalAddedRef,
@@ -36,7 +34,7 @@ function AddToCart({
 
   function handleAddToCartButtonClick() {
     if (product) {
-      dispatch(incrementProduct(product));
+      incrementProduct(product);
     }
 
     setModalAddedVisibility(true);

@@ -58,7 +58,8 @@ function StarRatingList({
         </div>
         <div className='rate__progress'>
           <span className='rate__stars'>{currentRating}</span>
-          <span>/</span> <span className='rate__all-stars'>5</span>
+          <span>/</span>{' '}
+          <span className='rate__all-stars'>{MAX_RATING_STARS}</span>
         </div>
       </div>
       {errors.rating && (

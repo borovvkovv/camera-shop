@@ -4,7 +4,7 @@ import { AppRoute } from '../../const';
 import { ProductCardMode } from '../../enums';
 import useRating from '../../hooks/use-rating';
 import { ProductCard } from '../../types/product-card';
-import { humanizeProductPrice } from '../../utils';
+import { getProductUrl, humanizeProductPrice } from '../../utils';
 import StarRating from '../star-rating/star-rating';
 
 type ProductCardItemProps = {
@@ -12,6 +12,7 @@ type ProductCardItemProps = {
   onBuyClick: (product: ProductCard) => void;
   addClass?: string;
   mode?: ProductCardMode;
+  basketProductIds: number[];
 };
 
 function ProductCardItem({
@@ -19,6 +20,7 @@ function ProductCardItem({
   onBuyClick,
   addClass,
   mode,
+  basketProductIds,
 }: ProductCardItemProps): JSX.Element {
   const {
     id,
@@ -32,6 +34,30 @@ function ProductCardItem({
   } = product;
 
   const { ratingInfo } = useRating(id);
+
+  const buyButton = basketProductIds.includes(product.id) ? (
+    <Link
+      className='btn btn--purple-border product-card__btn product-card__btn--in-cart'
+      to={AppRoute.Basket}
+    >
+      <svg
+        width='16'
+        height='16'
+        aria-hidden='true'
+      >
+        <use xlinkHref='#icon-basket'></use>
+      </svg>
+      В корзине
+    </Link>
+  ) : (
+    <button
+      className='btn btn--purple product-card__btn'
+      type='button'
+      onClick={() => onBuyClick(product)}
+    >
+      Купить
+    </button>
+  );
 
   const content = (
     <>
@@ -52,7 +78,7 @@ function ProductCardItem({
       </div>
       <div className='product-card__info'>
         <div className='rate product-card__rate'>
-          <StarRating rating={ratingInfo?.rating ?? null} />
+          <StarRating rating={ratingInfo?.rating} />
           <p className='rate__count'>
             <span className='visually-hidden'>Всего оценок:</span>
             {reviewCount}
@@ -65,16 +91,10 @@ function ProductCardItem({
         </p>
       </div>
       <div className='product-card__buttons'>
-        <button
-          className='btn btn--purple product-card__btn'
-          type='button'
-          onClick={() => onBuyClick(product)}
-        >
-          Купить
-        </button>
+        {buyButton}
         <Link
           className='btn btn--transparent'
-          to={AppRoute.Product.replace(':id', String(id))}
+          to={getProductUrl(id)}
           data-testid='productCardMoreInfo'
         >
           Подробнее
@@ -90,4 +110,7 @@ function ProductCardItem({
   );
 }
 
-export default memo(ProductCardItem, (previous, next) => previous.product === next.product);
+export default memo(
+  ProductCardItem,
+  (previous, next) => previous.product === next.product && previous.basketProductIds.length === next.basketProductIds.length
+);

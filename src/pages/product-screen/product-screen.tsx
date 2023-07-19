@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import AddToCart from '../../components/add-to-cart/add-to-cart';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
@@ -10,12 +10,13 @@ import usePopup from '../../hooks/use-popup';
 import useProduct from '../../hooks/use-product';
 import useSimilarProducts from '../../hooks/use-similar-products';
 import { ProductCard } from '../../types/product-card';
-import { humanizeProductPrice } from '../../utils';
+import { getProductUrl, humanizeProductPrice } from '../../utils';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import StarRating from '../../components/star-rating/star-rating';
 import ProductInfoTabs from '../../components/product-info-tabs/product-info-tabs';
 import { ProductInfoTabMode } from '../../enums';
 import useRating from '../../hooks/use-rating';
+import { BreadCrumb } from '../../types/bread-crumb';
 
 function ProductScreen(): JSX.Element {
   const { id: idAsString, tab: tabAsString } = useParams();
@@ -38,10 +39,9 @@ function ProductScreen(): JSX.Element {
   const [selectedProduct, setSelectedProduct] = useState<ProductCard | null>(
     null
   );
-  const modalRef = useRef(null);
-  const { isVisible, setVisibility } = usePopup(modalRef);
+  const { modalRef, isVisible, setVisibility } = usePopup();
 
-  const crumbs = useMemo(
+  const crumbs: BreadCrumb[] = useMemo(
     () => [
       {
         name: 'Каталог',
@@ -49,7 +49,7 @@ function ProductScreen(): JSX.Element {
       },
       {
         name: !product ? '' : product.name,
-        path: AppRoute.Product.replace(':id', String(id)),
+        path: getProductUrl(id),
       },
     ],
     [id, product]
@@ -116,7 +116,7 @@ function ProductScreen(): JSX.Element {
             <div className='product__content'>
               <h1 className='title title--h3'>{name}</h1>
               <div className='rate product__rate'>
-                <StarRating rating={ratingInfo?.rating ?? null} />
+                <StarRating rating={ratingInfo?.rating} />
                 <p className='rate__count'>
                   <span className='visually-hidden'>Всего оценок:</span>
                   {reviewCount}
@@ -158,6 +158,7 @@ function ProductScreen(): JSX.Element {
         modalRef={modalRef}
         isVisible={isVisible}
         setVisibility={setVisibility}
+        redirectAfterAddingUrl={AppRoute.Root}
       />
     </>
   );

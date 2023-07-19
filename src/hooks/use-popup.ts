@@ -1,9 +1,10 @@
-import { MutableRefObject, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function usePopup(
-  modalRef: MutableRefObject<HTMLElement | null>
+  onClose?: () => void
 ) {
   const [isVisible, setVisibility] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClick(evt: MouseEvent) {
@@ -15,6 +16,9 @@ export default function usePopup(
           .join('');
 
         if (!target.closest(refClasses)) {
+          if (onClose) {
+            onClose();
+          }
           setVisibility(false);
           evt.stopPropagation();
         }
@@ -23,6 +27,9 @@ export default function usePopup(
 
     function handleKeyDown(evt: KeyboardEvent) {
       if (evt.key === 'Escape') {
+        if (onClose) {
+          onClose();
+        }
         setVisibility(false);
       }
 
@@ -78,7 +85,7 @@ export default function usePopup(
       document.removeEventListener('click', handleClick, true);
       document.body.classList.remove('scroll-lock');
     };
-  }, [isVisible, modalRef]);
+  }, [isVisible, modalRef, onClose]);
 
-  return { isVisible, setVisibility };
+  return { modalRef, isVisible, setVisibility };
 }

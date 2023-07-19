@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useRef } from 'react';
+import { ChangeEvent, FormEvent, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
@@ -7,6 +7,8 @@ import useSearchResults from '../../hooks/use-search-results';
 import { redirectToRoute } from '../../store/action';
 import SearchFormResultList from '../search-form-result-list/search-form-result-list';
 import { useLocation } from 'react-router';
+import { calculateProductsInBasket } from '../../utils';
+import useProductsInBasket from '../../hooks/use-products-in-basket';
 
 function Header(): JSX.Element {
   const ref = useRef(null);
@@ -21,6 +23,23 @@ function Header(): JSX.Element {
     setSearchPattern,
   } = useSearchForm(ref);
   const { foundProducts } = useSearchResults(searchPattern);
+
+  const { productsInBasket } = useProductsInBasket();
+
+  const numberOfProducts = useMemo(
+    () => calculateProductsInBasket(productsInBasket),
+    [productsInBasket]
+  );
+
+  const productsInBasketCounter =
+    numberOfProducts === 0 ? null : (
+      <span
+        className='header__basket-count'
+        data-testid='ProductsInBasketCounter'
+      >
+        {numberOfProducts}
+      </span>
+    );
 
   function handleInputSearchChange({ target }: ChangeEvent<HTMLInputElement>) {
     setSearchPattern(target.value);
@@ -142,7 +161,7 @@ function Header(): JSX.Element {
         </div>
         <Link
           className='header__basket-link'
-          to='/'
+          to={AppRoute.Basket}
         >
           <svg
             width='16'
@@ -151,6 +170,7 @@ function Header(): JSX.Element {
           >
             <use xlinkHref='#icon-basket'></use>
           </svg>
+          {productsInBasketCounter}
         </Link>
       </div>
     </header>

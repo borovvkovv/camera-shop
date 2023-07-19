@@ -1,7 +1,16 @@
 import { datatype, name, unique, random } from 'faker';
-import { ProductCategory, ProductLevel, ProductType } from '../enums';
+import { ValidPromoCodes } from '../const';
+import {
+  ProductCategory,
+  ProductLevel,
+  ProductsInBasketLimitation,
+  ProductType,
+} from '../enums';
+import { BasketProduct, LocalStorageProduct } from '../types/basket';
 import { Filter } from '../types/filter';
+import { Order } from '../types/order';
 import { ProductCard } from '../types/product-card';
+import { PromoCodeInfo } from '../types/promo-code-info';
 import { PromoProduct } from '../types/promo-product';
 import { Review } from '../types/review';
 import { SearchResultProduct } from '../types/search-result-product';
@@ -66,7 +75,9 @@ export const getFakeProductRating = () => ({
 export const getFakeProductsRating = (quantity: number) =>
   Array.from({ length: quantity }).map((_) => getFakeProductRating());
 
-export const getFakeSearchResultProducts = (quantity: number): SearchResultProduct[] =>
+export const getFakeSearchResultProducts = (
+  quantity: number
+): SearchResultProduct[] =>
   Array.from({ length: quantity }).map((_) => ({
     productName: datatype.string(),
     urlPath: datatype.string(),
@@ -91,5 +102,34 @@ export const getFakeFilter = (): Filter => ({
 
 export const getFakeSort = (): Sort => ({
   order: 'Asc',
-  by: 'Price'
+  by: 'Price',
 });
+
+export const getFakeProductInBasket = (product?: ProductCard): BasketProduct => ({
+  product: product ?? getFakeProduct(),
+  quantity: datatype.number(ProductsInBasketLimitation.Max),
+});
+
+export const getFakeProductsInBasket = (quantity: number): BasketProduct[] =>
+  Array.from({ length: quantity }).map(() => getFakeProductInBasket());
+
+export const getFakePromoCodeInfo = (): PromoCodeInfo => ({
+  coupon: ValidPromoCodes[0],
+  discount: datatype.number(100),
+});
+
+export const getFakeOrder = (): Order => ({
+  camerasIds: [1, 2, 3],
+  coupon: ValidPromoCodes[0],
+});
+
+export const getFakeProductInLocalStorage = (
+  productInBasket: BasketProduct
+): LocalStorageProduct => ({
+  productId: productInBasket.product.id,
+  quantity: productInBasket.quantity,
+});
+
+export const getFakeProductsInLocalStorage = (
+  products: BasketProduct[]
+): LocalStorageProduct[] => products.map(getFakeProductInLocalStorage);

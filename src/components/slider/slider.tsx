@@ -1,5 +1,6 @@
 import { memo, MouseEvent, useMemo, useRef, useState } from 'react';
 import { ProductCardMode, SliderKeyFrames } from '../../enums';
+import useProductsInBasket from '../../hooks/use-products-in-basket';
 import useSlider from '../../hooks/use-slider';
 import { ProductCard } from '../../types/product-card';
 import ProductCardItem from '../product-card-item/product-card-item';
@@ -17,6 +18,10 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
   const { currentPageIndexes, maxPageNumber } = useSlider(
     products.length,
     currentSliderPage
+  );
+  const { productsInBasket } = useProductsInBasket();
+  const basketProductIds = productsInBasket.map(
+    (productInfo) => productInfo.product.id
   );
 
   const handleNextSliderClick = useMemo(
@@ -83,6 +88,7 @@ function Slider({ products, onBuyClick }: SliderProps): JSX.Element | null {
                     product={product}
                     onBuyClick={onBuyClick}
                     mode={ProductCardMode.Slider}
+                    basketProductIds={basketProductIds}
                   />
                 </div>
               ))}

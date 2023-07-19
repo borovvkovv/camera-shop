@@ -4,7 +4,6 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -13,14 +12,14 @@ import { useAppSelector } from '../../hooks/use-app-selector';
 import useFormDisable from '../../hooks/use-form-disable';
 import usePopup from '../../hooks/use-popup';
 import { addReviewAction } from '../../store/api-actions';
-import { getIsCommentSent } from '../../store/data-process/selectors';
+import { getIsCommentSending, getIsCommentSent } from '../../store/data-process/selectors';
 import { UserReview } from '../../types/user-review';
 import StarRatingList from '../star-rating-list/star-rating-list';
-import UserCommentSuccess from '../user-comment-success/user-comment-success';
+import ModalSuccess from '../modal-success/modal-success';
 
 type UserReviewProps = {
   productId: number;
-  modalRef?: React.MutableRefObject<null>;
+  modalRef: React.RefObject<HTMLDivElement>;
   isVisible: boolean;
   setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -45,7 +44,7 @@ function UserComment({
 
   const dispatch = useAppDispatch();
   const [userReview, setUserReview] = useState<UserReview>(initialState);
-  const isFormDisabled = useFormDisable();
+  const isFormDisabled = useFormDisable(getIsCommentSending);
   const {
     register,
     unregister,
@@ -55,11 +54,11 @@ function UserComment({
     mode: 'onBlur',
   });
   const isCommentSent = useAppSelector(getIsCommentSent);
-  const modalCommentSuccessRef = useRef(null);
   const {
+    modalRef: modalCommentSuccessRef,
     isVisible: isModalCommentSuccessVisible,
     setVisibility: setCommentSuccessVisibility,
-  } = usePopup(modalCommentSuccessRef);
+  } = usePopup();
 
   useEffect(() => {
     if (isCommentSent) {
@@ -302,10 +301,11 @@ function UserComment({
           </div>
         </div>
       </div>
-      <UserCommentSuccess
+      <ModalSuccess
         modalRef={modalCommentSuccessRef}
         isVisible={isModalCommentSuccessVisible}
         setVisibility={setCommentSuccessVisibility}
+        title='Спасибо за отзыв'
       />
     </>
   );

@@ -1,20 +1,31 @@
+import { configureMockStore } from '@jedmao/redux-mock-store';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
+import { Provider } from 'react-redux';
 import HistoryRouter from '../history-router/history-router';
 import AddedToCart from './added-to-cart';
 
 const history = createMemoryHistory();
 const setVisibility = jest.fn();
+const getNodeRef = () => ({
+  current: document.createElement('div'),
+});
+
+const mockStore = configureMockStore();
+const store = mockStore({});
 
 describe('Component: AddedToCart', () => {
   it('should render correctly', () => {
     const fakeApp = (
-      <HistoryRouter history={history}>
-        <AddedToCart
-          isVisible
-          setVisibility={setVisibility}
-        />
-      </HistoryRouter>
+      <Provider store={store}>
+        <HistoryRouter history={history}>
+          <AddedToCart
+            modalRef={getNodeRef()}
+            isVisible
+            setVisibility={setVisibility}
+          />
+        </HistoryRouter>
+      </Provider>
     );
 
     render(fakeApp);
@@ -29,12 +40,15 @@ describe('Component: AddedToCart', () => {
 
   it('should hide popup when prop isVisible=false', () => {
     const fakeApp = (
-      <HistoryRouter history={history}>
-        <AddedToCart
-          isVisible={false}
-          setVisibility={setVisibility}
-        />
-      </HistoryRouter>
+      <Provider store={store}>
+        <HistoryRouter history={history}>
+          <AddedToCart
+            modalRef={getNodeRef()}
+            isVisible={false}
+            setVisibility={setVisibility}
+          />
+        </HistoryRouter>
+      </Provider>
     );
 
     render(fakeApp);

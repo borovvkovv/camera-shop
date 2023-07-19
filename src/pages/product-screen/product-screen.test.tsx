@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router';
 import HistoryRouter from '../../components/history-router/history-router';
 import ProductScreen from './product-screen';
 import { HelmetProvider } from 'react-helmet-async';
+import { getProductUrl } from '../../utils';
 
 const product = getFakeProduct();
 
@@ -21,11 +22,15 @@ describe('Component: ProductScreen', () => {
   it('should render correctly', () => {
     const store = mockStore({
       [NameSpace.Data]: {
+        products: [],
         product: product,
         productsRating: [],
         isProductLoading: false,
         reviews: [],
-        similarProducts: []
+        similarProducts: [],
+      },
+      [NameSpace.App]: {
+        productsInBasket: [],
       },
     });
 
@@ -44,7 +49,7 @@ describe('Component: ProductScreen', () => {
       </Provider>
     );
 
-    history.push(AppRoute.Product.replace(':id', String(product.id)));
+    history.push(getProductUrl(product.id));
     render(fakeApp);
 
     expect(screen.getByText(product.description)).toBeInTheDocument();
@@ -53,9 +58,13 @@ describe('Component: ProductScreen', () => {
   it('should render loading when product is loading', () => {
     const store = mockStore({
       [NameSpace.Data]: {
+        products: [],
         product: null,
         productsRating: [],
         isProductLoading: true,
+      },
+      [NameSpace.App]: {
+        productsInBasket: [],
       },
     });
 
@@ -74,7 +83,7 @@ describe('Component: ProductScreen', () => {
       </Provider>
     );
 
-    history.push(AppRoute.Product.replace(':id', String(product.id)));
+    history.push(getProductUrl(product.id));
     render(fakeApp);
 
     expect(screen.getByText(/Загрузка.../)).toBeInTheDocument();
@@ -83,9 +92,13 @@ describe('Component: ProductScreen', () => {
   it('should set 404 page when product loading failed', () => {
     const store = mockStore({
       [NameSpace.Data]: {
+        products: [],
         product: null,
         productsRating: [],
         isProductLoading: false,
+      },
+      [NameSpace.App]: {
+        productsInBasket: [],
       },
     });
 
@@ -104,7 +117,7 @@ describe('Component: ProductScreen', () => {
       </Provider>
     );
 
-    history.push(AppRoute.Product.replace(':id', String(product.id)));
+    history.push(getProductUrl(product.id));
     render(fakeApp);
 
     expect(screen.getByText(/Страница не найдена/i)).toBeInTheDocument();

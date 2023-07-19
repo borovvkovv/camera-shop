@@ -18,7 +18,11 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const store = mockStore({
   [NameSpace.Data]: {
+    products: [],
     productsRating: [],
+  },
+  [NameSpace.App]: {
+    productsInBasket: [],
   },
 });
 
@@ -43,7 +47,9 @@ describe('Component: Slider', () => {
     expect(
       screen
         .getAllByTestId('productCardSlider')
-        .filter((similarProduct) => similarProduct.classList.contains('is-active')).length
+        .filter((similarProduct) =>
+          similarProduct.classList.contains('is-active')
+        ).length
     ).toBe(PRODUCTS_ON_SLIDER);
     expect(screen.getByTestId('nextSlide')).not.toBeDisabled();
     expect(screen.getByTestId('prevSlide')).toBeDisabled();

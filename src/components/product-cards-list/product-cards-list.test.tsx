@@ -18,7 +18,10 @@ const mockStore = configureMockStore(middlewares);
 
 const store = mockStore({
   [NameSpace.Data]: {
-    productsRating: []
+    productsRating: [],
+  },
+  [NameSpace.App]: {
+    productsInBasket: [],
   },
 });
 

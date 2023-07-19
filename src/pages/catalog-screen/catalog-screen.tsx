@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 import AddToCart from '../../components/add-to-cart/add-to-cart';
 import Banner from '../../components/banner/banner';
@@ -18,7 +18,8 @@ import Sorts from '../../components/sorts/sorts';
 import useSort from '../../hooks/use-sort';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import { redirectToRoute } from '../../store/action';
-import { getStringFromQueryParams } from '../../utils';
+import { getCatalogUrl, getStringFromQueryParams } from '../../utils';
+import { BreadCrumb } from '../../types/bread-crumb';
 function CatalogScreen(): JSX.Element {
   const { pathname } = useLocation();
   const { id: pageAsString } = useParams();
@@ -28,8 +29,7 @@ function CatalogScreen(): JSX.Element {
   const [selectedProduct, setSelectedProduct] = useState<ProductCard | null>(
     null
   );
-  const modalRef = useRef(null);
-  const { isVisible, setVisibility } = usePopup(modalRef);
+  const { modalRef, isVisible, setVisibility } = usePopup();
   const { products, isProductsLoading, isProductsLoadingFailed } =
     useProducts();
   const { filter, processedProducts, searchParams, setSearchParams } =
@@ -51,7 +51,7 @@ function CatalogScreen(): JSX.Element {
     <h1 className='title title--h3'>Товары не найдены</h1>
   );
 
-  const crumbs = useMemo(
+  const crumbs: BreadCrumb[] = useMemo(
     () => [
       {
         name: 'Каталог',
@@ -73,10 +73,7 @@ function CatalogScreen(): JSX.Element {
   function handleFilterSubmit(queryParams: Record<string, string[]>) {
     dispatch(
       redirectToRoute(
-        `${AppRoute.Catalog.replace(
-          ':id',
-          '1'
-        )}${getStringFromQueryParams(queryParams)}`
+        `${getCatalogUrl(1)}${getStringFromQueryParams(queryParams)}`
       )
     );
     setIsFiltering(false);

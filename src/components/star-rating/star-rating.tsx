@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { MAX_RATING_STARS } from '../../const';
 
 type StarRatingProps = {
-  rating: number | null;
+  rating: number | undefined;
 };
 
 function StarRating({ rating }: StarRatingProps): JSX.Element {

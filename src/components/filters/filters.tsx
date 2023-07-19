@@ -31,6 +31,8 @@ function Filters({
 }: FilterProps): JSX.Element {
   const minPrice = getMinPrice(products);
   const maxPrice = getMaxPrice(products);
+  const minPricePlaceHolder = isNaN(minPrice) ? 'от' : String(minPrice);
+  const maxPricePlaceHolder = isNaN(maxPrice) ? 'до' : String(maxPrice);
 
   const [queryParams, setQueryParams] = useState(getQueryParams(filter, sort));
   useEffect(() => {
@@ -261,7 +263,7 @@ function Filters({
               <input
                 type='number'
                 name='price'
-                placeholder={isNaN(minPrice) ? 'от' : String(minPrice)}
+                placeholder={minPricePlaceHolder}
                 value={queryParams[QueryParam.PriceMin] ?? ''}
                 onChange={handlePriceMinChange}
                 data-testid='minPriceFilterInput'
@@ -273,7 +275,7 @@ function Filters({
               <input
                 type='number'
                 name='priceUp'
-                placeholder={isNaN(maxPrice) ? 'до' : String(maxPrice)}
+                placeholder={maxPricePlaceHolder}
                 value={queryParams[QueryParam.PriceMax] ?? ''}
                 onChange={handlePriceMaxChange}
                 data-testid='maxPriceFilterInput'

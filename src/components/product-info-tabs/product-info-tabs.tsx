@@ -1,8 +1,8 @@
-import { AppRoute } from '../../const';
 import { ProductInfoTabMode } from '../../enums';
 import { useAppDispatch } from '../../hooks/use-app-dispatch';
 import { redirectToRoute } from '../../store/action';
 import { ProductCard } from '../../types/product-card';
+import { getProductTabUrl } from '../../utils';
 
 type ProductInfoTabsProps = {
   product: ProductCard;
@@ -22,10 +22,7 @@ function ProductInfoTabs({
   function handleCharacteristicsButtonClick() {
     dispatch(
       redirectToRoute(
-        AppRoute.ProductTab.replace(':id', String(product.id)).replace(
-          ':tab',
-          ProductInfoTabMode.Characteristics
-        )
+        getProductTabUrl(product.id, ProductInfoTabMode.Characteristics)
       )
     );
   }
@@ -33,10 +30,7 @@ function ProductInfoTabs({
   function handleTextButtonClick() {
     dispatch(
       redirectToRoute(
-        AppRoute.ProductTab.replace(':id', String(product.id)).replace(
-          ':tab',
-          ProductInfoTabMode.Description
-        )
+        getProductTabUrl(product.id, ProductInfoTabMode.Description)
       )
     );
   }

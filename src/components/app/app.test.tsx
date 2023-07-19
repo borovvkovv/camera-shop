@@ -35,6 +35,9 @@ const store = mockStore({
     isCommentSending: false,
     isCommentSent: true,
   },
+  [NameSpace.App]: {
+    productsInBasket: [],
+  },
 });
 
 const history = createMemoryHistory();
@@ -114,5 +117,13 @@ describe('Application routing', () => {
     );
     expect(screen.getByTestId('buttonTextTab')).toHaveClass('is-active');
     expect(screen.getByTestId('textTab')).toHaveClass('is-active');
+  });
+
+  it('Should render basket when user navigate to "/basket"', () => {
+    history.push(AppRoute.Basket);
+    render(fakeApp);
+
+    expect(screen.getByText('Нет товаров в корзине')).toBeInTheDocument();
+
   });
 });

@@ -1,6 +1,8 @@
 import { store } from '../store';
+import { BasketProduct } from './basket';
 import { ProductCard } from './product-card';
 import { ProductRating } from './product-rating';
+import { PromoCodeInfo } from './promo-code-info';
 import { PromoProduct } from './promo-product';
 import { Review } from './review';
 
@@ -19,6 +21,14 @@ export type DataProcess = {
   reviews: Review[];
   isCommentSending: boolean;
   isCommentSent: boolean;
+};
+
+export type AppProcess = {
+  productsInBasket: BasketProduct[];
+  promoCode: PromoCodeInfo | undefined;
+  isPromoCodeChecking: boolean;
+  isPromoCodeChecked: boolean;
+  isOrderSentSuccessfully: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;

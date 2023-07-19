@@ -28,6 +28,9 @@ export const createAPI = (): AxiosInstance => {
         ) {
           toast.warn('Ошибка загрузки списка отзывов');
         }
+        if (new RegExp(/\/orders/).test(error.config.url ?? '')) {
+          toast.warn('Ошибка отправки заказа');
+        }
       }
       throw error;
     }

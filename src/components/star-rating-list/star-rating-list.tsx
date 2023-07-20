@@ -24,12 +24,12 @@ function StarRatingList({
     (_, index) => MAX_RATING_STARS - index
   );
 
+  const RatingListClassNames = `rate htmlForm-review__item ${
+    errors.rating ? 'is-invalid' : ''
+  }`;
+
   return (
-    <fieldset
-      className={`rate htmlForm-review__item ${
-        errors.rating ? 'is-invalid' : ''
-      }`}
-    >
+    <fieldset className={RatingListClassNames}>
       <legend className='rate__caption'>
         Рейтинг
         <svg

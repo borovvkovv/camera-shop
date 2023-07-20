@@ -1,5 +1,4 @@
 import { store } from '../store';
-import { BasketProduct } from './basket';
 import { ProductCard } from './product-card';
 import { ProductRating } from './product-rating';
 import { PromoCodeInfo } from './promo-code-info';
@@ -24,7 +23,6 @@ export type DataProcess = {
 };
 
 export type AppProcess = {
-  productsInBasket: BasketProduct[];
   promoCode: PromoCodeInfo | undefined;
   isPromoCodeChecking: boolean;
   isPromoCodeChecked: boolean;

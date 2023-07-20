@@ -7,7 +7,6 @@ describe('Reducer: AppProcess', () => {
   let state: AppProcess;
   beforeEach(() => {
     state = {
-      productsInBasket: [],
       promoCode: undefined,
       isPromoCodeChecked: false,
       isPromoCodeChecking: false,

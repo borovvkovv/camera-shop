@@ -39,7 +39,6 @@ describe('Component: OrderCalculation', () => {
 
     const store = mockStore({
       [NameSpace.App]: {
-        productsInBasket: productsInBasket,
         promoCode: promoCodeInfo,
       },
     });
@@ -70,7 +69,6 @@ describe('Component: OrderCalculation', () => {
   it('should render price without discount if discount = undefined', () => {
     const store = mockStore({
       [NameSpace.App]: {
-        productsInBasket: productsInBasket,
         promoCode: undefined,
       },
     });

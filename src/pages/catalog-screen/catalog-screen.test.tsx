@@ -30,9 +30,6 @@ describe('Component: CatalogScreen', () => {
         promo: getFakePromoProduct(),
         isPromoLoading: false,
       },
-      [NameSpace.App]: {
-        productsInBasket: [],
-      },
     });
 
     const fakeApp = (
@@ -74,9 +71,6 @@ describe('Component: CatalogScreen', () => {
         promo: getFakePromoProduct(),
         isPromoLoading: false,
       },
-      [NameSpace.App]: {
-        productsInBasket: [],
-      },
     });
 
     const fakeApp = (
@@ -115,9 +109,6 @@ describe('Component: CatalogScreen', () => {
         isProductLoading: false,
         promo: getFakePromoProduct(),
         isPromoLoading: false,
-      },
-      [NameSpace.App]: {
-        productsInBasket: [],
       },
     });
 
@@ -159,9 +150,6 @@ describe('Component: CatalogScreen', () => {
         isProductLoading: false,
         promo: getFakePromoProduct(),
         isPromoLoading: false,
-      },
-      [NameSpace.App]: {
-        productsInBasket: [],
       },
     });
 

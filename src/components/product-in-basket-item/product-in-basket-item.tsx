@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { ProductsInBasketLimitation } from '../../enums';
 import { dicrementProduct, incrementProduct, setProductAmount } from '../../services/products-in-basket';
 import { BasketProduct } from '../../types/basket';
@@ -17,7 +17,6 @@ function ProductInBasketItem({
   productInfo,
   onProductDelete,
 }: ProductInBasketItemProps): JSX.Element {
-  const [productQuantity, setProductQuantity] = useState(productInfo.quantity);
   const {
     name,
     vendorCode,
@@ -37,12 +36,10 @@ function ProductInBasketItem({
     productInfo.quantity >= ProductsInBasketLimitation.Max;
 
   function handleDicrementProductsButtonClick() {
-    setProductQuantity((prev) => prev - 1);
     dicrementProduct(productInfo.product);
   }
 
   function handleIncrementProductsButtonClick() {
-    setProductQuantity((prev) => prev + 1);
     incrementProduct(productInfo.product);
   }
 
@@ -58,7 +55,6 @@ function ProductInBasketItem({
       } else if (quantity > ProductsInBasketLimitation.Max) {
         quantity = ProductsInBasketLimitation.Max;
       }
-      setProductQuantity(quantity);
       setProductAmount({ ...productInfo, quantity });
     }
   }
@@ -125,7 +121,7 @@ function ProductInBasketItem({
         <input
           type='number'
           id='counter1'
-          value={productQuantity}
+          value={productInfo.quantity}
           min='1'
           max='99'
           aria-label='количество товара'

@@ -4,7 +4,6 @@ import { AppProcess } from '../../types/store';
 import { fetchPromoCodeAction, makeOrderAction } from '../api-actions';
 
 const initialState: AppProcess = {
-  productsInBasket: [],
   promoCode: undefined,
   isPromoCodeChecked: false,
   isPromoCodeChecking: false,

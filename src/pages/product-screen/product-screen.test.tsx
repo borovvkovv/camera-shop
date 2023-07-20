@@ -29,9 +29,6 @@ describe('Component: ProductScreen', () => {
         reviews: [],
         similarProducts: [],
       },
-      [NameSpace.App]: {
-        productsInBasket: [],
-      },
     });
 
     const fakeApp = (
@@ -63,9 +60,6 @@ describe('Component: ProductScreen', () => {
         productsRating: [],
         isProductLoading: true,
       },
-      [NameSpace.App]: {
-        productsInBasket: [],
-      },
     });
 
     const fakeApp = (
@@ -96,9 +90,6 @@ describe('Component: ProductScreen', () => {
         product: null,
         productsRating: [],
         isProductLoading: false,
-      },
-      [NameSpace.App]: {
-        productsInBasket: [],
       },
     });
 

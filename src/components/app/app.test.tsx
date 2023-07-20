@@ -35,9 +35,6 @@ const store = mockStore({
     isCommentSending: false,
     isCommentSent: true,
   },
-  [NameSpace.App]: {
-    productsInBasket: [],
-  },
 });
 
 const history = createMemoryHistory();

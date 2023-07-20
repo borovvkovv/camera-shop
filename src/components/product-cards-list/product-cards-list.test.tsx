@@ -20,9 +20,6 @@ const store = mockStore({
   [NameSpace.Data]: {
     productsRating: [],
   },
-  [NameSpace.App]: {
-    productsInBasket: [],
-  },
 });
 
 describe('Component: ProductCardsList', () => {

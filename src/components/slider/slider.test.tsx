@@ -3,7 +3,7 @@ import {
 } from '../../utils/mock';
 import HistoryRouter from '../history-router/history-router';
 import { createMemoryHistory } from 'history';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { NameSpace, PRODUCTS_ON_SLIDER } from '../../const';
 import userEvent from '@testing-library/user-event';
 import Slider from './slider';
@@ -51,13 +51,11 @@ describe('Component: Slider', () => {
     expect(screen.getByTestId('nextSlide')).not.toBeDisabled();
     expect(screen.getByTestId('prevSlide')).toBeDisabled();
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(async () => {
-      await userEvent.click(screen.getByTestId('nextSlide'));
-      await userEvent.click(screen.getByTestId('nextSlide'));
-      await userEvent.click(screen.getByTestId('nextSlide'));
+    userEvent.click(screen.getByTestId('nextSlide'));
+    userEvent.click(screen.getByTestId('nextSlide'));
+    userEvent.click(screen.getByTestId('nextSlide'));
+    await waitFor(() => {
+      expect(screen.getByTestId('nextSlide')).toBeDisabled();
     });
-
-    expect(screen.getByTestId('nextSlide')).toBeDisabled();
   });
 });

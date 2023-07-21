@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { makeProductName } from '../../utils';
 import { getFakeProduct } from '../../utils/mock';
@@ -7,7 +7,6 @@ import { MutableRefObject } from 'react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import DeleteProduct from './delete-product';
-import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 
 const setVisibility = jest.fn();
@@ -81,12 +80,10 @@ describe('Component: DeleteProduct', () => {
 
     render(fakeApp);
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(async () => {
-      await userEvent.click(screen.getByTestId('ClosePopupButton'));
+    userEvent.click(screen.getByTestId('ClosePopupButton'));
+    await waitFor(() => {
+      expect(setVisibility).toBeCalledTimes(1);
     });
-
-    expect(setVisibility).toBeCalledTimes(1);
   });
 
   it('DeleteProduct popup should be hidden when user click on delete button', async () => {
@@ -105,12 +102,10 @@ describe('Component: DeleteProduct', () => {
 
     render(fakeApp);
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(async () => {
-      await userEvent.click(screen.getByTestId('DeleteButton'));
+    userEvent.click(screen.getByTestId('DeleteButton'));
+    await waitFor(() => {
+      expect(setVisibility).toBeCalledTimes(1);
     });
-
-    expect(setVisibility).toBeCalledTimes(1);
   });
 
 });

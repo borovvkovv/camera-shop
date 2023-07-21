@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { humanizeProductPrice, makeProductName } from '../../utils';
 import { getFakeProduct } from '../../utils/mock';
@@ -83,12 +83,10 @@ describe('Component: AddToCart', () => {
     render(fakeApp);
 
     expect(screen.getByTestId('addedToCartPopup')).not.toHaveClass('is-active');
+    userEvent.click(screen.getByTestId('addToCartButton'));
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(async () => {
-      await userEvent.click(screen.getByTestId('addToCartButton'));
+    await waitFor(() => {
+      expect(screen.getByTestId('addedToCartPopup')).toHaveClass('is-active');
     });
-
-    expect(screen.getByTestId('addedToCartPopup')).toHaveClass('is-active');
   });
 });

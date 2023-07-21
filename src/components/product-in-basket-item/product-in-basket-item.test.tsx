@@ -1,5 +1,5 @@
 import { getFakeProductInBasket } from '../../utils/mock';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { calculateProductPrice, humanizeProductPrice, makeProductName } from '../../utils';
 import thunk from 'redux-thunk';
 import { configureMockStore } from '@jedmao/redux-mock-store';
@@ -60,12 +60,10 @@ describe('Component: ProductCardItem', () => {
 
     render(fakeComponent);
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(async () => {
-      await userEvent.click(screen.getByTestId('DeleteProductButton'));
+    userEvent.click(screen.getByTestId('DeleteProductButton'));
+    await waitFor(() => {
+      expect(onProductDelete).toBeCalledTimes(1);
     });
-
-    expect(onProductDelete).toBeCalledTimes(1);
   });
 
 });

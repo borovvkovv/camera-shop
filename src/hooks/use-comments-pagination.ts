@@ -6,7 +6,7 @@ export default function useCommentsPagination(allComments: Review[]) {
   const [currentPage, setCurrentPage] = useState(1);
 
   function handleWindowsScroll() {
-    let timerId: undefined | NodeJS.Timeout = undefined;
+    let timerId: null | NodeJS.Timeout = null;
     let isLoadingActive = false;
 
     return () => {

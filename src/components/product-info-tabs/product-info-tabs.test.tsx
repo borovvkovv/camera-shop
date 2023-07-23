@@ -38,7 +38,7 @@ describe('Component: ProductInfoTab', () => {
               element={
                 <ProductInfoTabs
                   product={product}
-                  tabMode={undefined}
+                  tabMode={null}
                 />
               }
             />
@@ -69,7 +69,7 @@ describe('Component: ProductInfoTab', () => {
               element={
                 <ProductInfoTabs
                   product={product}
-                  tabMode={undefined}
+                  tabMode={null}
                 />
               }
             />
@@ -100,7 +100,7 @@ describe('Component: ProductInfoTab', () => {
               element={
                 <ProductInfoTabs
                   product={product}
-                  tabMode={undefined}
+                  tabMode={null}
                 />
               }
             />
@@ -140,7 +140,7 @@ describe('Component: ProductInfoTab', () => {
               element={
                 <ProductInfoTabs
                   product={product}
-                  tabMode={undefined}
+                  tabMode={null}
                 />
               }
             />

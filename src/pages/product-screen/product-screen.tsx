@@ -23,14 +23,14 @@ function ProductScreen(): JSX.Element {
   const id = Number(idAsString);
 
   const productInfoModeValues = Object.values(ProductInfoTabMode);
-  let tabMode: ProductInfoTabMode | undefined = tabAsString as ProductInfoTabMode;
+  let tabMode: ProductInfoTabMode | null = tabAsString as ProductInfoTabMode;
 
   if (
     productInfoModeValues.indexOf(
       tabMode ?? ProductInfoTabMode.Characteristics
     ) === -1
   ) {
-    tabMode = undefined;
+    tabMode = null;
   }
   const { product, isProductLoading } = useProduct(id);
   const { similarProducts } = useSimilarProducts(id);

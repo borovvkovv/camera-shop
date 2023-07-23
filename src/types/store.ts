@@ -23,7 +23,7 @@ export type DataProcess = {
 };
 
 export type AppProcess = {
-  promoCode: PromoCodeInfo | undefined;
+  promoCode: PromoCodeInfo | null;
   isPromoCodeChecking: boolean;
   isPromoCodeChecked: boolean;
   isOrderSentSuccessfully: boolean;

@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import ModalSuccess from './modal-success';
 import userEvent from '@testing-library/user-event';
 
@@ -32,22 +32,18 @@ describe('Component: ModalSuccess', () => {
   it('should call onClose when user click on cross button', async () => {
     render(fakeApp);
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(async () => {
-      await userEvent.click(screen.getByTestId('ClosePopupButton'));
+    userEvent.click(screen.getByTestId('ClosePopupButton'));
+    await waitFor(() => {
+      expect(onClose).toBeCalledTimes(1);
     });
-
-    expect(onClose).toBeCalledTimes(1);
   });
 
   it('should call onClick when user click on return to products button', async () => {
     render(fakeApp);
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(async () => {
-      await userEvent.click(screen.getByTestId('ReturnToProductsButton'));
+    userEvent.click(screen.getByTestId('ReturnToProductsButton'));
+    await waitFor(() => {
+      expect(onClick).toBeCalledTimes(1);
     });
-
-    expect(onClick).toBeCalledTimes(1);
   });
 });

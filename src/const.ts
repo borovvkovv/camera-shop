@@ -35,6 +35,4 @@ export const ProductCategoryToTriggerDisabling: keyof typeof ProductCategory = '
 
 export const ProductTypesToDisable: (keyof typeof ProductType)[] = ['Instant', 'Film'];
 
-export const ValidPromoCodes = ['camera-333', 'camera-444', 'camera-555'] as const;
-
 export const PRODUCTS_IN_BASKET = 'PRODUTS_IN_BASKET';

@@ -7,7 +7,7 @@ describe('Reducer: AppProcess', () => {
   let state: AppProcess;
   beforeEach(() => {
     state = {
-      promoCode: undefined,
+      promoCode: null,
       isPromoCodeChecked: false,
       isPromoCodeChecking: false,
       isOrderSentSuccessfully: false,
@@ -27,7 +27,7 @@ describe('Reducer: AppProcess', () => {
       })
     ).toEqual({
       ...state,
-      promoCode: undefined,
+      promoCode: null,
       isPromoCodeChecked: false,
       isPromoCodeChecking: true,
     });

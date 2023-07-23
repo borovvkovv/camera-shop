@@ -4,7 +4,7 @@ import { State } from '../types/store';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import { createAPI } from '../services/api';
 import MockAdapter from 'axios-mock-adapter';
-import { ApiRoute, ValidPromoCodes } from '../const';
+import { ApiRoute } from '../const';
 import {
   addReviewAction,
   fetchProductAction,
@@ -151,7 +151,7 @@ describe('Async actions', () => {
   it('should get discount when POST /coupons', async () => {
     const store = mockStore();
     const discount = 15;
-    const promoCode = ValidPromoCodes[0];
+    const promoCode = 'camera-333';
 
     mockApi.onPost(ApiRoute.PromoCode).reply(200, discount);
     expect(store.getActions()).toEqual([]);

@@ -6,7 +6,7 @@ import { getProductTabUrl } from '../../utils';
 
 type ProductInfoTabsProps = {
   product: ProductCard;
-  tabMode: ProductInfoTabMode | undefined;
+  tabMode: ProductInfoTabMode | null;
 };
 
 function ProductInfoTabs({

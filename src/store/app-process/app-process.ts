@@ -4,7 +4,7 @@ import { AppProcess } from '../../types/store';
 import { fetchPromoCodeAction, makeOrderAction } from '../api-actions';
 
 const initialState: AppProcess = {
-  promoCode: undefined,
+  promoCode: null,
   isPromoCodeChecked: false,
   isPromoCodeChecking: false,
   isOrderSentSuccessfully: false,
@@ -19,7 +19,7 @@ export const appProcess = createSlice({
       .addCase(fetchPromoCodeAction.pending, (state) => {
         state.isPromoCodeChecking = true;
         state.isPromoCodeChecked = false;
-        state.promoCode = undefined;
+        state.promoCode = null;
       })
       .addCase(fetchPromoCodeAction.fulfilled, (state, action) => {
         state.isPromoCodeChecking = false;

@@ -1,8 +1,4 @@
-import { ValidPromoCodes } from '../const';
-
 export type PromoCodeInfo = {
-  coupon: Coupon;
+  coupon: string;
   discount: number;
 };
-
-export type Coupon = (typeof ValidPromoCodes)[number];

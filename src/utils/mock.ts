@@ -1,5 +1,4 @@
 import { datatype, name, unique, random } from 'faker';
-import { ValidPromoCodes } from '../const';
 import {
   ProductCategory,
   ProductLevel,
@@ -114,13 +113,13 @@ export const getFakeProductsInBasket = (quantity: number): BasketProduct[] =>
   Array.from({ length: quantity }).map(() => getFakeProductInBasket());
 
 export const getFakePromoCodeInfo = (): PromoCodeInfo => ({
-  coupon: ValidPromoCodes[0],
+  coupon: 'camera-333',
   discount: datatype.number(100),
 });
 
 export const getFakeOrder = (): Order => ({
   camerasIds: [1, 2, 3],
-  coupon: ValidPromoCodes[0],
+  coupon: 'camera-333',
 });
 
 export const getFakeProductInLocalStorage = (
